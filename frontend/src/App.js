@@ -1,28 +1,33 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+//rfce
+
+import CollapsibleExample from "./components/NavBar";
+import Diary from "./components/Diary/Diary";
+import Logger from "./components/Logger/Logger";
+import Programs from "./components/Programs/Programs";
+import Calculators from "./components/Calculators/Calculators";
+
+import Container from "react-bootstrap/Container";
+
+import {
+    Routes,
+    Route,
+    useMatch,
+    useNavigate
+  } from "react-router-dom"
 
 const App = () => {
-  const [image, setImage] = useState("");
-
-    const fetchImage = async() => {
-        axios.get(`https://muscle-group-image-generator.p.rapidapi.com/getImage?muscleGroups=biceps,triceps,hamstring`, {
-            headers: {
-                'X-RapidAPI-Key': process.env.REACT_APP_RAPID_API_KEY,
-                'X-RapidAPI-Host': 'muscle-group-image-generator.p.rapidapi.com',
-            },
-            responseType: "arraybuffer"
-        }).then((response) => {
-            const imageFile = new Blob([response.data]);
-            const imageUrl = URL.createObjectURL(imageFile);
-            setImage(imageUrl)
-        });
-    }
-
-    useEffect(() => {
-        fetchImage()
-    }, [])
-
-    return <img src={image} alt={`biceps,triceps,hamstring}`} />
+    return (
+        <Container fluid className="px-0">
+            <CollapsibleExample />
+            <Routes>
+                <Route path="/" element={<div>Welcome</div>} />
+                <Route path="/diary" element={<Diary />} />
+                <Route path="/logger" element={<Logger />} />
+                <Route path="/programs" element={<Programs />} />
+                <Route path="/calculators" element={<Calculators />} />
+            </Routes>
+        </Container>
+    )
 }
 
 export default App;
