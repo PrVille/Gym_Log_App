@@ -1,10 +1,10 @@
 import React from 'react'
 import Container from 'react-bootstrap/esm/Container'
 
-function Programs() {
+function Statistics() {
   return (
-    <Container fluid>Programs</Container>
+    <Container fluid>Statistics</Container>
   )
 }
 
-export default Programs
+export default Statistics

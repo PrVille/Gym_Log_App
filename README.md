@@ -6,4 +6,5 @@
 |   :--:   | :---: | :--------: |
 | 21.01.23 | 3     | initiated project and experimented with different exercise apis |
 | 24.01.23 | 3     | navigation bar with bootstrap and react router |
-| sum      | 6     | | 
+| 24.01.23 | 1     | more routes |
+| sum      | 7     | | 

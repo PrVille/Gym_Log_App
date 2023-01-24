@@ -1,8 +1,9 @@
 import React from 'react'
+import Container from 'react-bootstrap/esm/Container'
 
 function Logger() {
   return (
-    <div>Logger</div>
+    <Container fluid>Logger</Container>
   )
 }
 

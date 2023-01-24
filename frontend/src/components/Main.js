@@ -1,10 +1,10 @@
 import React from 'react'
 import Container from 'react-bootstrap/esm/Container'
 
-function Programs() {
+function Main() {
   return (
-    <Container fluid>Programs</Container>
+    <Container fluid>Main</Container>
   )
 }
 
-export default Programs
+export default Main
