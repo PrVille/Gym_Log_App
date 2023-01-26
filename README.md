@@ -7,4 +7,6 @@
 | 21.01.23 | 3     | initiated project and experimented with different exercise apis |
 | 24.01.23 | 3     | navigation bar with bootstrap and react router |
 | 24.01.23 | 1     | more routes |
-| sum      | 7     | | 
+| 25.01.23 | 1     | IMPORTANT! Decided to go with a mobile app due to the nature of the app. Configured react native app |
+| 26.01.23 | 5     | Learned about the usage of React navigation and added bottom tabs navigation with multiple pages |
+| sum      | 13     | | 
