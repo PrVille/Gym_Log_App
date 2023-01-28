@@ -9,4 +9,5 @@
 | 24.01.23 | 1     | more routes |
 | 25.01.23 | 1     | IMPORTANT! Decided to go with a mobile app due to the nature of the app. Configured react native app |
 | 26.01.23 | 5     | Learned about the usage of React navigation and added bottom tabs navigation with multiple pages |
-| sum      | 13     | | 
+| 28.01.23 | 6     | Added exercise list with search bar and individual exercise views with details of exercise |
+| sum      | 19    | | 

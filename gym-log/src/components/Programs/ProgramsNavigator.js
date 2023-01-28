@@ -6,38 +6,20 @@ import theme from "../../theme"
 
 import Programs from "./Programs"
 import Exercises from "./Exercises"
+import Workouts from "./Workouts"
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: theme.backgroundColors.primary,
-    paddingTop: Constants.statusBarHeight,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white"
   },
 })
 
 const Tab = createMaterialTopTabNavigator()
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
-    </View>
-  )
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-
 const ProgramsNavigator = ({ params }) => (
-  <Tab.Navigator>
+  <Tab.Navigator initialRouteName={"Exercises"} sceneContainerStyle={styles.container}>
       <Tab.Screen name="Programs" component={Programs} />
+      <Tab.Screen name="Workouts" component={Workouts} />
       <Tab.Screen name="Exercises" component={Exercises} />
   </Tab.Navigator>
 )
