@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const Tab = createMaterialTopTabNavigator()
 
 const ProgramsNavigator = ({ params }) => (
-  <Tab.Navigator initialRouteName={"Exercises"} sceneContainerStyle={styles.container}>
+  <Tab.Navigator initialRouteName={"Workouts"} sceneContainerStyle={styles.container}>
       <Tab.Screen name="Programs" component={Programs} />
       <Tab.Screen name="Workouts" component={Workouts} />
       <Tab.Screen name="Exercises" component={Exercises} />

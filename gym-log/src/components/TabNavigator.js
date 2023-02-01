@@ -40,7 +40,6 @@ const TabNavigator = () => {
             iconName = focused ? "settings" : "settings-outline"
           }
 
-          // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />
         },
         tabBarShowLabel: false,

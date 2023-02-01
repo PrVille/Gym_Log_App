@@ -6,11 +6,10 @@ import {
   TouchableOpacity,
   FlatList,
   Pressable,
-  TextInput,
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import Ionicons from "@expo/vector-icons/Ionicons"
 import exercises from "../../../data"
+import Search from "../Utils/Search"
 
 const Stack = createStackNavigator()
 
@@ -176,33 +175,6 @@ const ExerciseList = ({ navigation }) => {
         </Pressable>
       )}
     />
-  )
-}
-
-const Search = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        flexDirection: "row",
-        marginStart: 10,
-      }}
-    >
-      <Ionicons name="search-outline" size={30} />
-      <TextInput
-        style={{
-          padding: 7,
-          marginStart: 5,
-          flex: 1,
-          borderRadius: 5,
-          borderWidth: 2,
-          overflow: "hidden",
-          borderColor: "grey",
-        }}
-        placeholder="Search"
-      />
-    </View>
   )
 }
 
