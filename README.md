@@ -12,4 +12,5 @@
 | 28.01.23 | 6     | Added exercise list with search bar and individual exercise views with details of exercise |
 | 28.01.23 | 2     | Added logger modal with blur background, icons for tab navigation |
 | 01.02.23 | 3     | Worked on workout view |
+| 01.02.23 | 6     | Worked on logger, added stopwatch and support to add exercises and sets to exercises |
 | sum      | ?     | | 

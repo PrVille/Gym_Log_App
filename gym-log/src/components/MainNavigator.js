@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, Button } from "react-native"
 
 import { createStackNavigator } from "@react-navigation/stack"
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
-import Logger from "./Logger/Logger"
+import LoggerStack from "./Logger/Logger"
+import Stopwatch from "./Utils/Stopwatch"
 
 const Stack = createStackNavigator()
 
 const MainNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator >
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}
@@ -23,7 +24,14 @@ const MainNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Logger" component={Logger} />
+      <Stack.Screen
+        name="LoggerStack"
+        component={LoggerStack}
+        options={{
+          presentation: "transparentModal",
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   )
 }

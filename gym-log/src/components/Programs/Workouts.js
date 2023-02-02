@@ -13,23 +13,6 @@ import theme from "../../theme"
 
 const Stack = createStackNavigator()
 
-const DynamicComponents = () => {
-  const [components, setComponents] = useState([])
-
-  const renderNewField = () => {
-    return setComponents([...components, "new component"])
-  }
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Components</Text>
-      <Button title="Add new" onPress={renderNewField} />
-      {components.map((component, i) => {
-        return <Text key={i}>{component}</Text>
-      })}
-    </View>
-  )
-}
-
 const workouts = [
   {
     id: 0,
@@ -229,8 +212,6 @@ const CreateWorkout = ({ navigation }) => {
 }
 
 const WorkoutExerciseCard = ({ item }) => {
-  console.log(item)
-
   return (
     <View
       style={{
@@ -315,7 +296,7 @@ const WorkoutExerciseList = ({ exercises }) => {
   )
 }
 
-const WorkoutDetails = ({ route }) => {
+const WorkoutDetails = ({ route, navigation }) => {
   const workout = route.params
   const primaryMuscleGroups = route.params.exercises
     .map((e) => e.primaryMuscleGroups)
@@ -400,6 +381,7 @@ const WorkoutDetails = ({ route }) => {
             borderColor: "grey",
             alignItems: "center",
           }}
+          onPress={() => navigation.navigate("Logger", workout)}
         >
           <Text
             style={{

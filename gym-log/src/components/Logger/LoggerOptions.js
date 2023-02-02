@@ -32,7 +32,9 @@ const LoggerOptions = ({ navigation }) => {
               alignItems: "center",
               opacity: 1,
             }}
-            onPress={() => navigation.navigate("Logger")}
+            onPress={() => {
+              navigation.goBack()
+              navigation.navigate("LoggerStack")}}
           >
             <Text
               style={{
