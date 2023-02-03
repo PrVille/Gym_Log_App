@@ -1,0 +1,8 @@
+### clear exercise database DEV
+DELETE http://localhost:3001/api/clear/exercises
+
+### clear sets database DEV
+DELETE http://localhost:3001/api/clear/sets
+
+### clear workouts database DEV
+DELETE http://localhost:3001/api/clear/workouts

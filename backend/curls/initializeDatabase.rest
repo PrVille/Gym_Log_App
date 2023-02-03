@@ -1,0 +1,5 @@
+### initialize exercise database DEV
+POST http://localhost:3001/api/init/exercises
+
+### initialize sets database DEV NOTE AFTER INIT EXERC
+POST http://localhost:3001/api/init/sets

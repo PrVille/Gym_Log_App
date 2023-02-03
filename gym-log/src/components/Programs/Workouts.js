@@ -10,6 +10,8 @@ import {
 import { createStackNavigator } from "@react-navigation/stack"
 import Search from "../Utils/Search"
 import theme from "../../theme"
+import uuid from 'react-native-uuid';
+
 
 const Stack = createStackNavigator()
 
@@ -37,29 +39,34 @@ const workouts = [
         tags: [],
         sets: [
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 12,
-            load: 20,
+            weight: 20,
           },
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 5,
-            load: 35,
+            weight: 35,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
         ],
       },
@@ -79,24 +86,28 @@ const workouts = [
         tags: [],
         sets: [
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 12,
-            load: 20,
+            weight: 20,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
         ],
       },
@@ -128,29 +139,34 @@ const workouts = [
         tags: ["powerlifting"],
         sets: [
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 12,
-            load: 20,
+            weight: 20,
           },
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 5,
-            load: 35,
+            weight: 35,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 8,
-            load: 45,
+            weight: 45,
           },
         ],
       },
@@ -177,24 +193,28 @@ const workouts = [
         tags: ["powerlifting"],
         sets: [
           {
+            id: uuid.v4(),
             type: "warmup",
             reps: 12,
-            load: 20,
+            weight: 20,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
           {
+            id: uuid.v4(),
             type: "working",
             reps: 12,
-            load: 40,
+            weight: 40,
           },
         ],
       },
@@ -277,7 +297,7 @@ const WorkoutExerciseCard = ({ item }) => {
               <Text>{i + 1}</Text>
               <Text>{set.type}</Text>
               <Text>{set.reps}</Text>
-              <Text>{set.load}</Text>
+              <Text>{set.weight}</Text>
             </View>
           )
         })}
@@ -381,7 +401,7 @@ const WorkoutDetails = ({ route, navigation }) => {
             borderColor: "grey",
             alignItems: "center",
           }}
-          onPress={() => navigation.navigate("Logger", workout)}
+          onPress={() => navigation.navigate("LoggerStack", workout)}
         >
           <Text
             style={{

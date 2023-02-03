@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Text,
   View,
@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  TextInput,
 } from "react-native"
 import Stopwatch from "../Utils/Stopwatch"
 import { createStackNavigator } from "@react-navigation/stack"
 import exercises from "../../../data"
+import FinishWorkoutScreen from "./FinishWorkoutScreen"
+import theme from "../../theme"
+import uuid from "react-native-uuid"
 
 const DynamicComponents = () => {
   const [components, setComponents] = useState([])
@@ -46,15 +50,24 @@ const ExerciseList = ({ navigation, updateExercises }) => {
             navigation.navigate("Logger")
           }}
         >
-          <Text style={{ marginTop: 10, alignSelf: "center"}}>{item.name}</Text>
+          <Text style={{ marginTop: 10, alignSelf: "center" }}>
+            {item.name}
+          </Text>
         </Pressable>
       )}
     />
   )
 }
 
-const ExerciseCard = ({ exercise, sets, updateSets }) => {
-    
+
+const ExerciseCard = ({
+  exercise,
+  sets,
+  addWorkingSet,
+  addWarmupSet,
+  updateWeightForSet,
+  updateRepsForSet,
+}) => {
   return (
     <View
       style={{
@@ -92,27 +105,40 @@ const ExerciseCard = ({ exercise, sets, updateSets }) => {
         </TouchableOpacity>
       </View>
       {/** SETS */}
-      <View style={{
-        margin: 5
-      }}>
-        {sets.map((set, i) => {            
+      <View
+        style={{
+          margin: 5,
+        }}
+      >
+        <TouchableOpacity onPress={() => addWarmupSet(exercise.id)}>
+          <Text>ADD WARMUP SET</Text>
+        </TouchableOpacity>
+        {sets.map((set, i) => {
           return (
-            <View key={i} style={{
+            <View
+              key={i}
+              style={{
                 flex: 1,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginTop: 5,
-
-            }}>
+              }}
+            >
               <Text>{i + 1}</Text>
               <Text>{set.type}</Text>
-              <Text>{set.weight} kg</Text>
-              <Text>{set.reps} reps</Text>
+              <TextInput
+                placeholder={`${set.weight} kg`}
+                onChangeText={(value) => updateWeightForSet(exercise.id, set.id, value)}
+              />
+              <TextInput
+                placeholder={`${set.reps} reps`}
+                onChangeText={(value) => updateRepsForSet(exercise.id, set.id, value)}
+              />
             </View>
           )
         })}
-        <TouchableOpacity onPress={() => updateSets(exercise.id)}>
-            <Text>ADD WORKING SET</Text>
+        <TouchableOpacity onPress={() => addWorkingSet(exercise.id)}>
+          <Text>ADD WORKING SET</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -133,7 +159,16 @@ const Footer = () => {
   )
 }
 
-const Logger = ({ navigation, exercises, sets, updateSets }) => {
+const Logger = ({
+  navigation,
+  exercises,
+  sets,
+  addWorkingSet,
+  addWarmupSet,
+  updateWeightForSet,
+  updateRepsForSet,
+  plannedWorkout,
+}) => {
   return (
     <SafeAreaView
       style={{
@@ -147,8 +182,33 @@ const Logger = ({ navigation, exercises, sets, updateSets }) => {
           backgroundColor: "white",
         }}
       >
+        <View
+          style={{
+            alignItems: "center",
+            margin: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: theme.fontSizes.heading,
+              textAlign: "center",
+            }}
+          >
+            {plannedWorkout ? plannedWorkout.name : "Improvised Workout"}
+          </Text>
+        </View>
+
         {exercises.map((exercise, i) => (
-          <ExerciseCard key={i} exercise={exercise} sets={sets.filter(set => set.exerciseId == exercise.id)} updateSets={updateSets} />
+          <ExerciseCard
+            key={i}
+            exercise={exercise}
+            sets={sets[exercise.id]}
+            addWorkingSet={addWorkingSet}
+            addWarmupSet={addWarmupSet}
+            updateWeightForSet={updateWeightForSet}
+            updateRepsForSet={updateRepsForSet}
+          />
         ))}
 
         <TouchableOpacity
@@ -175,69 +235,131 @@ const Logger = ({ navigation, exercises, sets, updateSets }) => {
 
 const Stack = createStackNavigator()
 
-const LoggerStack = ({ route, navigation }) => {
+const LoggerStack = ({ route, navigation, workout }) => {
+  const [startTime] = useState(Date.now())
+  const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
-  const [sets, setSets] = useState([])
+  const [sets, setSets] = useState({}) //[workoutid] -> [sets]
+  const [plannedWorkout, setPlannedWorkout] = useState(null)
+
+  useEffect(() => {
+    const populateWorkout = (plannedWorkout) => {
+      setExercises(plannedWorkout.exercises)
+      plannedWorkout.exercises.forEach((exercise) => {
+        sets[exercise.id] = exercise.sets
+      })
+      setSets({ ...sets })
+    }
+    setPlannedWorkout(route.params)
+    route.params ? populateWorkout(route.params) : null
+  }, [])
 
   const updateExercises = (newExercise) => {
-    setSets([...sets,
+    sets[newExercise.id] = [
       {
         //new set
-        exerciseId: newExercise.id,
+        id: uuid.v4(),
         type: "working", //default
         weight: 0, //default
         reps: 0, //default
       },
-      {
-        exerciseId: newExercise.id,
-        type: "warmup", //default
-        weight: 0, //default
-        reps: 0, //default
-      },
-    ])
+    ]
 
+    setSets({ ...sets })
     return setExercises([...exercises, newExercise])
   }
 
-  const updateSets = (id) => {
-    const newSet = {
-        //new set
-        exerciseId: id,
-        type: "working", //default
-        weight: 0, //default
-        reps: 0, //default
-      }
-    return setSets([...sets, newSet])
+  const submitWorkout = () => {
+    console.log(exercises.map((e) => e.name))
+    console.log(sets)
   }
 
+  const addWorkingSet = (id) => {
+    sets[id].push({
+      //new set
+      id: uuid.v4(),
+      type: "working", //default
+      weight: 0, //default
+      reps: 0, //default
+    })
+    return setSets({ ...sets })
+  }
+
+  const addWarmupSet = (id) => {
+    const newSet = {
+      //new set
+      id: uuid.v4(),
+      type: "warmup", //default
+      weight: 0, //default
+      reps: 0, //default
+    }
+
+    const warmupSetAmount = sets[id].filter(
+      (set) => set.type === "warmup"
+    ).length
+
+    if (warmupSetAmount === 0) {
+      sets[id].unshift(newSet)
+      return setSets({ ...sets })
+    }
+
+    sets[id].splice(warmupSetAmount, 0, newSet)
+    return setSets({ ...sets })
+  }
+
+  const updateWeightForSet = (exerciseId, setId, weight) => {
+    sets[exerciseId].find(set => set.id === setId).weight = weight
+    setSets({ ...sets })
+  }
+
+  const updateRepsForSet = (exerciseId, setId, reps) => {
+    sets[exerciseId].find(set => set.id === setId).reps = reps
+    setSets({ ...sets })
+  }
 
   return (
-    <Stack.Navigator
-      screenOptions={({ navigation }) => ({
-        presentation: "transparentModal",
-        headerTitle: () => <Stopwatch />,
-        headerLeft: () => (
-          <Button
-            onPress={() => navigation.goBack()}
-            title="Cancel"
-            color="black"
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Logger"
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: () => <Stopwatch startTime={startTime} />,
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="Cancel"
+              color="black"
+            />
+          ),
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                setFinishTime(Date.now())
+                navigation.navigate("FinishWorkout")
+              }}
+              title="Finish"
+              color="black"
+            />
+          ),
+        })}
+      >
+        {(props) => (
+          <Logger
+            exercises={exercises}
+            sets={sets}
+            addWorkingSet={addWorkingSet}
+            addWarmupSet={addWarmupSet}
+            updateWeightForSet={updateWeightForSet}
+            updateRepsForSet={updateRepsForSet}
+            plannedWorkout={plannedWorkout}
+            {...props}
           />
-        ),
-        headerRight: () => (
-          <Button
-            onPress={() => alert("Finish workout?")}
-            title="Finish"
-            color="black"
-          />
-        ),
-      })}
-    >
-      <Stack.Screen name="Logger">
-        {(props) => <Logger exercises={exercises} sets={sets} updateSets={updateSets} {...props} />}
+        )}
       </Stack.Screen>
       <Stack.Screen
         name="ExerciseList"
         options={({ navigation }) => ({
+          presentation: "transparentModal",
           headerTitle: "Choose Exercise",
           headerLeft: () => (
             <Button
@@ -251,6 +373,39 @@ const LoggerStack = ({ route, navigation }) => {
       >
         {(props) => (
           <ExerciseList updateExercises={updateExercises} {...props} />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name="FinishWorkout"
+        options={({ navigation }) => ({
+          presentation: "card",
+          headerTitle: "Finish workout",
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="<--"
+              color="black"
+            />
+          ),
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                submitWorkout()
+                navigation.navigate("TabNavigator")
+                navigation.navigate("Overview")
+              }}
+              title="Finish Workout"
+              color="black"
+            />
+          ),
+        })}
+      >
+        {(props) => (
+          <FinishWorkoutScreen
+            startTime={startTime}
+            finishTime={finishTime}
+            {...props}
+          />
         )}
       </Stack.Screen>
     </Stack.Navigator>
