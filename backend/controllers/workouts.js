@@ -5,8 +5,8 @@ Workout.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
   const workouts = await Workout.find({})
-    .populate("exercises", ["id", "name"])
-    .populate("sets", ["id", "type", "weight", "reps"])
+    .populate("exercises.exercise", ["id", "name"])
+    .populate("exercises.sets")
   res.json(workouts)
 })
 

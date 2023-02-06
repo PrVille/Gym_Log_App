@@ -16,9 +16,16 @@ router.get("/:id", async (req, res) => {
   res.json(set)
 })
 
+// useless ?
 router.get("/exercise/:id", async (req, res) => {
   const sets = await Set.find({ exercise: req.params.id })
   res.json(sets)
+})
+
+router.put("/:id", async (req, res) => {
+  const set = req.body
+  const updatedSet = await Set.findByIdAndUpdate(req.params.id, set, { new: true, runValidators: true, context: 'query'})
+  res.json(updatedSet)
 })
 
 router.post("/", async (req, res) => {
@@ -26,12 +33,6 @@ router.post("/", async (req, res) => {
   const newSet = await Set.create(req.body)
   exercise.sets.push(newSet.id)
   await exercise.save()
-
-  if (req.body.workout) {
-    const workout = await Workout.findById(req.body.workout)
-    workout.sets.push(newSet.id)
-    await workout.save()
-  }
   
   res.json(newSet)
 })

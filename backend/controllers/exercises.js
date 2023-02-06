@@ -4,8 +4,24 @@ const Exercise = require("../models/exercise")
 Exercise.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
+  if (req.query.fields) {
+    const exercisesWithFields = await Exercise.find({}, req.query.fields.split(","))
+    console.log(exercisesWithFields);
+    
+    res.json(exercisesWithFields)
+    return
+  }
+
   const exercises = await Exercise.find({}).populate("sets", ["id", "type", "weight", "reps"])
+  console.log(exercises);
+  
   res.json(exercises)
+})
+
+router.get("/:id", async (req, res) => {
+    const exercise = await Exercise.findById(req.params.id)    
+    res.json(exercise)
+  
 })
 
 router.post("/", async (req, res) => {

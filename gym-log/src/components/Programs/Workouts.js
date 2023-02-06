@@ -10,8 +10,9 @@ import {
 import { createStackNavigator } from "@react-navigation/stack"
 import Search from "../Utils/Search"
 import theme from "../../theme"
-import uuid from 'react-native-uuid';
-
+import uuid from "react-native-uuid"
+import useWorkouts from "../../hooks/useWorkouts"
+import CreatePlannedWorkout from "../Screens/CreatePlannedWorkout"
 
 const Stack = createStackNavigator()
 
@@ -222,14 +223,6 @@ const workouts = [
   },
 ]
 
-const CreateWorkout = ({ navigation }) => {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 30 }}>New Workout</Text>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
-    </View>
-  )
-}
 
 const WorkoutExerciseCard = ({ item }) => {
   return (
@@ -534,24 +527,39 @@ const Workouts = ({ params }) => {
           headerTitle: "",
           headerLeft: (props) => <Search {...props} />,
           headerRight: () => (
-            <TouchableOpacity
-              style={{
-                marginEnd: 10,
-                paddingEnd: 10,
-                paddingStart: 10,
-                flex: 1,
-                alignContent: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => navigation.navigate("CreateWorkout")}
-            >
-              <Text style={{ fontSize: 30 }}>+</Text>
-            </TouchableOpacity>
+            <View style={{flex: 1, flexDirection: "row", backgroundColor: "red"}}>
+              <TouchableOpacity
+                style={{
+                  marginEnd: 10,
+                  paddingEnd: 10,
+                  paddingStart: 10,
+                  flex: 0,
+                  alignContent: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("WorkoutHistory")}
+              >
+                <Text style={{ fontSize: 30 }}>H</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  marginEnd: 10,
+                  paddingEnd: 10,
+                  paddingStart: 10,
+                  flex: 0,
+                  alignContent: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("CreatePlannedWorkout")}
+              >
+                <Text style={{ fontSize: 30 }}>+</Text>
+              </TouchableOpacity>
+              
+            </View>
           ),
         })}
       />
       <Stack.Screen name="WorkoutDetails" component={WorkoutDetails} />
-      <Stack.Screen name="CreateWorkout" component={CreateWorkout} />
     </Stack.Navigator>
   )
 }

@@ -2,6 +2,8 @@ const router = require("express").Router()
 const Exercise = require("../models/exercise")
 const Set = require("../models/set")
 const Workout = require("../models/workout")
+const PlannedSet = require("../models/plannedSet")
+const PlannedWorkout = require("../models/plannedWorkout")
 
 /**
  * FOR DEV PURPOSES
@@ -20,6 +22,16 @@ router.delete("/sets", async (req, res) => {
 
 router.delete("/workouts", async (req, res) => {
   const deleted = await Workout.deleteMany()
+  res.json(deleted)
+})
+
+router.delete("/plannedsets", async (req, res) => {
+  const deleted = await PlannedSet.deleteMany()
+  res.json(deleted)
+})
+
+router.delete("/plannedworkouts", async (req, res) => {
+  const deleted = await PlannedWorkout.deleteMany()
   res.json(deleted)
 })
 

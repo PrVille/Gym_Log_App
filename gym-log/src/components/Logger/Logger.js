@@ -12,10 +12,11 @@ import {
 } from "react-native"
 import Stopwatch from "../Utils/Stopwatch"
 import { createStackNavigator } from "@react-navigation/stack"
-import exercises from "../../../data"
 import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
-import uuid from "react-native-uuid"
+import useWorkouts from "../../hooks/useWorkouts"
+import useSets from "../../hooks/useSets"
+import useExercises from "../../hooks/useExercises"
 
 const DynamicComponents = () => {
   const [components, setComponents] = useState([])
@@ -38,35 +39,40 @@ const DynamicComponents = () => {
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExerciseList = ({ navigation, updateExercises }) => {
+  const { exercises, loading } = useExercises({ fields: ["name", "_id"] })
+
+  
+
   return (
     <FlatList
       style={{ backgroundColor: "white" }}
       data={exercises}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => (
-        <Pressable
-          onPress={() => {
-            updateExercises(item)
-            navigation.navigate("Logger")
-          }}
-        >
-          <Text style={{ marginTop: 10, alignSelf: "center" }}>
-            {item.name}
-          </Text>
-        </Pressable>
-      )}
+      renderItem={({ item }) => {
+        return (
+          <Pressable
+            onPress={() => {
+              updateExercises(item)
+              navigation.navigate("Logger")
+            }}
+          >
+            <Text style={{ marginTop: 10, alignSelf: "center" }}>
+              {item.name}
+            </Text>
+          </Pressable>
+        )
+      }}
     />
   )
 }
 
-
 const ExerciseCard = ({
   exercise,
-  sets,
   addWorkingSet,
   addWarmupSet,
   updateWeightForSet,
   updateRepsForSet,
+  navigation
 }) => {
   return (
     <View
@@ -100,7 +106,7 @@ const ExerciseCard = ({
         >
           {exercise.name}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ExerciseDetails", exercise._id)}>
           <Text>Exercise Details</Text>
         </TouchableOpacity>
       </View>
@@ -110,10 +116,10 @@ const ExerciseCard = ({
           margin: 5,
         }}
       >
-        <TouchableOpacity onPress={() => addWarmupSet(exercise.id)}>
+        <TouchableOpacity onPress={() => addWarmupSet(exercise._id)}>
           <Text>ADD WARMUP SET</Text>
         </TouchableOpacity>
-        {sets.map((set, i) => {
+        {exercise.sets.map((set, i) => {
           return (
             <View
               key={i}
@@ -128,16 +134,20 @@ const ExerciseCard = ({
               <Text>{set.type}</Text>
               <TextInput
                 placeholder={`${set.weight} kg`}
-                onChangeText={(value) => updateWeightForSet(exercise.id, set.id, value)}
+                onChangeText={(value) =>
+                  updateWeightForSet(exercise._id, set._id, value)
+                }
               />
               <TextInput
                 placeholder={`${set.reps} reps`}
-                onChangeText={(value) => updateRepsForSet(exercise.id, set.id, value)}
+                onChangeText={(value) =>
+                  updateRepsForSet(exercise._id, set._id, value)
+                }
               />
             </View>
           )
         })}
-        <TouchableOpacity onPress={() => addWorkingSet(exercise.id)}>
+        <TouchableOpacity onPress={() => addWorkingSet(exercise._id)}>
           <Text>ADD WORKING SET</Text>
         </TouchableOpacity>
       </View>
@@ -162,7 +172,6 @@ const Footer = () => {
 const Logger = ({
   navigation,
   exercises,
-  sets,
   addWorkingSet,
   addWarmupSet,
   updateWeightForSet,
@@ -203,11 +212,11 @@ const Logger = ({
           <ExerciseCard
             key={i}
             exercise={exercise}
-            sets={sets[exercise.id]}
             addWorkingSet={addWorkingSet}
             addWarmupSet={addWarmupSet}
             updateWeightForSet={updateWeightForSet}
             updateRepsForSet={updateRepsForSet}
+            navigation={navigation}
           />
         ))}
 
@@ -239,82 +248,98 @@ const LoggerStack = ({ route, navigation, workout }) => {
   const [startTime] = useState(Date.now())
   const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
-  const [sets, setSets] = useState({}) //[workoutid] -> [sets]
   const [plannedWorkout, setPlannedWorkout] = useState(null)
+  const { createWorkout } = useWorkouts()
+  const { createSet, updateSets } = useSets()
+
+  
+  
 
   useEffect(() => {
-    const populateWorkout = (plannedWorkout) => {
-      setExercises(plannedWorkout.exercises)
-      plannedWorkout.exercises.forEach((exercise) => {
-        sets[exercise.id] = exercise.sets
-      })
-      setSets({ ...sets })
-    }
     setPlannedWorkout(route.params)
-    route.params ? populateWorkout(route.params) : null
+    route.params ? console.log(route.params) : null
   }, [])
 
-  const updateExercises = (newExercise) => {
-    sets[newExercise.id] = [
-      {
-        //new set
-        id: uuid.v4(),
-        type: "working", //default
-        weight: 0, //default
-        reps: 0, //default
-      },
-    ]
+  const updateExercises = async (newExercise) => {
+    const newSet = await createSet({
+      type: "work",
+      exercise: newExercise._id,
+      weight: 0,
+      reps: 0,
+    })
+    newExercise.sets = [newSet]
 
-    setSets({ ...sets })
     return setExercises([...exercises, newExercise])
   }
 
-  const submitWorkout = () => {
-    console.log(exercises.map((e) => e.name))
-    console.log(sets)
-  }
-
-  const addWorkingSet = (id) => {
-    sets[id].push({
-      //new set
-      id: uuid.v4(),
-      type: "working", //default
-      weight: 0, //default
-      reps: 0, //default
+  const submitWorkout = async () => {
+    //UPDATE SETS WEIGHTS AND REPS
+    //THEN CREATE WORKOUT
+    console.log(exercises)
+    const sets = exercises.map(e => e.sets).flat()
+    await updateSets(sets)
+    console.log("here");
+    await createWorkout({
+      name: "test",
+      notes: "test",
+      duration: 90,
+      exercises: exercises
     })
-    return setSets({ ...sets })
+    
   }
 
-  const addWarmupSet = (id) => {
-    const newSet = {
-      //new set
-      id: uuid.v4(),
-      type: "warmup", //default
-      weight: 0, //default
-      reps: 0, //default
-    }
+  const addWorkingSet = async (id) => {
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e._id === id)
 
-    const warmupSetAmount = sets[id].filter(
+    const newSet = await createSet({
+      type: "work",
+      exercise: id,
+      weight: 0,
+      reps: 0,
+    })
+
+    exercise.sets.push(newSet)
+    return setExercises(copyOfExercises)
+  }
+
+  const addWarmupSet = async (id) => {
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e._id === id)
+
+    const newWarmupSet = await createSet({
+      type: "warmup",
+      exercise: id,
+      weight: 0,
+      reps: 0,
+    })
+
+    const warmupSetAmount = exercise.sets.filter(
       (set) => set.type === "warmup"
     ).length
 
     if (warmupSetAmount === 0) {
-      sets[id].unshift(newSet)
-      return setSets({ ...sets })
+      exercise.sets.unshift(newWarmupSet)
+    } else {
+      exercise.sets.splice(warmupSetAmount, 0, newWarmupSet)
     }
-
-    sets[id].splice(warmupSetAmount, 0, newSet)
-    return setSets({ ...sets })
+    return setExercises(copyOfExercises)
   }
 
   const updateWeightForSet = (exerciseId, setId, weight) => {
-    sets[exerciseId].find(set => set.id === setId).weight = weight
-    setSets({ ...sets })
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e._id === exerciseId)
+    const set = exercise.sets.find((set) => set._id === setId)
+    set.weight = weight
+    return setExercises(copyOfExercises)
   }
 
   const updateRepsForSet = (exerciseId, setId, reps) => {
-    sets[exerciseId].find(set => set.id === setId).reps = reps
-    setSets({ ...sets })
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e._id === exerciseId)
+    const set = exercise.sets.find((set) => set._id === setId)
+    set.reps = reps
+    return setExercises(copyOfExercises)
   }
 
   return (
@@ -346,7 +371,6 @@ const LoggerStack = ({ route, navigation, workout }) => {
         {(props) => (
           <Logger
             exercises={exercises}
-            sets={sets}
             addWorkingSet={addWorkingSet}
             addWarmupSet={addWarmupSet}
             updateWeightForSet={updateWeightForSet}

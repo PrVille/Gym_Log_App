@@ -12,19 +12,30 @@ const schema = new mongoose.Schema(
       ref: "Exercise",
       required: true,
     },
-    weightType: {
+    plannedWeightType: {
         type: String,
-        enum: ["log", "rm", "weight"],
-        default: "log",
+        enum: ["previousWeight", "oneRepMaxPercentage", "plannedWeight"],
+        default: "previousWeight",
     },
-    weight: {
+    plannedWeight: {
       type: Number,
-      default: 0,
+      required: () => { return this.plannedWeightType === "plannedWeight" }
     },
-    reps: {
+    oneRepMaxPercentage: {
       type: Number,
-      default: 0,
+      required: () => { return this.plannedWeightType === "oneRepMaxPercentage" }
     },
+    plannedRepRangeMax: {
+      type: Number
+    },
+    plannedRepRangeMin: {
+      type: Number
+    },
+    plannedReps: {
+      type: Number,
+      required: true,
+      default: 0,
+    },    
   },
   { timestamps: true }
 )

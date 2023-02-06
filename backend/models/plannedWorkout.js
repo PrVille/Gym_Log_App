@@ -1,6 +1,19 @@
 const mongoose = require("mongoose")
 
-const schema = new mongoose.Schema(
+const plannedExerciseSchema = new mongoose.Schema({
+  exercise: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exercise",
+  },
+  sets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PlannedSet",
+    },
+  ],
+})
+
+const plannedWorkoutSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -9,23 +22,16 @@ const schema = new mongoose.Schema(
     notes: {
       type: String,
     },
-    duration: {
+    estimatedDuration: {
       type: Number,
     },
-    exercises: [
+    plannedExercises: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Exercise",
+        type: plannedExerciseSchema,
       },
-    ],
-    sets: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "PlannedSet",
-      },
-    ],
+    ]
   },
   { timestamps: true }
 )
 
-module.exports = mongoose.model("PlannedWorkout", schema)
+module.exports = mongoose.model("PlannedWorkout", plannedWorkoutSchema)

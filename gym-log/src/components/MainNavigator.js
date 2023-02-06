@@ -5,6 +5,9 @@ import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
 import LoggerStack from "./Logger/Logger"
 import Stopwatch from "./Utils/Stopwatch"
+import ExerciseDetails from "./Screens/ExerciseDetails"
+import WorkoutHistory from "./Screens/WorkoutHistory"
+import CreatePlannedWorkout from "./Screens/CreatePlannedWorkout"
 
 const Stack = createStackNavigator()
 
@@ -31,6 +34,54 @@ const MainNavigator = () => {
           presentation: "transparentModal",
           headerShown: false,
         }}
+      />
+
+      {/** MODAL UNIVERSAL SCREENS */}
+
+      <Stack.Screen
+        name="ExerciseDetails"
+        component={ExerciseDetails}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="X"
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="WorkoutHistory"
+        component={WorkoutHistory}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="X"
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="CreatePlannedWorkout"
+        component={CreatePlannedWorkout}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="X"
+              color="black"
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   )

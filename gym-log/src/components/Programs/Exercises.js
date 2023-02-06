@@ -8,8 +8,9 @@ import {
   Pressable,
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import exercises from "../../../data"
+import exercises1 from "../../../data"
 import Search from "../Utils/Search"
+import useExercises from "../../hooks/useExercises"
 
 const Stack = createStackNavigator()
 
@@ -20,72 +21,6 @@ const CreateExercise = ({ navigation }) => {
         IMPLEMENT: Creation of a new exercise here
       </Text>
       <Button onPress={() => navigation.goBack()} title="Dismiss" />
-    </View>
-  )
-}
-
-const ExerciseDetails = ({ route }) => {
-  const { primaryMuscleGroups, secondaryMuscleGroups, instructions } =
-    route.params
-
-  return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <View
-        style={{
-          flex: 0,
-          margin: 5,
-          alignItems: "center",
-        }}
-      >
-        <Text>{instructions}</Text>
-      </View>
-      <View
-        style={{
-          paddingTop: 20,
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-        }}
-      >
-        <View
-          style={{
-            flex: 0,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Primary Muscle Groups
-          </Text>
-          {primaryMuscleGroups.map((muscleGroup) => (
-            <Text key={muscleGroup}>{muscleGroup}</Text>
-          ))}
-        </View>
-        <View
-          style={{
-            flex: 0,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Secondary Muscle Groups
-          </Text>
-          {secondaryMuscleGroups.map((muscleGroup) => (
-            <Text key={muscleGroup}>{muscleGroup}</Text>
-          ))}
-        </View>
-      </View>
     </View>
   )
 }
@@ -165,12 +100,16 @@ const ExerciseCard = ({ item }) => {
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExerciseList = ({ navigation }) => {
+  const { exercises, loading } = useExercises({})
+
+  if (loading) return null
+  
   return (
     <FlatList
       data={exercises}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <Pressable onPress={() => navigation.navigate("ExerciseDetails", item)}>
+        <Pressable onPress={() => navigation.navigate("ExerciseDetails", item._id)}>
           <ExerciseCard item={item} />
         </Pressable>
       )}
@@ -220,13 +159,7 @@ const Exercises = () => {
         component={CreateExercise}
         options={{ headerBackTitle: "Cancel", headerTitle: "" }}
       />
-      <Stack.Screen
-        name="ExerciseDetails"
-        component={ExerciseDetails}
-        options={({ route }) => ({
-          title: route.params.name,
-        })}
-      />
+
     </Stack.Navigator>
   )
 }

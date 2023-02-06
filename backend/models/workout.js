@@ -1,5 +1,18 @@
 const mongoose = require("mongoose")
 
+const exerciseSchema = new mongoose.Schema({
+  exercise: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exercise",
+  },
+  sets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Set",
+    },
+  ],
+})
+
 const schema = new mongoose.Schema(
   {
     name: {
@@ -14,14 +27,7 @@ const schema = new mongoose.Schema(
     },
     exercises: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Exercise",
-      },
-    ],
-    sets: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Set",
+        type: exerciseSchema,
       },
     ],
   },

@@ -6,3 +6,6 @@ DELETE http://localhost:3001/api/clear/sets
 
 ### clear workouts database DEV
 DELETE http://localhost:3001/api/clear/workouts
+
+### clear planned workouts database DEV
+DELETE http://localhost:3001/api/clear/plannedworkouts
