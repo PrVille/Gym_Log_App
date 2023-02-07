@@ -16,5 +16,6 @@
 | 03.02.23 | 3     | Worked on logger, fixed stopwatch, added support to add warmup/working sets, support to log planned workout |
 | 03.02.23 | 5     | Worked on backend, sets, exercises, workouts, planned sets, planned workouts |
 | 04.02.23 | 5     | Worked on backend, restructuring logger to fit backend, started integrating frontend with backend |
-| 05.02.23 | 4     | Restructuring for more universal components, can now log a full improvised workout |
+| 06.02.23 | 4     | Restructuring for more universal components, can now log a full improvised workout |
+| 07.02.23 | 4     | Started working on creation of a planned workout |
 | sum      | ?     | | 

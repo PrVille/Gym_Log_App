@@ -14,34 +14,14 @@ import Stopwatch from "../Utils/Stopwatch"
 import { createStackNavigator } from "@react-navigation/stack"
 import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
-import useWorkouts from "../../hooks/useWorkouts"
-import useSets from "../../hooks/useSets"
 import useExercises from "../../hooks/useExercises"
-
-const DynamicComponents = () => {
-  const [components, setComponents] = useState([])
-
-  const renderNewField = () => {
-    return setComponents([...components, "new component"])
-  }
-
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Components</Text>
-      <Button title="Add new" onPress={renderNewField} />
-      {components.map((component, i) => {
-        return <Text key={i}>{component}</Text>
-      })}
-    </View>
-  )
-}
+import useSetsService from "../../hooks/useSetsService"
+import useWorkoutsService from "../../hooks/useWorkoutsService"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExerciseList = ({ navigation, updateExercises }) => {
   const { exercises, loading } = useExercises({ fields: ["name", "_id"] })
-
-  
 
   return (
     <FlatList
@@ -245,20 +225,18 @@ const Logger = ({
 const Stack = createStackNavigator()
 
 const LoggerStack = ({ route, navigation, workout }) => {
+  const [mode, setMode] = useState()
   const [startTime] = useState(Date.now())
   const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
   const [plannedWorkout, setPlannedWorkout] = useState(null)
-  const { createWorkout } = useWorkouts()
-  const { createSet, updateSets } = useSets()
-
-  
-  
+  const { createWorkout } = useWorkoutsService()
+  const { createSet, updateSets } = useSetsService()
 
   useEffect(() => {
-    setPlannedWorkout(route.params)
-    route.params ? console.log(route.params) : null
-  }, [])
+    setMode(route.params.mode)
+    if (route.params.workout) setPlannedWorkout(route.params.workout)
+  }, [])  
 
   const updateExercises = async (newExercise) => {
     const newSet = await createSet({
@@ -348,7 +326,7 @@ const LoggerStack = ({ route, navigation, workout }) => {
         name="Logger"
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: () => <Stopwatch startTime={startTime} />,
+          headerTitle: () => mode === "planWorkout" ? <Text>Planning workout</Text> : <Stopwatch startTime={startTime} />,
           headerLeft: () => (
             <Button
               onPress={() => navigation.goBack()}

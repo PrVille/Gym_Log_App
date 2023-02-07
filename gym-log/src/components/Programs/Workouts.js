@@ -12,7 +12,6 @@ import Search from "../Utils/Search"
 import theme from "../../theme"
 import uuid from "react-native-uuid"
 import useWorkouts from "../../hooks/useWorkouts"
-import CreatePlannedWorkout from "../Screens/CreatePlannedWorkout"
 
 const Stack = createStackNavigator()
 
@@ -394,7 +393,7 @@ const WorkoutDetails = ({ route, navigation }) => {
             borderColor: "grey",
             alignItems: "center",
           }}
-          onPress={() => navigation.navigate("LoggerStack", workout)}
+          onPress={() => navigation.navigate("LoggerStack", { mode: "logPlanned", workout })}
         >
           <Text
             style={{

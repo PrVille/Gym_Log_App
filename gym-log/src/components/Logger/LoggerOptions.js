@@ -24,6 +24,33 @@ const LoggerOptions = ({ navigation }) => {
               marginBottom: 100,
               marginHorizontal: 20,
               padding: 10,
+              backgroundColor: "grey",
+              borderRadius: 5,
+              borderWidth: 2,
+              overflow: "hidden",
+              borderColor: "black",
+              alignItems: "center",
+              opacity: 1,
+            }}
+            onPress={() => {
+              navigation.goBack()
+              navigation.navigate("CreatePlannedWorkout")
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+              }}
+            >
+              Plan a workout
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={{
+              marginBottom: 100,
+              marginHorizontal: 20,
+              padding: 10,
               backgroundColor: "black",
               borderRadius: 5,
               borderWidth: 2,
@@ -34,7 +61,8 @@ const LoggerOptions = ({ navigation }) => {
             }}
             onPress={() => {
               navigation.goBack()
-              navigation.navigate("LoggerStack")}}
+              navigation.navigate("LoggerStack", { mode: "logImprovised" })
+            }}
           >
             <Text
               style={{

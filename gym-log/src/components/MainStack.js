@@ -4,14 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack"
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
 import LoggerStack from "./Logger/Logger"
-import Stopwatch from "./Utils/Stopwatch"
 import ExerciseDetails from "./Screens/ExerciseDetails"
 import WorkoutHistory from "./Screens/WorkoutHistory"
-import CreatePlannedWorkout from "./Screens/CreatePlannedWorkout"
+import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
 
 const Stack = createStackNavigator()
 
-const MainNavigator = () => {
+const MainStack = () => {
   return (
     <Stack.Navigator >
       <Stack.Screen
@@ -30,6 +29,14 @@ const MainNavigator = () => {
       <Stack.Screen
         name="LoggerStack"
         component={LoggerStack}
+        options={{
+          presentation: "transparentModal",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="CreatePlannedWorkout"
+        component={CreatePlannedWorkout}
         options={{
           presentation: "transparentModal",
           headerShown: false,
@@ -57,7 +64,7 @@ const MainNavigator = () => {
         name="WorkoutHistory"
         component={WorkoutHistory}
         options={({ navigation }) => ({
-          presentation: "transparentModal",
+          presentation: "card",
           headerTitle: "",
           headerLeft: () => (
             <Button
@@ -68,23 +75,9 @@ const MainNavigator = () => {
           ),
         })}
       />
-      <Stack.Screen
-        name="CreatePlannedWorkout"
-        component={CreatePlannedWorkout}
-        options={({ navigation }) => ({
-          presentation: "transparentModal",
-          headerTitle: "",
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="X"
-              color="black"
-            />
-          ),
-        })}
-      />
+      
     </Stack.Navigator>
   )
 }
 
-export default MainNavigator
+export default MainStack

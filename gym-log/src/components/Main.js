@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar"
-import MainNavigator from "./MainNavigator"
+import MainStack from "./MainStack"
 
 const Main = () => {
   return (
     <>
       <StatusBar />
-      <MainNavigator />
+      <MainStack />
     </>
   )
 }
