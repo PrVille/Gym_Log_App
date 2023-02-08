@@ -1,2 +1,5 @@
 ### get all planned workouts
 GET http://localhost:3001/api/plannedworkouts
+
+###
+GET http://localhost:3001/api/plannedworkouts/63e396655e4293c2c7717869

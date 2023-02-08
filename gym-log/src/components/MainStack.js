@@ -7,6 +7,7 @@ import LoggerStack from "./Logger/Logger"
 import ExerciseDetails from "./Screens/ExerciseDetails"
 import WorkoutHistory from "./Screens/WorkoutHistory"
 import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
+import PlannedWorkoutDetails from "./Screens/PlannedWorkoutDetails"
 
 const Stack = createStackNavigator()
 
@@ -65,6 +66,21 @@ const MainStack = () => {
         component={WorkoutHistory}
         options={({ navigation }) => ({
           presentation: "card",
+          headerTitle: "",
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="X"
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="PlannedWorkoutDetails"
+        component={PlannedWorkoutDetails}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
           headerTitle: "",
           headerLeft: () => (
             <Button

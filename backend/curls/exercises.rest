@@ -17,6 +17,10 @@ Content-Type: application/json
 ### delete exercise by id
 DELETE http://localhost:3001/api/exercises/63dd38feb5a222be4573e666
 
+###
+
+GET http://localhost:3001/api/exercises/63dd68eefed1e86b9a4dada9
+
 ### clear exercise database DEV
 DELETE http://localhost:3001/api/clear/exercises
 

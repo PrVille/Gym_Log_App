@@ -12,22 +12,12 @@ const useWorkouts = () => {
     setWorkouts(fetchedWorkouts)
     setLoading(false)
   }
-
-  //seperate to its own hook
-  const createWorkout = async (workout) => {
-    console.log("CREATING WORKOUT")
-    const res = await workoutsService.create(workout)
-    console.log(res);
-    
-    //await fetchWorkouts()
-    return res
-  }
     
   useEffect(() => {
     fetchWorkouts()
   }, [])
 
-  return { workouts, loading, createWorkout }
+  return { workouts, loading }
 }
 
 export default useWorkouts

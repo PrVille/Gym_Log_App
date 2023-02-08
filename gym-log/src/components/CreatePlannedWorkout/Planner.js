@@ -13,10 +13,6 @@ import theme from "../../theme"
 const Planner = ({
   navigation,
   exercises,
-  addWorkingSet,
-  addWarmupSet,
-  updateWeightTypeForSet,
-  updatePlannedRepsForSet,
 }) => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -29,10 +25,6 @@ const Planner = ({
           <ExerciseCard
             key={i}
             exercise={exercise}
-            addWorkingSet={addWorkingSet}
-            addWarmupSet={addWarmupSet}
-            updateWeightTypeForSet={updateWeightTypeForSet}
-            updatePlannedRepsForSet={updatePlannedRepsForSet}
             navigation={navigation}
           />
         ))}

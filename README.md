@@ -18,4 +18,6 @@
 | 04.02.23 | 5     | Worked on backend, restructuring logger to fit backend, started integrating frontend with backend |
 | 06.02.23 | 4     | Restructuring for more universal components, can now log a full improvised workout |
 | 07.02.23 | 4     | Started working on creation of a planned workout |
-| sum      | ?     | | 
+| 07.02.23 | 2     | Worked on creation of a planned set for a planned workout |
+| 08.02.23 | 4     | Can now create a planned workout |
+| sum      | 57    | | 

@@ -84,9 +84,9 @@ const ExerciseCard = ({
             fontWeight: "bold",
           }}
         >
-          {exercise.name}
+          {exercise.exercise.name}
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("ExerciseDetails", exercise._id)}>
+        <TouchableOpacity onPress={() => navigation.navigate("ExerciseDetails", exercise.exercise._id)}>
           <Text>Exercise Details</Text>
         </TouchableOpacity>
       </View>
@@ -96,7 +96,7 @@ const ExerciseCard = ({
           margin: 5,
         }}
       >
-        <TouchableOpacity onPress={() => addWarmupSet(exercise._id)}>
+        <TouchableOpacity onPress={() => addWarmupSet(exercise.exercise._id)}>
           <Text>ADD WARMUP SET</Text>
         </TouchableOpacity>
         {exercise.sets.map((set, i) => {
@@ -115,19 +115,19 @@ const ExerciseCard = ({
               <TextInput
                 placeholder={`${set.weight} kg`}
                 onChangeText={(value) =>
-                  updateWeightForSet(exercise._id, set._id, value)
+                  updateWeightForSet(exercise.exercise._id, set._id, value)
                 }
               />
               <TextInput
                 placeholder={`${set.reps} reps`}
                 onChangeText={(value) =>
-                  updateRepsForSet(exercise._id, set._id, value)
+                  updateRepsForSet(exercise.exercise._id, set._id, value)
                 }
               />
             </View>
           )
         })}
-        <TouchableOpacity onPress={() => addWorkingSet(exercise._id)}>
+        <TouchableOpacity onPress={() => addWorkingSet(exercise.exercise._id)}>
           <Text>ADD WORKING SET</Text>
         </TouchableOpacity>
       </View>
@@ -234,10 +234,17 @@ const LoggerStack = ({ route, navigation, workout }) => {
   const { createSet, updateSets } = useSetsService()
 
   useEffect(() => {
+    console.log(route.params);
+    
     setMode(route.params.mode)
-    if (route.params.workout) setPlannedWorkout(route.params.workout)
-  }, [])  
-
+    if (route.params.plannedWorkout) {
+      setPlannedWorkout(route.params.plannedWorkout)  
+      const pw = route.params.plannedWorkout
+      console.log(pw);
+      
+    }
+  }, [])    
+  
   const updateExercises = async (newExercise) => {
     const newSet = await createSet({
       type: "work",
@@ -245,9 +252,11 @@ const LoggerStack = ({ route, navigation, workout }) => {
       weight: 0,
       reps: 0,
     })
-    newExercise.sets = [newSet]
 
-    return setExercises([...exercises, newExercise])
+    return setExercises([...exercises, {
+      exercise: newExercise,
+      sets: [newSet]
+    }])
   }
 
   const submitWorkout = async () => {
@@ -268,7 +277,7 @@ const LoggerStack = ({ route, navigation, workout }) => {
 
   const addWorkingSet = async (id) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
-    const exercise = copyOfExercises.find((e) => e._id === id)
+    const exercise = copyOfExercises.find((e) => e.exercise._id === id)
 
     const newSet = await createSet({
       type: "work",
@@ -283,7 +292,7 @@ const LoggerStack = ({ route, navigation, workout }) => {
 
   const addWarmupSet = async (id) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
-    const exercise = copyOfExercises.find((e) => e._id === id)
+    const exercise = copyOfExercises.find((e) => e.exercise._id === id)
 
     const newWarmupSet = await createSet({
       type: "warmup",
@@ -305,8 +314,10 @@ const LoggerStack = ({ route, navigation, workout }) => {
   }
 
   const updateWeightForSet = (exerciseId, setId, weight) => {
+    console.log(exerciseId, setId, weight);
+    
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
-    const exercise = copyOfExercises.find((e) => e._id === exerciseId)
+    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
     const set = exercise.sets.find((set) => set._id === setId)
     set.weight = weight
     return setExercises(copyOfExercises)
@@ -314,7 +325,7 @@ const LoggerStack = ({ route, navigation, workout }) => {
 
   const updateRepsForSet = (exerciseId, setId, reps) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
-    const exercise = copyOfExercises.find((e) => e._id === exerciseId)
+    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
     const set = exercise.sets.find((set) => set._id === setId)
     set.reps = reps
     return setExercises(copyOfExercises)

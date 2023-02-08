@@ -6,21 +6,24 @@ import theme from "../../theme"
 
 import Programs from "./Programs"
 import Exercises from "./Exercises"
-import Workouts from "./Workouts"
+import PlannedWorkouts from "./PlannedWorkouts"
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 })
 
 const Tab = createMaterialTopTabNavigator()
 
 const ProgramsNavigator = ({ params }) => (
-  <Tab.Navigator initialRouteName={"Workouts"} sceneContainerStyle={styles.container}>
-      <Tab.Screen name="Programs" component={Programs} />
-      <Tab.Screen name="Workouts" component={Workouts} />
-      <Tab.Screen name="Exercises" component={Exercises} />
+  <Tab.Navigator
+    initialRouteName={"PlannedWorkouts"}
+    sceneContainerStyle={styles.container}
+  >
+    <Tab.Screen name="Programs" component={Programs} />
+    <Tab.Screen name="PlannedWorkouts" component={PlannedWorkouts} />
+    <Tab.Screen name="Exercises" component={Exercises} />
   </Tab.Navigator>
 )
 

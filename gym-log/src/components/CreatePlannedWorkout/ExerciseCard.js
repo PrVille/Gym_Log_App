@@ -23,47 +23,27 @@ const ExerciseCardHeader = ({ exerciseName, exerciseId, navigation }) => {
 const PlannedSet = ({
   set,
   setNumber,
-  exerciseId,
-  updatePlannedRepsForSet,
-  updateWeightTypeForSet,
 }) => {
-
-  const cycleWeightType = () => {
-    const type = set.plannedWeightType
-    let value
-    console.log(type);
-    if (type === "previousWeight") {
-        value = "oneRepMaxPercentage"
-    } else if (type === "oneRepMaxPercentage") {
-        value = "plannedWeight"
-    } else if (type === "plannedWeight") {
-        value = "previousWeight"
-    }
-    updateWeightTypeForSet(exerciseId, set._id, value)
-  }
-
   return (
     <>
       <Text>{setNumber}</Text>
       <Text>{set.type}</Text>
-      <TouchableOpacity onPress={() => cycleWeightType()}>
-        <Text>{set.plannedWeightType}</Text>
-      </TouchableOpacity>
-      <TextInput
-                placeholder={`reps`}
-                onChangeText={(value) =>
-                  updateRepsForSet(exercise._id, set._id, value)
-                }
-              />
+      {set.plannedWeightType === "oneRepMaxPercentage" && (
+        <Text>{set.oneRepMaxPercentage} %</Text>
+      )}
+      {set.plannedWeightType === "plannedWeight" && (
+        <Text>{set.plannedWeight} kg</Text>
+      )}
+      {set.plannedWeightType === "previousWeight" && (
+        <Text>prev</Text>
+      )}
+      <Text>{set.plannedReps}</Text>
     </>
   )
 }
 
 const PlannedSets = ({
   sets,
-  exerciseId,
-  updateWeightTypeForSet,
-  updatePlannedRepsForSet,
 }) => {
   return (
     <View style={styles.plannedSetsContainer}>
@@ -72,9 +52,6 @@ const PlannedSets = ({
           <PlannedSet
             set={set}
             setNumber={i + 1}
-            exerciseId={exerciseId}
-            updatePlannedRepsForSet={updatePlannedRepsForSet}
-            updateWeightTypeForSet={updateWeightTypeForSet}
           />
         </View>
       ))}
@@ -84,30 +61,22 @@ const PlannedSets = ({
 
 const ExerciseCard = ({
   exercise,
-  addWorkingSet,
-  addWarmupSet,
-  updateWeightTypeForSet,
-  updatePlannedRepsForSet,
   navigation,
 }) => {
+  
   return (
     <View style={styles.cardContainer}>
       <ExerciseCardHeader
-        exerciseName={exercise.name}
-        exerciseId={exercise._id}
+        exerciseName={exercise.exercise.name}
+        exerciseId={exercise.exercise._id}
         navigation={navigation}
       />
-      <TouchableOpacity onPress={() => addWarmupSet(exercise._id)}>
-        <Text>ADD WARMUP SET</Text>
-      </TouchableOpacity>
       <PlannedSets
         sets={exercise.sets}
-        exerciseId={exercise._id}
-        updatePlannedRepsForSet={updatePlannedRepsForSet}
-        updateWeightTypeForSet={updateWeightTypeForSet}
+        exerciseId={exercise.exercise._id}
       />
-      <TouchableOpacity onPress={() => addWorkingSet(exercise._id)}>
-        <Text>ADD WORKING SET</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("CreatePlannedSet", exercise.exercise._id)}>
+        <Text>ADD SET</Text>
       </TouchableOpacity>
     </View>
   )
