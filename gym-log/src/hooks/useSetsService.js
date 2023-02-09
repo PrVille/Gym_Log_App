@@ -22,7 +22,22 @@ const useSetsService = () => {
     return
   }
 
-  return { createSet, updateSet, updateSets }
+  const createSetsFromPlannedSets = async (plannedSets) => {
+    const res = []
+    for (let i = 0; i < plannedSets.length; i++) {
+      const plannedSet = plannedSets[i]
+      const set = await createSet({
+        type: plannedSet.type,
+        exercise: plannedSet.exercise,
+        reps: plannedSet.plannedReps,
+        weight: plannedSet.weightToUse
+      })
+      res.push(set)      
+    }
+    return res
+  }
+
+  return { createSet, updateSet, updateSets, createSetsFromPlannedSets }
 }
 
 export default useSetsService

@@ -36,8 +36,37 @@ const schema = new mongoose.Schema(
       required: true,
       default: 0,
     },    
+    weightToUse: {
+      type: Number,
+      default: 0
+    }
   },
   { timestamps: true }
 )
+
+schema.post('find', async function (result) {
+  console.log(result);
+  for (let i = 0; i < result.length; i++) {
+    const doc = result[i]
+    //console.log(doc);
+    switch (doc.plannedWeightType) {
+      case "previousWeight":
+        doc.weightToUse = 50
+        break;
+      case "oneRepMaxPercentage":
+        doc.weightToUse = doc.oneRepMaxPercentage * 50 / 100
+        break;
+      case "plannedWeight":
+        doc.weightToUse = doc.plannedWeight
+        break;
+      default:
+        console.log("how are we here");
+        break;
+    }
+    console.log(doc);
+    
+  }
+  return result
+});
 
 module.exports = mongoose.model("PlannedSet", schema)

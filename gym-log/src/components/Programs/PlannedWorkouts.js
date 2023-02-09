@@ -1,11 +1,5 @@
 import React, { useState } from "react"
-import {
-  Text,
-  View,
-  FlatList,
-  Pressable,
-  TouchableOpacity,
-} from "react-native"
+import { Text, View, FlatList, Pressable, TouchableOpacity } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
 import Search from "../Utils/Search"
 import usePlannedWorkouts from "../../hooks/usePlannedWorkouts"
@@ -95,7 +89,21 @@ const PlannedWorkoutList = ({ navigation }) => {
       data={plannedWorkouts}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <Pressable onPress={() => navigation.navigate("PlannedWorkoutDetails", item._id)}>
+        <Pressable
+          onPress={() => navigation.navigate("PlannedWorkoutDetails", item._id)}
+        >
+          <Text
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              zIndex: 10,
+              marginRight: 100,
+              alignSelf: "flex-end",
+              marginTop: -10
+            }}
+          >
+            LABEL
+          </Text>
           <PlannedWorkoutCard item={item} />
         </Pressable>
       )}

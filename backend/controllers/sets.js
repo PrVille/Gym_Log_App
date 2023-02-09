@@ -2,12 +2,16 @@ const router = require("express").Router()
 const Set = require("../models/set")
 const Exercise = require("../models/exercise")
 const Workout = require("../models/workout")
+const mongoose = require("mongoose")
 
 
-Set.watch().on("change", (data) => console.log(data))
+//Set.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
   const sets = await Set.find({}).populate("exercise", ["id", "name"])
+  const id = new mongoose.Types.ObjectId()
+  console.log(id);
+  
   res.json(sets)
 })
 

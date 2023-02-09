@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const Workout = require("../models/workout")
 
-Workout.watch().on("change", (data) => console.log(data))
+//Workout.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
   const workouts = await Workout.find({})

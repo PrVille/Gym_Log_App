@@ -20,4 +20,5 @@
 | 07.02.23 | 4     | Started working on creation of a planned workout |
 | 07.02.23 | 2     | Worked on creation of a planned set for a planned workout |
 | 08.02.23 | 4     | Can now create a planned workout |
-| sum      | 57    | | 
+| 09.02.23 | 4     | Can now log a planned workout |
+| sum      | ??    | | 

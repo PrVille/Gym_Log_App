@@ -17,6 +17,7 @@ import theme from "../../theme"
 import useExercises from "../../hooks/useExercises"
 import useSetsService from "../../hooks/useSetsService"
 import useWorkoutsService from "../../hooks/useWorkoutsService"
+import uuid from "react-native-uuid"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
@@ -52,7 +53,7 @@ const ExerciseCard = ({
   addWarmupSet,
   updateWeightForSet,
   updateRepsForSet,
-  navigation
+  navigation,
 }) => {
   return (
     <View
@@ -86,7 +87,11 @@ const ExerciseCard = ({
         >
           {exercise.exercise.name}
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("ExerciseDetails", exercise.exercise._id)}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("ExerciseDetails", exercise.exercise._id)
+          }
+        >
           <Text>Exercise Details</Text>
         </TouchableOpacity>
       </View>
@@ -100,6 +105,8 @@ const ExerciseCard = ({
           <Text>ADD WARMUP SET</Text>
         </TouchableOpacity>
         {exercise.sets.map((set, i) => {
+          console.log(set)
+
           return (
             <View
               key={i}
@@ -113,13 +120,19 @@ const ExerciseCard = ({
               <Text>{i + 1}</Text>
               <Text>{set.type}</Text>
               <TextInput
-                placeholder={`${set.weight} kg`}
+                inputMode="numeric"
+                keyboardType="numbers-and-punctuation"
+                keyboardAppearance="dark"
+                value={`${set.weight}`}
+                placeholder={`kg`}
                 onChangeText={(value) =>
                   updateWeightForSet(exercise.exercise._id, set._id, value)
                 }
               />
               <TextInput
-                placeholder={`${set.reps} reps`}
+                inputMode="numeric"
+                placeholder={"reps"}
+                value={`${set.reps}`}
                 onChangeText={(value) =>
                   updateRepsForSet(exercise.exercise._id, set._id, value)
                 }
@@ -156,7 +169,7 @@ const Logger = ({
   addWarmupSet,
   updateWeightForSet,
   updateRepsForSet,
-  plannedWorkout,
+  workout,
 }) => {
   return (
     <SafeAreaView
@@ -184,7 +197,7 @@ const Logger = ({
               textAlign: "center",
             }}
           >
-            {plannedWorkout ? plannedWorkout.name : "Improvised Workout"}
+            {workout.name}
           </Text>
         </View>
 
@@ -224,27 +237,41 @@ const Logger = ({
 
 const Stack = createStackNavigator()
 
-const LoggerStack = ({ route, navigation, workout }) => {
-  const [mode, setMode] = useState()
+const LoggerStack = ({ route, navigation  }) => {
   const [startTime] = useState(Date.now())
   const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
-  const [plannedWorkout, setPlannedWorkout] = useState(null)
+  const [workout, setWorkout] = useState({
+    name: `${uuid.v4()}`,
+    notes: "test",
+    duration: 90,
+  })
   const { createWorkout } = useWorkoutsService()
-  const { createSet, updateSets } = useSetsService()
+  const { createSet, updateSets, createSetsFromPlannedSets } = useSetsService()
 
   useEffect(() => {
-    console.log(route.params);
-    
-    setMode(route.params.mode)
-    if (route.params.plannedWorkout) {
-      setPlannedWorkout(route.params.plannedWorkout)  
-      const pw = route.params.plannedWorkout
-      console.log(pw);
-      
+    const initializeWorkout = async () => {
+      const p = route.params.plannedWorkout
+      const pw = route.params.plannedWorkout.plannedExercises
+      for (let i = 0; i < pw.length; i++) {
+        const e = pw[i]
+        e.sets = await createSetsFromPlannedSets(e.sets)
+        console.log(e)
+      }
+      setExercises(pw)
+      setWorkout({
+        name: p.name,
+        notes: p.notes,
+        duration: p.estimatedDuration
+      })
     }
-  }, [])    
-  
+
+    if (route.params.plannedWorkout) {
+      initializeWorkout()
+    }
+
+  }, [])
+
   const updateExercises = async (newExercise) => {
     const newSet = await createSet({
       type: "work",
@@ -253,26 +280,26 @@ const LoggerStack = ({ route, navigation, workout }) => {
       reps: 0,
     })
 
-    return setExercises([...exercises, {
-      exercise: newExercise,
-      sets: [newSet]
-    }])
+    return setExercises([
+      ...exercises,
+      {
+        exercise: newExercise,
+        sets: [newSet],
+      },
+    ])
   }
 
   const submitWorkout = async () => {
     //UPDATE SETS WEIGHTS AND REPS
     //THEN CREATE WORKOUT
     console.log(exercises)
-    const sets = exercises.map(e => e.sets).flat()
+    const sets = exercises.map((e) => e.sets).flat()
     await updateSets(sets)
-    console.log("here");
+    console.log("here")
     await createWorkout({
-      name: "test",
-      notes: "test",
-      duration: 90,
-      exercises: exercises
+      ...workout,
+      exercises: exercises,
     })
-    
   }
 
   const addWorkingSet = async (id) => {
@@ -314,8 +341,8 @@ const LoggerStack = ({ route, navigation, workout }) => {
   }
 
   const updateWeightForSet = (exerciseId, setId, weight) => {
-    console.log(exerciseId, setId, weight);
-    
+    console.log(exerciseId, setId, weight)
+
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
     const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
     const set = exercise.sets.find((set) => set._id === setId)
@@ -337,7 +364,10 @@ const LoggerStack = ({ route, navigation, workout }) => {
         name="Logger"
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: () => mode === "planWorkout" ? <Text>Planning workout</Text> : <Stopwatch startTime={startTime} />,
+          headerTitle: () => (
+            
+              <Stopwatch startTime={startTime} />
+            ),
           headerLeft: () => (
             <Button
               onPress={() => navigation.goBack()}
@@ -364,7 +394,7 @@ const LoggerStack = ({ route, navigation, workout }) => {
             addWarmupSet={addWarmupSet}
             updateWeightForSet={updateWeightForSet}
             updateRepsForSet={updateRepsForSet}
-            plannedWorkout={plannedWorkout}
+            workout={workout}
             {...props}
           />
         )}

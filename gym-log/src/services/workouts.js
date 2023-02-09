@@ -2,7 +2,7 @@ import axios from "axios"
 
 const webUrl = "http://localhost:3001/api/workouts"
 const mobileUrl = "http://192.168.0.105:3001/api/workouts"
-const baseUrl = webUrl
+const baseUrl = mobileUrl
 
 const getAll = async () => {
   const request = axios.get(baseUrl)

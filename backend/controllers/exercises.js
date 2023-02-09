@@ -1,19 +1,19 @@
 const router = require("express").Router()
 const Exercise = require("../models/exercise")
 
-Exercise.watch().on("change", (data) => console.log(data))
+//Exercise.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
   if (req.query.fields) {
     const exercisesWithFields = await Exercise.find({}, req.query.fields.split(","))
-    console.log(exercisesWithFields);
+    //console.log(exercisesWithFields);
     
     res.json(exercisesWithFields)
     return
   }
 
   const exercises = await Exercise.find({}).populate("sets", ["id", "type", "weight", "reps"])
-  console.log(exercises);
+  //console.log(exercises);
   
   res.json(exercises)
 })

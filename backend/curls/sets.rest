@@ -6,10 +6,11 @@ POST http://localhost:3001/api/sets
 Content-Type: application/json
 
 {
+    "_id": "63e4e7cccfbda2b2500a8a84",
     "type": "work",
     "weight": 50,
     "reps": 12,
-    "exercise": "63dd4dade477342a1fe45227"
+    "exercise": "63dd68eefed1e86b9a4dada4"
 }
 
 ### get sets by exercise ID

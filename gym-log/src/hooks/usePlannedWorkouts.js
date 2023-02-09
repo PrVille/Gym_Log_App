@@ -10,7 +10,7 @@ const usePlannedWorkouts = () => {
     setLoading(true)
     const fetchedPlannedWorkouts = await plannedWorkoutsService.getAll()
     setPlannedWorkouts(fetchedPlannedWorkouts)
-    
+    //console.log(JSON.stringify(fetchedPlannedWorkouts))
     setLoading(false)
   }
     
