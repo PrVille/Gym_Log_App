@@ -1,13 +1,11 @@
 import { Text, View, FlatList, Pressable } from "react-native"
 import { useSelector } from "react-redux"
-import { selectExercisesWithFields } from "../../redux/reducers/exerciseReducer"
+import { selectExercises } from "../../redux/reducers/exerciseReducer"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
-  const exercises = useSelector((state) =>
-    selectExercisesWithFields(state, ["name", "_id"])
-  )
+  const exercises = useSelector(selectExercises)
   
   const availableExercises = exercises.filter(exercise => !existingExercises.includes(exercise._id))
 

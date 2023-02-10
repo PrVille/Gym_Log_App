@@ -14,10 +14,13 @@ export const setSlice = createSlice({
     addMultipleNewSets(state, { payload }) {
       return state.concat(payload)
     },
+    removeSet(state, { payload }) {
+      return state.filter((set) => set._id !== payload)
+    },
   },
 })
 
-const { setSets, addNewSet, addMultipleNewSets } = setSlice.actions
+const { setSets, addNewSet, addMultipleNewSets, removeSet } = setSlice.actions
 
 // ACTIONS
 
@@ -28,6 +31,7 @@ export const initializeSets = () => {
   }
 }
 
+// NOTE: remember to add set for equivalent exercise
 export const createSet = (set) => {
   return async (dispatch) => {
     const newSet = await setService.create(set)
@@ -36,11 +40,20 @@ export const createSet = (set) => {
   }
 }
 
+// NOTE: remember to add sets for equivalent exercises
 export const createMultipleSets = (sets) => {
   return async (dispatch) => {
     const newSets = await setService.create(sets)
     dispatch(addMultipleNewSets(newSets))    
     return newSets
+  }
+}
+
+export const deleteSet = (id) => {
+  return async (dispatch) => {    
+    const res = await setService.remove(id)
+    dispatch(removeSet(id))   
+    return res 
   }
 }
 

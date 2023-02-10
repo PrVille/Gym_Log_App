@@ -9,23 +9,23 @@ const getAll = async () => {
   return res.data
 }
 
-const getAllWithFields = async (fields) => {
-    const res = await axios.get(`${baseUrl}?fields=${fields}`)
-    return res.data
-}
-
 const getById = async (id) => {
   const res = await axios.get(`${baseUrl}/${id}`)
-  //console.log(res.data);
   return res.data
 }
 
 const create = async (newObject) => {
-  const response = await axios.post(baseUrl, newObject)
+
+  const response = await axios.post(baseUrl, newObject).catch(err => console.log(err.response.data)
+  )
+  
   return response.data
 }
 
+const update = async (id, newObject) => {
+  const reponse = await axios.put(`${baseUrl}/${id}`, newObject);
+  return reponse.data
+};
 
 
-
-export default { getAll, getAllWithFields, getById, create}
+export default { getAll, getById, create, update}

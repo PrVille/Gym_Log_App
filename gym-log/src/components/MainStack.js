@@ -10,7 +10,7 @@ import WorkoutHistory from "./Screens/WorkoutHistory"
 import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
 import PlannedWorkoutDetails from "./Screens/PlannedWorkoutDetails"
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 import { initializeExercises } from "../redux/reducers/exerciseReducer"
 import { initializeWorkouts } from "../redux/reducers/workoutReducer"
 import { initializeSets } from "../redux/reducers/setReducer"
@@ -18,6 +18,8 @@ import { initializePlannedSets } from "../redux/reducers/plannedSetReducer"
 import { initializePlannedWorkouts } from "../redux/reducers/plannedWorkoutReducer"
 
 import { createStackNavigator } from "@react-navigation/stack"
+import WorkoutDetails from "./Screens/WorkoutDetails"
+import CreateExercise from "./Screens/CreateExercise"
 
 const Stack = createStackNavigator()
 
@@ -43,17 +45,24 @@ const MainStack = () => {
   useEffect(() => {
     dispatch(initializePlannedWorkouts())
   }, [dispatch])
-  
-  const state = (useSelector(state => state));    
 
-  if (!state.exercises || !state.workouts || !state.plannedSets || !state.sets || !state.plannedWorkouts ) return (
-    <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-      <Text>LOADING...</Text>
-    </View>
+  const state = useSelector((state) => state)
+
+  if (
+    !state.exercises ||
+    !state.workouts ||
+    !state.plannedSets ||
+    !state.sets ||
+    !state.plannedWorkouts
   )
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>LOADING...</Text>
+      </View>
+    )
 
   return (
-    <Stack.Navigator >
+    <Stack.Navigator>
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}
@@ -101,6 +110,23 @@ const MainStack = () => {
           ),
         })}
       />
+
+      <Stack.Screen
+        name="CreateExercise"
+        component={CreateExercise}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="Cancel"
+              color="black"
+            />
+          ),
+        })}
+      />
       <Stack.Screen
         name="WorkoutHistory"
         component={WorkoutHistory}
@@ -131,7 +157,23 @@ const MainStack = () => {
           ),
         })}
       />
-      
+
+      <Stack.Screen
+        name="WorkoutDetails"
+        component={WorkoutDetails}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="X"
+              color="black"
+            />
+          ),
+        })}
+      />
     </Stack.Navigator>
   )
 }

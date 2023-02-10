@@ -4,13 +4,13 @@ const schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   instructions: {
     type: String,
   },
   oneRepMax: {
-    type: Number
+    type: Number,
+    default: 0
   },
   primaryMuscleGroups: [
     {
@@ -39,5 +39,6 @@ const schema = new mongoose.Schema({
     },
   ],
 })
+
 
 module.exports = mongoose.model("Exercise", schema)

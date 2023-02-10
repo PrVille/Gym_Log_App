@@ -18,7 +18,7 @@ const Tab = createMaterialTopTabNavigator()
 
 const ProgramsNavigator = ({ params }) => (
   <Tab.Navigator
-    initialRouteName={"PlannedWorkouts"}
+    initialRouteName={"Exercises"}
     sceneContainerStyle={styles.container}
   >
     <Tab.Screen name="Programs" component={Programs} />

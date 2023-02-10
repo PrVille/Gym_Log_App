@@ -15,9 +15,15 @@ import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
 import uuid from "react-native-uuid"
 import ExercisePicker from "../Screens/ExercisePicker"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { createWorkout } from "../../redux/reducers/workoutReducer"
 import { createMultipleSets } from "../../redux/reducers/setReducer"
+import {
+  addSetForExerciseById,
+  selectExerciseById,
+  update1RMForExerciseById,
+  updateExercise,
+} from "../../redux/reducers/exerciseReducer"
 
 const ExerciseCard = ({
   exercise,
@@ -205,13 +211,31 @@ const LoggerStack = ({ route, navigation }) => {
   })
 
   useEffect(() => {
-    console.log(route.params);
-    
+    const selectWeight = (plannedSet, exercise) => {
+      switch (plannedSet.plannedWeightType) {
+        case "previousWeight":
+          exercise.sets.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt)
+          })
+          const set = exercise.sets.find(
+            (set) => set.reps === plannedSet.plannedReps
+          )
+          return !set.weight ? 0 : set.weight
+        case "oneRepMaxPercentage":
+          return (exercise.oneRepMax * plannedSet.oneRepMaxPercentage) / 100
+        case "plannedWeight":
+          return plannedSet.plannedWeight
+        default:
+          return 0
+      }
+    }
+
     if (route.params.plannedWorkout) {
       const plannedWorkout = route.params.plannedWorkout
       const plannedExercises = plannedWorkout.plannedExercises
 
       for (let i = 0; i < plannedExercises.length; i++) {
+        const exercise = plannedExercises[i]
         const plannedSets = plannedExercises[i].sets
         for (let j = 0; j < plannedSets.length; j++) {
           const plannedSet = plannedSets[j]
@@ -220,7 +244,7 @@ const LoggerStack = ({ route, navigation }) => {
             type: plannedSet.type,
             exercise: plannedSet.exercise,
             reps: plannedSet.plannedReps,
-            weight: plannedSet.weightToUse,
+            weight: selectWeight(plannedSet, exercise.exercise),
           }
 
           plannedSets[j] = { ...set }
@@ -263,16 +287,51 @@ const LoggerStack = ({ route, navigation }) => {
   }
 
   const submitWorkout = async () => {
+    // Brzycki 1RM formula
+    // 1RM = w / [1.0278 - (0.0278 * r)]
+    // accurate for <= 10 reps
+    const Brzycki1RM = (w, r) => {
+      return w / (1.0278 - 0.0278 * r)
+    }
+
+    // Epley 1RM formula
+    // 1RM = w * (1 + (0.0333 * r))
+    // Better than Brzycki for > 10 reps
+    const Epley1RM = (w, r) => {
+      return w * (1 + 0.0333 * r)
+    }
+
+    const update1RM = async (set, exercise) => {
+      const weight = set.weight
+      const reps = set.reps
+      const current1RM = exercise.oneRepMax
+      const new1RM =
+        reps <= 10 ? Brzycki1RM(weight, reps) : Epley1RM(weight, reps)
+
+      if (new1RM > current1RM) {
+        console.log("NEW 1RM", new1RM.toFixed(2))
+        dispatch(updateExercise({ ...exercise, oneRepMax: new1RM.toFixed(2) }))
+      }
+    }
+
     for (let i = 0; i < exercises.length; i++) {
       const sets = exercises[i].sets
       for (let j = 0; j < sets.length; j++) {
+        await update1RM(sets[j], exercises[i].exercise)
         delete sets[j]._id
       }
-      await dispatch(createMultipleSets(sets)).then(
-        (createdSets) => (exercises[i].sets = createdSets)
-      )
+
+      await dispatch(createMultipleSets(sets)).then((createdSets) => {
+        exercises[i].sets = createdSets
+        dispatch(
+          updateExercise({
+            ...exercises[i].exercise,
+            sets: exercises[i].exercise.sets.concat(createdSets),
+          })
+        )
+      })
     }
-    
+
     dispatch(
       createWorkout({
         ...workout,

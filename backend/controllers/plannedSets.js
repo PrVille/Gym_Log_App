@@ -6,7 +6,7 @@ const PlannedSet = require("../models/plannedSet")
 
 router.get("/", async (req, res) => {
   const sets = await PlannedSet.find({})
-    .populate("exercise", ["id", "name"])
+    .populate("exercise")
 
   res.json(sets)
 })

@@ -5,11 +5,9 @@ import { selectExerciseById } from "../../redux/reducers/exerciseReducer"
 
 const ExerciseDetails = ({ route, navigation }) => {
   const id = route.params
-  const exercise = useSelector(state => selectExerciseById(state, id))  
-
-  if (!exercise) return null
-
-  const { name, instructions, primaryMuscleGroups, secondaryMuscleGroups } = exercise
+  const exercise = useSelector(state => selectExerciseById(state, id))    
+  
+  const { name, instructions, primaryMuscleGroups, secondaryMuscleGroups, oneRepMax } = exercise
 
   return (
     <View
@@ -27,6 +25,7 @@ const ExerciseDetails = ({ route, navigation }) => {
       >
         <Button onPress={() => navigation.goBack()} title="go back" />
         <Text>{name}</Text>
+        <Text>{oneRepMax}</Text>
         <Text>{instructions}</Text>
       </View>
       <View

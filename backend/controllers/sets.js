@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 //Set.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
-  const sets = await Set.find({}).populate("exercise", ["id", "name"])  
+  const sets = await Set.find({}).populate("exercise")  
   res.json(sets)
 })
 
@@ -33,24 +33,12 @@ router.post("/", async (req, res) => {
 
   if (Array.isArray(req.body)) {
     const sets = req.body    
-    const newSets = []
-    for (let i = 0; i < sets.length; i++) {
-      const set = sets[i]
-      const exercise = await Exercise.findById(set.exercise)
-      const newSet = await Set.create(set)
-      exercise.sets.push(newSet.id)
-      await exercise.save()
-      newSets.push(newSet)
-    }
-    res.json(newSets)
+    const inserts = await Set.insertMany(sets)
+    res.json(inserts)
     return  
   }
 
-  const exercise = await Exercise.findById(req.body.exercise)
   const newSet = await Set.create(req.body)
-  exercise.sets.push(newSet.id)
-  await exercise.save()
-  
   res.json(newSet)
 })
 

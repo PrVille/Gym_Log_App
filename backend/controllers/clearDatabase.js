@@ -9,8 +9,8 @@ const PlannedWorkout = require("../models/plannedWorkout")
  * FOR DEV PURPOSES
  */
 
-router.delete("/exercises", async (req, res) => {
-  const deleted = await Exercise.deleteMany()
+router.delete("/exercises", async (req, res) => { 
+  const deleted = await Exercise.deleteMany() 
   res.json(deleted)
 })
 

@@ -28,9 +28,7 @@ export const initializePlannedWorkouts = () => {
 export const createPlannedWorkout = (plannedWorkout) => {
   return async (dispatch) => {
     const newPlannedWorkout = await plannedWorkoutService.create(plannedWorkout)
-    dispatch(addNewPlannedWorkout(newPlannedWorkout))    
-    console.log(newPlannedWorkout);
-    
+    dispatch(addNewPlannedWorkout(newPlannedWorkout))        
     return newPlannedWorkout
   }
 }

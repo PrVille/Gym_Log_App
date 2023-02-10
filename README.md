@@ -24,4 +24,7 @@
 | 09.02.23 | 3     | Started integrating redux for app (Should have done this in the beginning :'))|
 | 10.02.23 | 4     | Redux for workouts, exercisePicker, cant pick exercise more than once, reworked logger/backend to minimize backend requests (create many sets) |
 | 10.02.23 | 3     | Completed redux integration and optimized calls to backend for workout planner |
+| 10.02.23 | 2     | backend fixes, automatic 1RM updating, weight populating for planned sets, updateExercise  |
+| 10.02.23 | 3     | some cleanup, workout history + workout details, cascading deletion of completed workout + sets in workout with alert, simple add exercise |
+| 10.02.23 | 1     | some styling for exercises view |
 | sum      | ??    | | 

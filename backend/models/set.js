@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Exercise = require("./exercise")
 
 const schema = new mongoose.Schema(
   {

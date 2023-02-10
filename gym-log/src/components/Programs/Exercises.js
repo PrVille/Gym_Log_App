@@ -1,116 +1,97 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Text,
   View,
-  Button,
   TouchableOpacity,
   FlatList,
   Pressable,
+  StyleSheet,
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import Search from "../Utils/Search"
-import { useSelector, useDispatch } from "react-redux";
-import { selectExercises, createExercise } from "../../redux/reducers/exerciseReducer"
-
+import { useSelector, useDispatch } from "react-redux"
+import {
+  selectExercisesByQuery,
+  createExercise,
+} from "../../redux/reducers/exerciseReducer"
+import Ionicons from "react-native-vector-icons/Ionicons"
+import { FAB, Searchbar, Chip } from "react-native-paper"
+import theme from "../../theme"
 
 const Stack = createStackNavigator()
 
-const CreateExercise = ({ navigation }) => {
-  const dispatch = useDispatch()
+const styles = StyleSheet.create({
+  cardContainer: {
+    flex: 1,
+    padding: 0,
+    marginHorizontal: 5,
+    flexDirection: "row",
+  },
+  pressable: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "center",
+    paddingHorizontal: 15,
+  },
+  heading: {
+    fontSize: theme.fontSizes.heading,
+    fontWeight: theme.fontWeights.bold,
+  },
+  subheading: {
+    flex: 0,
+    flexDirection: "row",
+    backgroundColor: "white",
+  },
+  subheadingItem: {
+    fontSize: theme.fontSizes.body,
+    fontWeight: theme.fontWeights.bold,
+    color: "grey",
+  },
+  ellipsisContainer: {
+    flex: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "black",
+  },
+})
 
-  const newExercise = {
-    name: "test6",
-    instructions: "just do it",
-    oneRepMax: 50,
-    primaryMuscleGroups: ["head"],
-    secondaryMuscleGroups: ["legs"],
-    primaryMuscles: ["finger"],
-    secondaryMuscles: ["toe"],
-    sets: []
-  }
-
-  const addExercise = () => {
-    dispatch(createExercise(newExercise)).then(res => console.log(res))
-  }
-
+const ExerciseCard = ({ item, navigation }) => {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button onPress={() => addExercise()} title="Create" />
-      <Text style={{ fontSize: 30 }}>
-        IMPLEMENT: Creation of a new exercise here
-      </Text>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
-    </View>
-  )
-}
-
-const ExerciseCard = ({ item }) => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        padding: 10,
-        marginHorizontal: 5,
-        alignItems: "stretch",
-        borderRadius: 5,
-        borderWidth: 2,
-        overflow: "hidden",
-        borderColor: "grey",
-      }}
-    >
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          paddingBottom: 10,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-          }}
-        >
-          {item.name}
-        </Text>
+    <View style={styles.cardContainer}>
+      <View style={{ flex: 0 }}>
+        <Ionicons
+          style={{ backgroundColor: "white" }}
+          name={"image-sharp"}
+          size={100}
+        />
       </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-        }}
+      <Pressable
+        style={styles.pressable}
+        onPress={() => navigation.navigate("ExerciseDetails", item._id)}
       >
-        <View
-          style={{
-            flex: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Total Sets</Text>
-          <Text>12</Text>
+        <Text style={styles.heading}>{item.name}</Text>
+        <View style={styles.subheading}>
+          <Text style={styles.subheadingItem}>Sets: {item.sets.length}</Text>
+          <View style={{ paddingHorizontal: 5 }}>
+            <Text>|</Text>
+          </View>
+          <Text style={styles.subheadingItem}>
+            Volume:{" "}
+            {item.sets.map((set) => set.weight).reduce((a, b) => a + b, 0)} kg
+          </Text>
         </View>
-        <View
-          style={{
-            flex: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Total Volume</Text>
-          <Text>1000</Text>
-        </View>
-        <View
-          style={{
-            flex: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Estimated 1RM</Text>
-          <Text>100</Text>
-        </View>
+      </Pressable>
+      <View style={styles.ellipsisContainer}>
+        <Ionicons
+          style={{ backgroundColor: "white", flex: 0 }}
+          name={"ellipsis-vertical"}
+          size={30}
+        />
       </View>
     </View>
   )
@@ -118,24 +99,94 @@ const ExerciseCard = ({ item }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const ExerciseList = ({ navigation }) => {
-  const exercises = useSelector(selectExercises);
-  console.log(exercises.length);
-  
+const ExerciseListHeader = () => {
   return (
-    <FlatList
-      data={exercises}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => navigation.navigate("ExerciseDetails", item._id)}>
-          <ExerciseCard item={item} />
-        </Pressable>
-      )}
-    />
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        padding: 2,
+        marginTop: 10,
+      }}
+    >
+      <Chip
+        style={{ margin: 3 }}
+        icon="arm-flex"
+        onPress={() => console.log("Pressed")}
+      >
+        All
+      </Chip>
+      <Chip
+        style={{ margin: 3 }}
+        icon="arm-flex"
+        onPress={() => console.log("Pressed")}
+      >
+        Chest
+      </Chip>
+      <Chip
+        style={{ margin: 3 }}
+        icon="arm-flex"
+        onPress={() => console.log("Pressed")}
+      >
+        Back
+      </Chip>
+      <Chip
+        style={{ margin: 3 }}
+        onPress={() => console.log("Pressed")}
+      >
+        Legs
+      </Chip>
+      <Chip
+        style={{ margin: 3 }}
+        onPress={() => console.log("Pressed")}
+      >
+        Core
+      </Chip>
+      
+      <Chip
+        style={{ margin: 3 }}
+        icon="sort-alphabetical-variant"
+        onPress={() => console.log("Pressed")}
+      >
+        Sort
+      </Chip>
+      
+    </View>
+  )
+}
+
+const ExerciseList = ({ navigation, searchQuery }) => {
+  const exercises = useSelector((state) =>
+    selectExercisesByQuery(state, searchQuery)
+  )
+
+  return (
+    <>
+      <FlatList
+        ListHeaderComponent={<ExerciseListHeader />}
+        data={exercises}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => (
+          <ExerciseCard item={item} navigation={navigation} />
+        )}
+      />
+      <FAB
+        icon="plus"
+        color="white"
+        style={styles.fab}
+        onPress={() => navigation.navigate("CreateExercise")}
+      />
+    </>
   )
 }
 
 const Exercises = () => {
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const onChangeSearch = (query) => setSearchQuery(query)
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -151,33 +202,20 @@ const Exercises = () => {
     >
       <Stack.Screen
         name="ExerciseList"
-        component={ExerciseList}
         options={({ navigation }) => ({
-          headerTitle: "",
-          headerLeft: (props) => <Search {...props} />,
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                marginEnd: 10,
-                paddingEnd: 10,
-                paddingStart: 10,
-                flex: 1,
-                alignContent: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => navigation.navigate("CreateExercise")}
-            >
-              <Text style={{ fontSize: 30 }}>+</Text>
-            </TouchableOpacity>
+          header: (props) => (
+            <Searchbar
+              style={{ backgroundColor: "white" }}
+              elevation={1}
+              placeholder="Search"
+              onChangeText={onChangeSearch}
+              value={searchQuery}
+            />
           ),
         })}
-      />
-      <Stack.Screen
-        name="CreateExercise"
-        component={CreateExercise}
-        options={{ headerBackTitle: "Cancel", headerTitle: "" }}
-      />
-
+      >
+        {(props) => <ExerciseList searchQuery={searchQuery} {...props} />}
+      </Stack.Screen>
     </Stack.Navigator>
   )
 }
