@@ -1,10 +1,16 @@
-import { Text, View, FlatList, TouchableOpacity, StyleSheet } from "react-native"
-import usePlannedWorkout from "../../hooks/usePlannedWorkout"
+import {
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native"
 import theme from "../../theme"
+import { useSelector } from "react-redux"
+import { selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
 
 const PlannedWorkoutExerciseCard = ({ item }) => {
   const { exercise, sets } = item
-  
 
   return (
     <View
@@ -71,10 +77,13 @@ const PlannedWorkoutExerciseCard = ({ item }) => {
               <Text>{i + 1}</Text>
               <Text>{set.type}</Text>
               <Text>{set.plannedReps}</Text>
-              {set.plannedWeightType === "oneRepMaxPercentage" && (<Text>{set.oneRepMaxPercentage}%</Text>)}
-              {set.plannedWeightType === "plannedWeight" && (<Text>{set.plannedWeight}kg</Text>)}
-              {set.plannedWeightType === "previousWeight" && (<Text>prev</Text>)}
-              
+              {set.plannedWeightType === "oneRepMaxPercentage" && (
+                <Text>{set.oneRepMaxPercentage}%</Text>
+              )}
+              {set.plannedWeightType === "plannedWeight" && (
+                <Text>{set.plannedWeight}kg</Text>
+              )}
+              {set.plannedWeightType === "previousWeight" && <Text>prev</Text>}
             </View>
           )
         })}
@@ -97,9 +106,9 @@ const PlannedWorkoutExerciseList = ({ plannedExercises }) => {
 
 const PlannedWorkoutDetails = ({ route, navigation }) => {
   const id = route.params
-  const { plannedWorkout, loading } = usePlannedWorkout(id)
-
-  if (loading) return null
+  const plannedWorkout = useSelector((state) =>
+    selectPlannedWorkoutById(state, id)
+  )
 
   const { name, notes, estimatedDuration, plannedExercises } = plannedWorkout
 
@@ -174,9 +183,9 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
               borderColor: "grey",
               alignItems: "center",
             }}
-            onPress={() =>
-              navigation.navigate("LoggerStack", { mode: "logPlanned", plannedWorkout })
-            }
+            onPress={() => {
+              navigation.navigate("LoggerStack", { plannedWorkout })
+            }}
           >
             <Text
               style={{
@@ -201,8 +210,6 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  
-})
+const styles = StyleSheet.create({})
 
 export default PlannedWorkoutDetails

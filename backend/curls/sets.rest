@@ -13,6 +13,12 @@ Content-Type: application/json
     "exercise": "63dd68eefed1e86b9a4dada4"
 }
 
+### add [set]
+POST http://localhost:3001/api/sets
+Content-Type: application/json
+
+["hello"]
+
 ### get sets by exercise ID
 GET http://localhost:3001/api/sets/exercise/63dd4dade477342a1fe45227
 

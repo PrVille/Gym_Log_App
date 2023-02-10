@@ -3,49 +3,21 @@ import {
   Text,
   View,
   Button,
-  FlatList,
-  Pressable,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
   TextInput,
 } from "react-native"
 import Stopwatch from "../Utils/Stopwatch"
+import RestTimer from "../Utils/RestTimer"
 import { createStackNavigator } from "@react-navigation/stack"
 import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
-import useExercises from "../../hooks/useExercises"
-import useSetsService from "../../hooks/useSetsService"
-import useWorkoutsService from "../../hooks/useWorkoutsService"
 import uuid from "react-native-uuid"
-
-const ItemSeparator = () => <View style={{ height: 5 }} />
-
-const ExerciseList = ({ navigation, updateExercises }) => {
-  const { exercises, loading } = useExercises({ fields: ["name", "_id"] })
-
-  return (
-    <FlatList
-      style={{ backgroundColor: "white" }}
-      data={exercises}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => {
-        return (
-          <Pressable
-            onPress={() => {
-              updateExercises(item)
-              navigation.navigate("Logger")
-            }}
-          >
-            <Text style={{ marginTop: 10, alignSelf: "center" }}>
-              {item.name}
-            </Text>
-          </Pressable>
-        )
-      }}
-    />
-  )
-}
+import ExercisePicker from "../Screens/ExercisePicker"
+import { useDispatch } from "react-redux"
+import { createWorkout } from "../../redux/reducers/workoutReducer"
+import { createMultipleSets } from "../../redux/reducers/setReducer"
 
 const ExerciseCard = ({
   exercise,
@@ -105,8 +77,6 @@ const ExerciseCard = ({
           <Text>ADD WARMUP SET</Text>
         </TouchableOpacity>
         {exercise.sets.map((set, i) => {
-          console.log(set)
-
           return (
             <View
               key={i}
@@ -144,20 +114,6 @@ const ExerciseCard = ({
           <Text>ADD WORKING SET</Text>
         </TouchableOpacity>
       </View>
-    </View>
-  )
-}
-
-const Footer = () => {
-  return (
-    <View
-      style={{
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>TODO: Rest Timer</Text>
     </View>
   )
 }
@@ -224,20 +180,21 @@ const Logger = ({
             marginHorizontal: 5,
             marginVertical: 40,
           }}
-          onPress={() => navigation.navigate("ExerciseList")}
+          onPress={() => navigation.navigate("ExercisePicker")}
         >
           <Text style={{ fontWeight: "bold" }}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      <Footer />
+      <RestTimer />
     </SafeAreaView>
   )
 }
 
 const Stack = createStackNavigator()
 
-const LoggerStack = ({ route, navigation  }) => {
+const LoggerStack = ({ route, navigation }) => {
+  const dispatch = useDispatch()
   const [startTime] = useState(Date.now())
   const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
@@ -246,39 +203,55 @@ const LoggerStack = ({ route, navigation  }) => {
     notes: "test",
     duration: 90,
   })
-  const { createWorkout } = useWorkoutsService()
-  const { createSet, updateSets, createSetsFromPlannedSets } = useSetsService()
 
   useEffect(() => {
-    const initializeWorkout = async () => {
-      const p = route.params.plannedWorkout
-      const pw = route.params.plannedWorkout.plannedExercises
-      for (let i = 0; i < pw.length; i++) {
-        const e = pw[i]
-        e.sets = await createSetsFromPlannedSets(e.sets)
-        console.log(e)
+    console.log(route.params);
+    
+    if (route.params.plannedWorkout) {
+      const plannedWorkout = route.params.plannedWorkout
+      const plannedExercises = plannedWorkout.plannedExercises
+
+      for (let i = 0; i < plannedExercises.length; i++) {
+        const plannedSets = plannedExercises[i].sets
+        for (let j = 0; j < plannedSets.length; j++) {
+          const plannedSet = plannedSets[j]
+          const set = {
+            _id: uuid.v4(),
+            type: plannedSet.type,
+            exercise: plannedSet.exercise,
+            reps: plannedSet.plannedReps,
+            weight: plannedSet.weightToUse,
+          }
+
+          plannedSets[j] = { ...set }
+        }
       }
-      setExercises(pw)
+
+      setExercises(plannedExercises)
       setWorkout({
-        name: p.name,
-        notes: p.notes,
-        duration: p.estimatedDuration
+        name: plannedWorkout.name,
+        notes: plannedWorkout.notes,
+        duration: plannedWorkout.estimatedDuration,
       })
     }
-
-    if (route.params.plannedWorkout) {
-      initializeWorkout()
-    }
-
   }, [])
 
-  const updateExercises = async (newExercise) => {
-    const newSet = await createSet({
+  const updateExercises = (newExercise) => {
+    const existingExercise = exercises.find(
+      (exercise) => exercise.exercise._id === newExercise._id
+    )
+    if (existingExercise) {
+      console.log("EXERCISE ALREADY IN WORKOUT")
+      return
+    }
+
+    const newSet = {
+      _id: uuid.v4(),
       type: "work",
       exercise: newExercise._id,
       weight: 0,
       reps: 0,
-    })
+    }
 
     return setExercises([
       ...exercises,
@@ -290,43 +263,51 @@ const LoggerStack = ({ route, navigation  }) => {
   }
 
   const submitWorkout = async () => {
-    //UPDATE SETS WEIGHTS AND REPS
-    //THEN CREATE WORKOUT
-    console.log(exercises)
-    const sets = exercises.map((e) => e.sets).flat()
-    await updateSets(sets)
-    console.log("here")
-    await createWorkout({
-      ...workout,
-      exercises: exercises,
-    })
+    for (let i = 0; i < exercises.length; i++) {
+      const sets = exercises[i].sets
+      for (let j = 0; j < sets.length; j++) {
+        delete sets[j]._id
+      }
+      await dispatch(createMultipleSets(sets)).then(
+        (createdSets) => (exercises[i].sets = createdSets)
+      )
+    }
+    
+    dispatch(
+      createWorkout({
+        ...workout,
+        exercises,
+      })
+    )
   }
 
-  const addWorkingSet = async (id) => {
+  const addWorkingSet = (id) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
     const exercise = copyOfExercises.find((e) => e.exercise._id === id)
 
-    const newSet = await createSet({
+    const newSet = {
+      _id: uuid.v4(),
       type: "work",
       exercise: id,
       weight: 0,
       reps: 0,
-    })
+    }
 
     exercise.sets.push(newSet)
     return setExercises(copyOfExercises)
   }
 
-  const addWarmupSet = async (id) => {
+  const addWarmupSet = (id) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
     const exercise = copyOfExercises.find((e) => e.exercise._id === id)
 
-    const newWarmupSet = await createSet({
+    const newWarmupSet = {
+      _id: uuid.v4(),
       type: "warmup",
       exercise: id,
       weight: 0,
       reps: 0,
-    })
+    }
 
     const warmupSetAmount = exercise.sets.filter(
       (set) => set.type === "warmup"
@@ -341,8 +322,6 @@ const LoggerStack = ({ route, navigation  }) => {
   }
 
   const updateWeightForSet = (exerciseId, setId, weight) => {
-    console.log(exerciseId, setId, weight)
-
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
     const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
     const set = exercise.sets.find((set) => set._id === setId)
@@ -364,10 +343,7 @@ const LoggerStack = ({ route, navigation  }) => {
         name="Logger"
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: () => (
-            
-              <Stopwatch startTime={startTime} />
-            ),
+          headerTitle: () => <Stopwatch startTime={startTime} />,
           headerLeft: () => (
             <Button
               onPress={() => navigation.goBack()}
@@ -400,10 +376,11 @@ const LoggerStack = ({ route, navigation  }) => {
         )}
       </Stack.Screen>
       <Stack.Screen
-        name="ExerciseList"
+        name="ExercisePicker"
         options={({ navigation }) => ({
           presentation: "transparentModal",
           headerTitle: "Choose Exercise",
+          headerShadowVisible: false,
           headerLeft: () => (
             <Button
               onPress={() => navigation.goBack()}
@@ -415,7 +392,13 @@ const LoggerStack = ({ route, navigation  }) => {
         })}
       >
         {(props) => (
-          <ExerciseList updateExercises={updateExercises} {...props} />
+          <ExercisePicker
+            onSelection={updateExercises}
+            existingExercises={exercises.map(
+              (exercise) => exercise.exercise._id
+            )}
+            {...props}
+          />
         )}
       </Stack.Screen>
       <Stack.Screen

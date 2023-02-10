@@ -1,12 +1,10 @@
 import React from "react"
 import { Text, View } from "react-native"
-import useWorkouts from "../../hooks/useWorkouts"
+import { useSelector } from "react-redux";
+import { selectWorkouts } from "../../redux/reducers/workoutReducer"
 
 const WorkoutHistory = ({ params }) => {
-  const { workouts, loading } = useWorkouts()
-
-  if (loading) return null
-  console.log(workouts);
+  const workouts = useSelector(selectWorkouts)
   
   return (
     <View

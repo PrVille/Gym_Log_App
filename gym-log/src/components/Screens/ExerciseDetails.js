@@ -1,15 +1,16 @@
 import { View, Text, Button } from "react-native"
-import useExercise from "../../hooks/useExercise"
+import { useSelector } from "react-redux";
+import { selectExerciseById } from "../../redux/reducers/exerciseReducer"
+
 
 const ExerciseDetails = ({ route, navigation }) => {
   const id = route.params
-  const { exercise, loading } = useExercise(id)
+  const exercise = useSelector(state => selectExerciseById(state, id))  
 
-  if (loading) return null
+  if (!exercise) return null
 
-  const { instructions, primaryMuscleGroups, secondaryMuscleGroups } = exercise
+  const { name, instructions, primaryMuscleGroups, secondaryMuscleGroups } = exercise
 
-  
   return (
     <View
       style={{
@@ -25,6 +26,7 @@ const ExerciseDetails = ({ route, navigation }) => {
         }}
       >
         <Button onPress={() => navigation.goBack()} title="go back" />
+        <Text>{name}</Text>
         <Text>{instructions}</Text>
       </View>
       <View

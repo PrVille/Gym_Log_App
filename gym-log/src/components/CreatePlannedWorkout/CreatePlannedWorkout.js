@@ -5,15 +5,24 @@ import { createStackNavigator } from "@react-navigation/stack"
 import FinishPlanning from "./FinishPlanning"
 
 import Planner from "./Planner"
-import ExerciseList from "./ExerciseList"
 import CreatePlannedSet from "./CreatePlannedSet"
-import usePlannedWorkoutsService from "../../hooks/usePlannedWorkoutsService"
+import ExercisePicker from "../Screens/ExercisePicker"
+import { useDispatch } from "react-redux"
+import { createMultiplePlannedSets } from "../../redux/reducers/plannedSetReducer"
+import { createPlannedWorkout } from "../../redux/reducers/plannedWorkoutReducer"
+import uuid from "react-native-uuid"
+
 
 const Stack = createStackNavigator()
 
 const CreatePlannedWorkout = ({ route, navigation, workout }) => {
+  const dispatch = useDispatch()
   const [exercises, setExercises] = useState([])
-  const { createPlannedWorkout } = usePlannedWorkoutsService()
+  const [plannedWorkout, setPlannedWorkout] = useState({
+    name: `${uuid.v4()}`,
+    notes: "test",
+    estimatedDuration: 90,
+  })
 
   const addPlannedSet = (exerciseId, newPlannedSet) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
@@ -45,17 +54,23 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
   }
 
   const submitWorkout = async () => {
-    //UPDATE SETS WEIGHTS AND REPS
-    //THEN CREATE WORKOUT
-    console.log(exercises)
     
-    await createPlannedWorkout({
-      name: "test",
-      notes: "test",
-      estimatedDuration: 90,
-      plannedExercises: exercises,
-    })
-
+    for (let i = 0; i < exercises.length; i++) {
+      const sets = exercises[i].sets      
+      for (let j = 0; j < sets.length; j++) {
+        delete sets[j]._id
+      }
+      await dispatch(createMultiplePlannedSets(sets)).then(
+        (createdSets) => (exercises[i].sets = createdSets)
+      )      
+    }
+    
+    dispatch(
+      createPlannedWorkout({
+        ...plannedWorkout,
+        plannedExercises: exercises,
+      })
+    )
   }
 
   return (
@@ -91,10 +106,11 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
         )}
       </Stack.Screen>
       <Stack.Screen
-        name="ExerciseList"
+        name="ExercisePicker"
         options={({ navigation }) => ({
           presentation: "transparentModal",
           headerTitle: "Choose Exercise",
+          headerShadowVisible: false,
           headerLeft: () => (
             <Button
               onPress={() => navigation.goBack()}
@@ -105,7 +121,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           headerRight: null, //search button here
         })}
       >
-        {(props) => <ExerciseList addExercise={addExercise} {...props} />}
+        {(props) => <ExercisePicker onSelection={addExercise} existingExercises={exercises.map(exercise => exercise.exercise._id)} {...props} />}
       </Stack.Screen>
       <Stack.Screen
         name="FinishPlanning"

@@ -6,7 +6,6 @@ const baseUrl = mobileUrl
 
 const getAll = async () => {
   const res = await axios.get(baseUrl)
-  //console.log(res.data);
   return res.data
 }
 
@@ -21,6 +20,12 @@ const getById = async (id) => {
   return res.data
 }
 
+const create = async (newObject) => {
+  const response = await axios.post(baseUrl, newObject)
+  return response.data
+}
 
 
-export default { getAll, getAllWithFields, getById }
+
+
+export default { getAll, getAllWithFields, getById, create}

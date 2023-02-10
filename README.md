@@ -21,4 +21,7 @@
 | 07.02.23 | 2     | Worked on creation of a planned set for a planned workout |
 | 08.02.23 | 4     | Can now create a planned workout |
 | 09.02.23 | 4     | Can now log a planned workout |
+| 09.02.23 | 3     | Started integrating redux for app (Should have done this in the beginning :'))|
+| 10.02.23 | 4     | Redux for workouts, exercisePicker, cant pick exercise more than once, reworked logger/backend to minimize backend requests (create many sets) |
+| 10.02.23 | 3     | Completed redux integration and optimized calls to backend for workout planner |
 | sum      | ??    | | 

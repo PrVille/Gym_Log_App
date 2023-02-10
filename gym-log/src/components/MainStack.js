@@ -1,6 +1,7 @@
+import { useEffect } from "react"
+
 import { StyleSheet, Text, View, Button } from "react-native"
 
-import { createStackNavigator } from "@react-navigation/stack"
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
 import LoggerStack from "./Logger/Logger"
@@ -9,9 +10,48 @@ import WorkoutHistory from "./Screens/WorkoutHistory"
 import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
 import PlannedWorkoutDetails from "./Screens/PlannedWorkoutDetails"
 
+import { useDispatch, useSelector } from "react-redux";
+import { initializeExercises } from "../redux/reducers/exerciseReducer"
+import { initializeWorkouts } from "../redux/reducers/workoutReducer"
+import { initializeSets } from "../redux/reducers/setReducer"
+import { initializePlannedSets } from "../redux/reducers/plannedSetReducer"
+import { initializePlannedWorkouts } from "../redux/reducers/plannedWorkoutReducer"
+
+import { createStackNavigator } from "@react-navigation/stack"
+
 const Stack = createStackNavigator()
 
 const MainStack = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeExercises())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeWorkouts())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializePlannedSets())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeSets())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializePlannedWorkouts())
+  }, [dispatch])
+  
+  const state = (useSelector(state => state));    
+
+  if (!state.exercises || !state.workouts || !state.plannedSets || !state.sets || !state.plannedWorkouts ) return (
+    <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+      <Text>LOADING...</Text>
+    </View>
+  )
+
   return (
     <Stack.Navigator >
       <Stack.Screen

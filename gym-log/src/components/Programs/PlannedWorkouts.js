@@ -2,7 +2,8 @@ import React, { useState } from "react"
 import { Text, View, FlatList, Pressable, TouchableOpacity } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
 import Search from "../Utils/Search"
-import usePlannedWorkouts from "../../hooks/usePlannedWorkouts"
+import { useSelector, useDispatch } from "react-redux";
+import { selectPlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
 
 const Stack = createStackNavigator()
 
@@ -81,9 +82,8 @@ const PlannedWorkoutCard = ({ item }) => {
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const PlannedWorkoutList = ({ navigation }) => {
-  const { plannedWorkouts, loading } = usePlannedWorkouts()
+  const plannedWorkouts = useSelector(selectPlannedWorkouts)
 
-  if (loading) return null
   return (
     <FlatList
       data={plannedWorkouts}

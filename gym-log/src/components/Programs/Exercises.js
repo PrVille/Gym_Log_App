@@ -9,13 +9,33 @@ import {
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
 import Search from "../Utils/Search"
-import useExercises from "../../hooks/useExercises"
+import { useSelector, useDispatch } from "react-redux";
+import { selectExercises, createExercise } from "../../redux/reducers/exerciseReducer"
+
 
 const Stack = createStackNavigator()
 
 const CreateExercise = ({ navigation }) => {
+  const dispatch = useDispatch()
+
+  const newExercise = {
+    name: "test6",
+    instructions: "just do it",
+    oneRepMax: 50,
+    primaryMuscleGroups: ["head"],
+    secondaryMuscleGroups: ["legs"],
+    primaryMuscles: ["finger"],
+    secondaryMuscles: ["toe"],
+    sets: []
+  }
+
+  const addExercise = () => {
+    dispatch(createExercise(newExercise)).then(res => console.log(res))
+  }
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Button onPress={() => addExercise()} title="Create" />
       <Text style={{ fontSize: 30 }}>
         IMPLEMENT: Creation of a new exercise here
       </Text>
@@ -99,9 +119,8 @@ const ExerciseCard = ({ item }) => {
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExerciseList = ({ navigation }) => {
-  const { exercises, loading } = useExercises({})
-
-  if (loading) return null
+  const exercises = useSelector(selectExercises);
+  console.log(exercises.length);
   
   return (
     <FlatList

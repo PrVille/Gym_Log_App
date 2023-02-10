@@ -5,8 +5,10 @@ const PlannedSet = require("../models/plannedSet")
 
 
 router.get("/", async (req, res) => {
-  PlannedSet.find({})
+  const sets = await PlannedSet.find({})
     .populate("exercise", ["id", "name"])
+
+  res.json(sets)
 })
 
 router.get("/:id", async (req, res) => {
@@ -20,6 +22,13 @@ router.get("/exercise/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
+  if (Array.isArray(req.body)) {
+    const sets = req.body    
+    const inserts = await PlannedSet.insertMany(sets)
+    res.json(inserts)
+    return  
+  }
+
   const newSet = await PlannedSet.create(req.body)
   res.json(newSet)
 })

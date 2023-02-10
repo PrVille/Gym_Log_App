@@ -14,9 +14,14 @@ const create = async (newObject) => {
   return response.data
 }
 
+const createMany = async (newObjects) => {
+  const response = await axios.post(baseUrl, newObjects)
+  return response.data
+}
+
 const update = async (id, newObject) => {
   const reponse = await axios.put(`${baseUrl}/${id}`, newObject);
   return reponse.data
 };
 
-export default { getAll, create, update }
+export default { getAll, create, createMany, update }

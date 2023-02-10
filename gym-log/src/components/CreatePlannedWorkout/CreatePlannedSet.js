@@ -1,27 +1,28 @@
 import React, { useState } from "react"
 import { Text, View, TouchableOpacity, TextInput } from "react-native"
 import { RadioButton } from "react-native-paper"
-import usePlannedSetsService from "../../hooks/usePlannedSetsService"
+import uuid from "react-native-uuid"
 
 const CreatePlannedSet = ({
   route,
   navigation,
   addPlannedSet,
-  updatePlannedSet,
 }) => {
   const exerciseId = route.params
   const [plannedSet, setPlannedSet] = useState({
     type: "work",
     exercise: exerciseId,
     plannedWeightType: "previousWeight",
-    plannedReps: 12
+    plannedReps: 12 //default
   })
-  const { createPlannedSet } = usePlannedSetsService()
 
   const submitPlannedSet = async () => {
-    if (!plannedSet.plannedRepRangeMin) delete plannedSet.plannedRepRangeMin
-    if (!plannedSet.plannedRepRangeMax) delete plannedSet.plannedRepRangeMax
-    const newPlannedSet = await createPlannedSet(plannedSet)
+
+    const newPlannedSet = {
+      _id: uuid.v4(),
+      ...plannedSet
+    }    
+    
     addPlannedSet(exerciseId, newPlannedSet)
     navigation.goBack()
   }
@@ -124,27 +125,13 @@ const CreatePlannedSet = ({
 
       <TextInput
         placeholder={`plannedReps (required)`}
-        value={plannedSet.plannedReps}
+        value={`${plannedSet.plannedReps}`}
         onChangeText={(value) =>
           setPlannedSet({ ...plannedSet, plannedReps: value })
         }
       />
 
-      <Text>----------------optional fields-----------------</Text>
-
-      <TextInput
-        placeholder={`minReps`}
-        onChangeText={(value) =>
-          setPlannedSet({ ...plannedSet, plannedRepRangeMin: value })
-        }
-      />
-
-      <TextInput
-        placeholder={`maxReps`}
-        onChangeText={(value) =>
-          setPlannedSet({ ...plannedSet, plannedRepRangeMax: value })
-        }
-      />
+      
       <TouchableOpacity onPress={() => submitPlannedSet()}>
         <Text>ADD</Text>
       </TouchableOpacity>

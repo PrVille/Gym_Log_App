@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native"
 import ExerciseCard from "./ExerciseCard"
-import RestTimer from "./RestTimer"
+import RestTimer from "../Utils/RestTimer"
 import theme from "../../theme"
 
 const Planner = ({
@@ -31,7 +31,7 @@ const Planner = ({
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("ExerciseList")}
+          onPress={() => navigation.navigate("ExercisePicker")}
         >
           <Text style={{ fontWeight: "bold" }}>Add Exercise</Text>
         </TouchableOpacity>
