@@ -1,19 +1,21 @@
 import { View, Text, Button } from "react-native"
 import { useSelector } from "react-redux";
 import { selectExerciseById } from "../../redux/reducers/exerciseReducer"
+import { useTheme } from '@react-navigation/native';
 
 
 const ExerciseDetails = ({ route, navigation }) => {
   const id = route.params
   const exercise = useSelector(state => selectExerciseById(state, id))    
+  const { colors } = useTheme();
   
-  const { name, instructions, primaryMuscleGroups, secondaryMuscleGroups, oneRepMax } = exercise
+  const { name, instructions, primaryMuscles, secondaryMuscles, oneRepMax } = exercise
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: colors.background,
       }}
     >
       <View
@@ -47,10 +49,10 @@ const ExerciseDetails = ({ route, navigation }) => {
               fontWeight: "bold",
             }}
           >
-            Primary Muscle Groups
+            Primary Muscles
           </Text>
-          {primaryMuscleGroups.map((muscleGroup) => (
-            <Text key={muscleGroup}>{muscleGroup}</Text>
+          {primaryMuscles.map((muscle) => (
+            <Text key={muscle}>{muscle}</Text>
           ))}
         </View>
         <View
@@ -64,10 +66,10 @@ const ExerciseDetails = ({ route, navigation }) => {
               fontWeight: "bold",
             }}
           >
-            Secondary Muscle Groups
+            Secondary Muscles
           </Text>
-          {secondaryMuscleGroups.map((muscleGroup) => (
-            <Text key={muscleGroup}>{muscleGroup}</Text>
+          {secondaryMuscles.map((muscle) => (
+            <Text key={muscle}>{muscle}</Text>
           ))}
         </View>
       </View>

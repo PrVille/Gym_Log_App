@@ -27,4 +27,5 @@
 | 10.02.23 | 2     | backend fixes, automatic 1RM updating, weight populating for planned sets, updateExercise  |
 | 10.02.23 | 3     | some cleanup, workout history + workout details, cascading deletion of completed workout + sets in workout with alert, simple add exercise |
 | 10.02.23 | 1     | some styling for exercises view |
+| 11.02.23 | 6     | learned about theming and tested some themes, learned about React Native Elements and styled exercise list, add exercise expanded, changed model of exercise |
 | sum      | ??    | | 

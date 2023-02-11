@@ -12,16 +12,6 @@ const schema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  primaryMuscleGroups: [
-    {
-      type: String,
-    },
-  ],
-  secondaryMuscleGroups: [
-    {
-      type: String,
-    },
-  ],
   primaryMuscles: [
     {
       type: String,

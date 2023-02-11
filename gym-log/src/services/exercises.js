@@ -16,8 +16,7 @@ const getById = async (id) => {
 
 const create = async (newObject) => {
 
-  const response = await axios.post(baseUrl, newObject).catch(err => console.log(err.response.data)
-  )
+  const response = await axios.post(baseUrl, newObject)//.catch(err => console.log(err.response.data))
   
   return response.data
 }

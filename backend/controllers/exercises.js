@@ -20,12 +20,8 @@ router.post("/", async (req, res) => {
 })
 
 router.put("/:id", async (req, res) => {
-  console.log(req.body);
-  console.log(req.params.id);
-  
-  
   const exercise = req.body
-  const updatedExercise = await Exercise.findByIdAndUpdate(req.params.id, exercise, { new: true, runValidators: true, context: 'query'})
+  const updatedExercise = await Exercise.findByIdAndUpdate(req.params.id, exercise, { new: true, runValidators: true, context: 'query'}).populate("sets") 
   res.json(updatedExercise)
 })
 

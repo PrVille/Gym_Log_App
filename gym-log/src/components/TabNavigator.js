@@ -7,12 +7,12 @@ import Settings from "./Settings/Settings"
 import ProgramsNavigator from "./Programs/ProgramsNavigator"
 import Overview from "./Overview/Overview"
 import Ionicons from "react-native-vector-icons/Ionicons"
+import { useTheme } from "@react-navigation/native"
 
 import theme from "../theme"
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     paddingTop: Constants.statusBarHeight,
   },
 })
@@ -22,10 +22,12 @@ const Tab = createBottomTabNavigator()
 const MockComponent = () => <View style={{ backgroundColor: "red" }}></View>
 
 const TabNavigator = () => {
+  const { colors } = useTheme()
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {          
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
           if (route.name === "Overview") {
@@ -40,12 +42,19 @@ const TabNavigator = () => {
             iconName = focused ? "settings" : "settings-outline"
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />
+          return (
+            <Ionicons
+              name={iconName}
+              size={focused ? size : size}
+              color={color}
+            />
+          )
         },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "black",
-        tabBarInactiveTintColor: "grey",
+        tabBarActiveTintColor: colors.text,
+        tabBarInactiveTintColor: colors.text,
         headerShown: false,
+        tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
       initialRouteName={"ProgramsNavigator"}

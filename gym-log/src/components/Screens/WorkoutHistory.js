@@ -4,6 +4,7 @@ import { selectWorkouts } from "../../redux/reducers/workoutReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWorkout } from "../../redux/reducers/workoutReducer"
 import { deleteSet } from "../../redux/reducers/setReducer"
+import { useTheme } from '@react-navigation/native'
 
 const WorkoutCard = ({ workout }) => {
   const dispatch = useDispatch()
@@ -55,11 +56,12 @@ const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const WorkoutHistory = ({ params, navigation }) => {
   const workouts = useSelector(selectWorkouts)  
+  const { colors } = useTheme()
 
   return (
     <View
       style={{
-        backgroundColor: "white",
+        backgroundColor: colors.background,
         flex: 1
       }}
     >

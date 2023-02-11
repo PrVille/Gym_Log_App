@@ -8,6 +8,8 @@ import {
 import theme from "../../theme"
 import { useSelector } from "react-redux"
 import { selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
+import { useTheme } from '@react-navigation/native';
+
 
 const PlannedWorkoutExerciseCard = ({ item }) => {
   const { exercise, sets } = item
@@ -109,11 +111,12 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
   const plannedWorkout = useSelector((state) =>
     selectPlannedWorkoutById(state, id)
   )
+  const { colors } = useTheme();
 
   const { name, notes, estimatedDuration, plannedExercises } = plannedWorkout
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <View
         style={{
           flex: 1,

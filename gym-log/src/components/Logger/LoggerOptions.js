@@ -1,6 +1,8 @@
 import React from "react"
 import { Text, TouchableWithoutFeedback, View, Pressable } from "react-native"
 import { BlurView } from "expo-blur"
+import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import theme from "../../theme"
 
 const LoggerOptions = ({ navigation }) => {
   return (
@@ -19,59 +21,36 @@ const LoggerOptions = ({ navigation }) => {
             alignItems: "stretch",
           }}
         >
-          <Pressable
-            style={{
-              marginBottom: 100,
+          <Button
+            title="Plan a workout"
+            buttonStyle={{
+              backgroundColor: theme.colors.paleDogwood,
+              borderColor: theme.colors.chineseViolet,
+            }}
+            titleStyle={{
+              color: theme.colors.chineseViolet,
+            }}
+            containerStyle={{
+              marginBottom: 30,
               marginHorizontal: 20,
-              padding: 10,
-              backgroundColor: "grey",
-              borderRadius: 5,
-              borderWidth: 2,
-              overflow: "hidden",
-              borderColor: "black",
-              alignItems: "center",
-              opacity: 1,
             }}
             onPress={() => {
               navigation.goBack()
               navigation.navigate("CreatePlannedWorkout")
             }}
-          >
-            <Text
-              style={{
-                color: "white",
-              }}
-            >
-              Plan a workout
-            </Text>
-          </Pressable>
+          />
 
-          <Pressable
-            style={{
+          <Button
+            title="Log an improvised workout"
+            containerStyle={{
               marginBottom: 100,
               marginHorizontal: 20,
-              padding: 10,
-              backgroundColor: "black",
-              borderRadius: 5,
-              borderWidth: 2,
-              overflow: "hidden",
-              borderColor: "black",
-              alignItems: "center",
-              opacity: 1,
             }}
             onPress={() => {
               navigation.goBack()
               navigation.navigate("LoggerStack", { mode: "logImprovised" })
             }}
-          >
-            <Text
-              style={{
-                color: "white",
-              }}
-            >
-              Log a workout
-            </Text>
-          </Pressable>
+          />
         </View>
       </BlurView>
     </TouchableWithoutFeedback>

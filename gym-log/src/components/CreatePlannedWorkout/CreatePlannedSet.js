@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Text, View, TouchableOpacity, TextInput } from "react-native"
 import { RadioButton } from "react-native-paper"
 import uuid from "react-native-uuid"
+import { useTheme } from '@react-navigation/native';
 
 const CreatePlannedSet = ({
   route,
@@ -9,6 +10,7 @@ const CreatePlannedSet = ({
   addPlannedSet,
 }) => {
   const exerciseId = route.params
+  const { colors } = useTheme()
   const [plannedSet, setPlannedSet] = useState({
     type: "work",
     exercise: exerciseId,
@@ -31,7 +33,7 @@ const CreatePlannedSet = ({
     <View
       style={{
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: colors.background,
         justifyContent: "center",
         alignItems: "center",
       }}

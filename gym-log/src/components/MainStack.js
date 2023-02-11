@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 
-import { StyleSheet, Text, View, Button } from "react-native"
+import { StyleSheet, Text, View,  } from "react-native"
+import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+
 
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
@@ -116,13 +118,14 @@ const MainStack = () => {
         component={CreateExercise}
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: "",
+          headerTitle: "Create new exercise",
           headerShadowVisible: false,
           headerLeft: () => (
-            <Button
+            <Icon
+              style={{marginStart: 5}}
               onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="black"
+              name="close"
+              size={30}
             />
           ),
         })}
@@ -131,7 +134,7 @@ const MainStack = () => {
         name="WorkoutHistory"
         component={WorkoutHistory}
         options={({ navigation }) => ({
-          presentation: "card",
+          presentation: "transparentModal",
           headerTitle: "",
           headerLeft: () => (
             <Button

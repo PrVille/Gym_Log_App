@@ -117,11 +117,9 @@ const PlannedWorkouts = ({ params }) => {
       screenOptions={{
         headerStatusBarHeight: 0,
         headerStyle: {
-          backgroundColor: "white",
           height: 60,
         },
         cardStyle: {
-          backgroundColor: "white",
         },
       }}
     >
@@ -133,7 +131,7 @@ const PlannedWorkouts = ({ params }) => {
           headerLeft: (props) => <Search {...props} />,
           headerRight: () => (
             <View
-              style={{ flex: 1, flexDirection: "row", backgroundColor: "red" }}
+              style={{ flex: 1, flexDirection: "row",  }}
             >
               <TouchableOpacity
                 style={{

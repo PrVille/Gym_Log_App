@@ -24,6 +24,7 @@ import {
   update1RMForExerciseById,
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
+import { useTheme } from '@react-navigation/native';
 
 const ExerciseCard = ({
   exercise,
@@ -133,6 +134,8 @@ const Logger = ({
   updateRepsForSet,
   workout,
 }) => {
+  const { colors } = useTheme()
+
   return (
     <SafeAreaView
       style={{
@@ -143,7 +146,7 @@ const Logger = ({
         style={{
           flex: 1,
           padding: 10,
-          backgroundColor: "white",
+          backgroundColor: colors.background,
         }}
       >
         <View
@@ -321,7 +324,7 @@ const LoggerStack = ({ route, navigation }) => {
         delete sets[j]._id
       }
 
-      await dispatch(createMultipleSets(sets)).then((createdSets) => {
+      await dispatch(createMultipleSets(sets)).then((createdSets) => {        
         exercises[i].sets = createdSets
         dispatch(
           updateExercise({
