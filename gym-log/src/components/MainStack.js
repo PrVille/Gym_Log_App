@@ -12,41 +12,21 @@ import WorkoutHistory from "./Screens/WorkoutHistory"
 import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
 import PlannedWorkoutDetails from "./Screens/PlannedWorkoutDetails"
 
-import { useDispatch, useSelector } from "react-redux"
-import { initializeExercises } from "../redux/reducers/exerciseReducer"
-import { initializeWorkouts } from "../redux/reducers/workoutReducer"
-import { initializeSets } from "../redux/reducers/setReducer"
-import { initializePlannedSets } from "../redux/reducers/plannedSetReducer"
-import { initializePlannedWorkouts } from "../redux/reducers/plannedWorkoutReducer"
-
+import { useSelector } from "react-redux"
 import { createStackNavigator } from "@react-navigation/stack"
 import WorkoutDetails from "./Screens/WorkoutDetails"
 import CreateExercise from "./Screens/CreateExercise"
 
+import useInitialization from "../hooks/useInitialization"
+
 const Stack = createStackNavigator()
 
 const MainStack = () => {
-  const dispatch = useDispatch()
+  const stateInitializer = useInitialization()
 
   useEffect(() => {
-    dispatch(initializeExercises())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializeWorkouts())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializePlannedSets())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializeSets())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializePlannedWorkouts())
-  }, [dispatch])
+    stateInitializer()
+  }, [])
 
   const state = useSelector((state) => state)
 

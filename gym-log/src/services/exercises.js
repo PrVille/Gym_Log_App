@@ -26,5 +26,10 @@ const update = async (id, newObject) => {
   return reponse.data
 };
 
+const remove = async (id) => {
+  const reponse = await axios.delete(`${baseUrl}/${id}`);
+  return reponse.data
+};
 
-export default { getAll, getById, create, update}
+
+export default { getAll, getById, create, update, remove}

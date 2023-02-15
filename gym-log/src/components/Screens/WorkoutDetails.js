@@ -11,7 +11,7 @@ const WorkoutDetails = ({ params, route, navigation }) => {
   const { colors } = useTheme()
 
   const { name, notes, duration, exercises, createdAt } = workout    
-
+  
   return (
     <View
       style={{
@@ -25,6 +25,13 @@ const WorkoutDetails = ({ params, route, navigation }) => {
       <Text>{notes}</Text>
       <Text>{duration}</Text>
       <Text>{createdAt}</Text>
+      {exercises.map(exercise => {
+        return (
+          <View key={exercise._id}>
+          <Text>{exercise.exercise.name}, Sets: {exercise.sets.length}</Text>
+          </View>
+        )
+      })}
     </View>
   )
 }

@@ -28,4 +28,8 @@
 | 10.02.23 | 3     | some cleanup, workout history + workout details, cascading deletion of completed workout + sets in workout with alert, simple add exercise |
 | 10.02.23 | 1     | some styling for exercises view |
 | 11.02.23 | 6     | learned about theming and tested some themes, learned about React Native Elements and styled exercise list, add exercise expanded, changed model of exercise |
+| 15.02.23 | 3     | changes to removal methods in backend, middleware to handle cascading removal for workout, custom hook for initializing state |
+| 15.02.23 | 2     | middleware to handle cascading removal for exercise, |
+| 15.02.23 | 1     | can now create, edit and delete exercises |
+| 15.02.23 | 1     | fixed broken 1rm updating |
 | sum      | ??    | | 

@@ -1,15 +1,45 @@
 import React, { createRef, useState } from "react"
-import { View, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native"
+import {
+  View,
+  FlatList,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Alert,
+} from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { useSelector } from "react-redux"
-import { selectExercisesByQuery } from "../../redux/reducers/exerciseReducer"
+import {
+  selectExercisesByQuery,
+  deleteExercise,
+} from "../../redux/reducers/exerciseReducer"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
 import theme from "../../theme"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  selectWorkouts,
+  initializeWorkouts,
+} from "../../redux/reducers/workoutReducer"
+import { initializeSets } from "../../redux/reducers/setReducer"
+import { initializePlannedSets } from "../../redux/reducers/plannedSetReducer"
+import { initializePlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
 
 const Stack = createStackNavigator()
 
-const ExerciseListItem = ({ exercise, navigation }) => {
-  
+const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
+  const confirmDeletion = (exercise) => {
+    Alert.alert(
+      `Delete ${exercise.name}?`,
+      "This will delete the exercise and all related data (sets, planned sets, exercise in workouts and planned workouts)",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "Delete", onPress: () => removeExercise(exercise) },
+      ]
+    )
+  }
+
   return (
     <ListItem.Swipeable
       onPress={() => navigation.navigate("ExerciseDetails", exercise._id)}
@@ -17,7 +47,10 @@ const ExerciseListItem = ({ exercise, navigation }) => {
         <Button
           title="Edit"
           titleStyle={{ color: "white" }}
-          onPress={() => reset()}
+          onPress={() => {
+            navigation.navigate("CreateExercise", exercise)
+            reset()
+          }}
           icon={{ name: "edit", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "blue" }}
         />
@@ -26,7 +59,10 @@ const ExerciseListItem = ({ exercise, navigation }) => {
         <Button
           title="Delete"
           titleStyle={{ color: "white" }}
-          onPress={() => reset()}
+          onPress={() => {
+            confirmDeletion(exercise)
+            reset()
+          }}
           icon={{ name: "delete", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
         />
@@ -48,24 +84,44 @@ const ExerciseListItem = ({ exercise, navigation }) => {
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExerciseList = ({ navigation, searchQuery }) => {
+  const dispatch = useDispatch()
   const exercises = useSelector((state) =>
     selectExercisesByQuery(state, searchQuery)
   )
 
+  //
+  const removeExercise = (exercise) => {
+    try {
+      dispatch(deleteExercise(exercise._id)).then((res) => {
+        //refresh cascading deleted
+        dispatch(initializeSets())
+        dispatch(initializeWorkouts())
+        dispatch(initializePlannedSets())
+        dispatch(initializePlannedWorkouts())
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
-      <FlatList
-        data={exercises}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => (
-          <ExerciseListItem exercise={item} navigation={navigation} />
-        )}
-      />
-      <FAB
-        icon={{ name: "add", color: theme.colors.paleDogwood }}
-        onPress={() => navigation.navigate("CreateExercise")}
-      />
+        <FlatList
+          data={exercises}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item }) => (
+            <ExerciseListItem
+              exercise={item}
+              navigation={navigation}
+              removeExercise={removeExercise}
+            />
+          )}
+        />
+        <FAB
+          icon={{ name: "add", color: theme.colors.paleDogwood }}
+          onPress={() => navigation.navigate("CreateExercise")}
+        />
       </>
     </TouchableWithoutFeedback>
   )

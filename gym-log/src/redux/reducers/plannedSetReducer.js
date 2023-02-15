@@ -11,7 +11,7 @@ export const plannedSetSlice = createSlice({
     addNewPlannedSet(state, { payload }) {
       return state.concat(payload)
     },
-    addMultipleNewPlannedSet(state, { payload }) {
+    addMultipleNewPlannedSets(state, { payload }) {
       return state.concat(payload)
     },
   },
@@ -43,6 +43,7 @@ export const createMultiplePlannedSets = (plannedSets) => {
     return newPlannedSets
   }
 }
+
 
 
 // SELECTORS

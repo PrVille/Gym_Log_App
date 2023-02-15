@@ -49,14 +49,14 @@ export const createMultipleSets = (sets) => {
   }
 }
 
+//needed?
 export const deleteSet = (id) => {
   return async (dispatch) => {    
-    const res = await setService.remove(id)
+    const deletedSet = await setService.remove(id)
     dispatch(removeSet(id))   
-    return res 
+    return deletedSet 
   }
 }
-
 
 // SELECTORS
 

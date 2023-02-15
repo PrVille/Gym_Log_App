@@ -8,6 +8,7 @@ router.get("/", async (req, res) => {
   res.json(exercises)
 })
 
+// useless ??
 router.get("/:id", async (req, res) => {
     const exercise = await Exercise.findById(req.params.id).populate("sets")   
     res.json(exercise)
@@ -22,12 +23,15 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const exercise = req.body
   const updatedExercise = await Exercise.findByIdAndUpdate(req.params.id, exercise, { new: true, runValidators: true, context: 'query'}).populate("sets") 
+  console.log(updatedExercise);
+  
   res.json(updatedExercise)
 })
 
 router.delete("/:id", async (req, res) => {
-  const deleted = await Exercise.deleteOne({ _id: req.params.id })
-  res.json(deleted)
+  const exerciseToDelete = await Exercise.findById(req.params.id)  
+  await exerciseToDelete.remove()
+  res.json(exerciseToDelete)
 })
 
 

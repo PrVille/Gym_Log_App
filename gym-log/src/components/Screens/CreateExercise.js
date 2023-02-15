@@ -1,7 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Text, ScrollView } from "react-native"
 import { useDispatch } from "react-redux"
-import { createExercise } from "../../redux/reducers/exerciseReducer"
+import {
+  createExercise,
+  updateExercise,
+} from "../../redux/reducers/exerciseReducer"
 import { useTheme } from "@react-navigation/native"
 import { Input, Button, ListItem, Divider } from "@rneui/themed"
 
@@ -24,10 +27,14 @@ const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
     return null
   }
-  return <Text style={{ color: "red", alignSelf: "center", marginVertical: 10 }}>{errorMessage}</Text>
+  return (
+    <Text style={{ color: "red", alignSelf: "center", marginVertical: 10 }}>
+      {errorMessage}
+    </Text>
+  )
 }
 
-const CreateExercise = ({ navigation }) => {
+const CreateExercise = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { colors } = useTheme()
   const [errorMessage, setErrorMessage] = useState(null)
@@ -44,6 +51,26 @@ const CreateExercise = ({ navigation }) => {
     secondaryMuscles: [],
     sets: [],
   })
+
+  useEffect(() => {
+    if (route.params) {
+      console.log(route.params.primaryMuscles)
+      const pms = primaryMuscles.map((pm) => {
+        return route.params.primaryMuscles.includes(pm.muscle)
+          ? { ...pm, isChecked: true }
+          : pm
+      })
+      const sms = secondaryMuscles.map((sm) => {
+        return route.params.secondaryMuscles.includes(sm.muscle)
+          ? { ...sm, isChecked: true }
+          : sm
+      })
+
+      setPrimaryMuscles(pms)
+      setSecondaryMuscles(sms)
+      setNewExercise(route.params)
+    }
+  }, [])
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -67,6 +94,27 @@ const CreateExercise = ({ navigation }) => {
       )
     } catch (error) {
       notify(error.response.data.error)
+      return
+    }
+    navigation.goBack()
+  }
+
+  const updateEditedExercise = async () => {
+    const pms = primaryMuscles
+      .filter((pm) => pm.isChecked)
+      .map((pm) => pm.muscle)
+    const sms = secondaryMuscles
+      .filter((sm) => sm.isChecked)
+      .map((sm) => sm.muscle)
+    newExercise.primaryMuscles = pms
+    newExercise.secondaryMuscles = sms
+    try {
+      await dispatch(updateExercise(newExercise)).then((res) =>
+        console.log(res)
+      )
+    } catch (error) {
+      console.log(error)
+
       return
     }
     navigation.goBack()
@@ -101,6 +149,7 @@ const CreateExercise = ({ navigation }) => {
       <Input
         inputContainerStyle={{}}
         label={"Name"}
+        value={newExercise.name}
         placeholder={`Name`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, name: value })
@@ -110,6 +159,7 @@ const CreateExercise = ({ navigation }) => {
       <Input
         inputContainerStyle={{}}
         label={"Instructions"}
+        value={newExercise.instructions}
         placeholder={`Instructions`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, instructions: value })
@@ -119,6 +169,7 @@ const CreateExercise = ({ navigation }) => {
       <Input
         inputContainerStyle={{}}
         label={"1RM"}
+        value={`${newExercise.oneRepMax}`}
         placeholder={`Defaults to 0, will update automatically`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, oneRepMax: value })
@@ -197,12 +248,21 @@ const CreateExercise = ({ navigation }) => {
           })}
       </ListItem.Accordion>
 
-      <Button
-        containerStyle={{ marginVertical: 50 }}
-        onPress={() => addExercise()}
-        title="Create"
-        disabled={!newExercise.name}
-      />
+      {route.params ? (
+        <Button
+          containerStyle={{ marginVertical: 50 }}
+          onPress={() => updateEditedExercise()}
+          title="Update"
+          disabled={!newExercise.name}
+        />
+      ) : (
+        <Button
+          containerStyle={{ marginVertical: 50 }}
+          onPress={() => addExercise()}
+          title="Create"
+          disabled={!newExercise.name}
+        />
+      )}
     </ScrollView>
   )
 }

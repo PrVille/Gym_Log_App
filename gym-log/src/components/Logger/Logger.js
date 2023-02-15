@@ -223,6 +223,8 @@ const LoggerStack = ({ route, navigation }) => {
           const set = exercise.sets.find(
             (set) => set.reps === plannedSet.plannedReps
           )
+          console.log(set);
+          if (!set) return 0
           return !set.weight ? 0 : set.weight
         case "oneRepMaxPercentage":
           return (exercise.oneRepMax * plannedSet.oneRepMaxPercentage) / 100
@@ -304,7 +306,7 @@ const LoggerStack = ({ route, navigation }) => {
       return w * (1 + 0.0333 * r)
     }
 
-    const update1RM = async (set, exercise) => {
+    const getUpdated1RM = (set, exercise) => {
       const weight = set.weight
       const reps = set.reps
       const current1RM = exercise.oneRepMax
@@ -313,14 +315,15 @@ const LoggerStack = ({ route, navigation }) => {
 
       if (new1RM > current1RM) {
         console.log("NEW 1RM", new1RM.toFixed(2))
-        dispatch(updateExercise({ ...exercise, oneRepMax: new1RM.toFixed(2) }))
+        return new1RM.toFixed(2)
       }
+      return current1RM
     }
 
     for (let i = 0; i < exercises.length; i++) {
       const sets = exercises[i].sets
       for (let j = 0; j < sets.length; j++) {
-        await update1RM(sets[j], exercises[i].exercise)
+        exercises[i].exercise.oneRepMax = getUpdated1RM(sets[j], exercises[i].exercise)        
         delete sets[j]._id
       }
 
