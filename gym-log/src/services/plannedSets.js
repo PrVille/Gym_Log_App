@@ -19,6 +19,12 @@ const createMany = async (newObjects) => {
   return response.data
 }
 
+const remove = async (id) => {
+  const reponse = await axios.delete(`${baseUrl}/${id}`);
+  return reponse.data
+};
 
 
-export default { create, createMany, getAll }
+
+
+export default { create, createMany, getAll, remove }

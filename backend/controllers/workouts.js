@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
   res.json(newPopulatedWorkout)
 })
 
+//should not allow completed workout editing?
 router.put("/:id", async (req, res) => {
   const workout = req.body
   const updatedWorkout = await Workout.findByIdAndUpdate(

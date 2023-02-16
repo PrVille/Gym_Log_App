@@ -7,11 +7,21 @@ import FinishPlanning from "./FinishPlanning"
 import Planner from "./Planner"
 import CreatePlannedSet from "./CreatePlannedSet"
 import ExercisePicker from "../Screens/ExercisePicker"
-import { useDispatch } from "react-redux"
-import { createMultiplePlannedSets } from "../../redux/reducers/plannedSetReducer"
-import { createPlannedWorkout } from "../../redux/reducers/plannedWorkoutReducer"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  createMultiplePlannedSets,
+  deletePlannedSet,
+} from "../../redux/reducers/plannedSetReducer"
+import {
+  createPlannedWorkout,
+  selectPlannedWorkoutById,
+  updatePlannedWorkout,
+} from "../../redux/reducers/plannedWorkoutReducer"
 import uuid from "react-native-uuid"
-
+import CloseButton from "../Buttons/CloseButton"
+import BackButton from "../Buttons/BackButton"
+import ForwardButton from "../Buttons/ForwardButton"
+import DoneButton from "../Buttons/DoneButton"
 
 const Stack = createStackNavigator()
 
@@ -21,12 +31,31 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
   const [plannedWorkout, setPlannedWorkout] = useState({
     name: `${uuid.v4()}`,
     notes: "test",
-    estimatedDuration: 90,
+    estimatedDuration: 0,
   })
+  const workoutToEdit = route.params
+    ? useSelector((state) => selectPlannedWorkoutById(state, route.params))
+    : null
+
+  useEffect(() => {
+    if (workoutToEdit) {
+      const existingSets = workoutToEdit.plannedExercises
+        .map((e) => e.sets)
+        .flat()
+        .map((set) => set._id)
+      console.log(existingSets)
+      setExercises(workoutToEdit.plannedExercises)
+      setPlannedWorkout({
+        name: workoutToEdit.name,
+        notes: workoutToEdit.notes,
+        estimatedDuration: workoutToEdit.estimatedDuration,
+      })
+    }
+  }, [])
 
   const addPlannedSet = (exerciseId, newPlannedSet) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
-    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)    
+    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
 
     if (newPlannedSet.type === "warmup") {
       const warmupSetAmount = exercise.sets.filter(
@@ -46,25 +75,45 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
   }
 
   const addExercise = async (newExercise) => {
-  
-    return setExercises([...exercises, {
-      exercise: newExercise,
-      sets: []
-    }])
+    return setExercises([
+      ...exercises,
+      {
+        exercise: newExercise,
+        sets: [],
+      },
+    ])
   }
 
   const submitWorkout = async () => {
-    
     for (let i = 0; i < exercises.length; i++) {
-      const sets = exercises[i].sets      
+      const sets = exercises[i].sets
       for (let j = 0; j < sets.length; j++) {
         delete sets[j]._id
       }
       await dispatch(createMultiplePlannedSets(sets)).then(
         (createdSets) => (exercises[i].sets = createdSets)
-      )      
+      )
     }
-    
+
+    if (workoutToEdit) {
+      const existingPlannedSets = workoutToEdit.plannedExercises
+        .map((e) => e.sets)
+        .flat()
+        .map((set) => set._id)
+      for (let i = 0; i < existingPlannedSets.length; i++) {
+        await dispatch(deletePlannedSet(existingPlannedSets[i])).then(res => res)
+      }
+
+      dispatch(
+        updatePlannedWorkout({
+          ...plannedWorkout,
+          plannedExercises: exercises,
+          _id: workoutToEdit._id,
+        })
+      )
+      return
+    }
+
     dispatch(
       createPlannedWorkout({
         ...plannedWorkout,
@@ -79,21 +128,14 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
         name="Planner"
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: () => <Text>Planning workout</Text>,
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="black"
-            />
-          ),
+          headerShadowVisible: false,
+          headerTitle: "Planning a workout",
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
-            <Button
+            <ForwardButton
               onPress={() => {
                 navigation.navigate("FinishPlanning")
               }}
-              title="Done"
-              color="black"
             />
           ),
         })}
@@ -101,6 +143,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
         {(props) => (
           <Planner
             exercises={exercises}
+            plannedWorkout={plannedWorkout}
             {...props}
           />
         )}
@@ -121,35 +164,43 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           headerRight: null, //search button here
         })}
       >
-        {(props) => <ExercisePicker onSelection={addExercise} existingExercises={exercises.map(exercise => exercise.exercise._id)} {...props} />}
+        {(props) => (
+          <ExercisePicker
+            onSelection={addExercise}
+            existingExercises={exercises.map(
+              (exercise) => exercise.exercise._id
+            )}
+            {...props}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen
         name="FinishPlanning"
         options={({ navigation }) => ({
           presentation: "card",
           headerTitle: "Finish planning",
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="<--"
-              color="black"
-            />
-          ),
+          headerShadowVisible: false,
+          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
-            <Button
+            <DoneButton
               onPress={() => {
                 submitWorkout()
                 navigation.navigate("TabNavigator")
                 navigation.navigate("ProgramsNavigator")
                 navigation.navigate("PlannedWorkouts")
               }}
-              title="Finish Workout"
-              color="black"
             />
           ),
         })}
       >
-        {(props) => <FinishPlanning {...props} />}
+        {(props) => (
+          <FinishPlanning
+            plannedWorkout={plannedWorkout}
+            setPlannedWorkout={setPlannedWorkout}
+            exercises={exercises}
+            {...props}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen
         name="CreatePlannedSet"

@@ -19,4 +19,17 @@ const create = async (newObject) => {
   return response.data
 }
 
-export default { create, getAll, getById }
+const update = async (id, newObject) => {
+  const reponse = await axios.put(`${baseUrl}/${id}`, newObject);
+  return reponse.data
+};
+
+const remove = async (id) => {
+  console.log("plannedWorkoutService - remove");
+  
+  const reponse = await axios.delete(`${baseUrl}/${id}`);
+  return reponse.data
+};
+
+
+export default { create, getAll, getById, update, remove }

@@ -1,41 +1,52 @@
-import { Text, View, FlatList, Pressable } from "react-native"
+import { Text, View, FlatList, Pressable, SafeAreaView } from "react-native"
 import { useSelector } from "react-redux"
 import { selectExercises } from "../../redux/reducers/exerciseReducer"
-import { useTheme } from '@react-navigation/native';
-
+import { useTheme } from "@react-navigation/native"
+import { FAB } from "@rneui/themed"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
   const exercises = useSelector(selectExercises)
-  const { colors } = useTheme();
-  
-  const availableExercises = exercises.filter(exercise => !existingExercises.includes(exercise._id))
+  const { colors } = useTheme()
+
+  const availableExercises = exercises.filter(
+    (exercise) => !existingExercises.includes(exercise._id)
+  )
 
   return (
-    <FlatList
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
-      data={availableExercises}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => {
-        return (
-          <Pressable
-            style={{
-              borderBottomWidth: 2,
-              borderBottomColor: "grey",
-              borderRadius: 2,
-            }}
-            onPress={() => {
-              onSelection(item)
-              navigation.goBack()
-            }}
-          >
-            <Text style={{ marginTop: 10 }}>{item.name}</Text>
-          </Pressable>
-        )
-      }}
-    />
+    <>
+      <FlatList
+        style={{ backgroundColor: colors.background }}
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        data={availableExercises}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => {
+          return (
+            <Pressable
+              style={{
+                borderBottomWidth: 2,
+                borderBottomColor: "grey",
+                borderRadius: 2,
+              }}
+              onPress={() => {
+                onSelection(item)
+                navigation.goBack()
+              }}
+            >
+              <Text style={{ marginTop: 10 }}>{item.name}</Text>
+            </Pressable>
+          )
+        }}
+      />
+      <FAB
+        icon={{ name: "add", color: colors.background }}
+        onPress={() => navigation.navigate("CreateExercise")}
+      />
+    </>
   )
 }
 

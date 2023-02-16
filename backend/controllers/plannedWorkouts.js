@@ -37,4 +37,22 @@ router.post("/", async (req, res) => {
   res.json(newPopulatedPlannedWorkout) 
 })
 
+router.put("/:id", async (req, res) => {
+  const plannedWorkout = req.body
+  const updatedPlannedWorkout = await PlannedWorkout.findByIdAndUpdate(
+    req.params.id,
+    plannedWorkout,
+    { new: true, runValidators: true, context: "query" }
+  )
+    .populate("plannedExercises.exercise")
+    .populate("plannedExercises.sets")
+  res.json(updatedPlannedWorkout)
+})
+
+router.delete("/:id", async (req, res) => {
+  const plannedWorkoutToDelete = await PlannedWorkout.findById(req.params.id)
+  await plannedWorkoutToDelete.remove()
+  res.json(plannedWorkoutToDelete)
+})
+
 module.exports = router

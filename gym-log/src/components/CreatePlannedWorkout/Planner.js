@@ -13,12 +13,13 @@ import theme from "../../theme"
 const Planner = ({
   navigation,
   exercises,
+  plannedWorkout
 }) => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-          <Text style={styles.title}>{"Your Planned Workout"}</Text>
+          <Text style={styles.title}>{plannedWorkout.name}</Text>
         </View>
 
         {exercises.map((exercise, i) => (

@@ -26,10 +26,12 @@ const { setSets, addNewSet, addMultipleNewSets, removeSet } = setSlice.actions
 
 export const initializeSets = () => {
   return async (dispatch) => {
-    const sets = await setService.getAll()
+    const sets = await setService.getAll()   
     dispatch(setSets(sets))
   }
 }
+
+export const refetchSets = () => initializeSets()
 
 // NOTE: remember to add set for equivalent exercise
 export const createSet = (set) => {

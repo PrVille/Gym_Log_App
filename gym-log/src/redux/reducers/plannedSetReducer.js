@@ -14,10 +14,13 @@ export const plannedSetSlice = createSlice({
     addMultipleNewPlannedSets(state, { payload }) {
       return state.concat(payload)
     },
+    removePlannedSet(state, { payload }) {
+      return state.filter((plannedSet) => plannedSet._id !== payload)
+    },
   },
 })
 
-const { setPlannedSets, addNewPlannedSet, addMultipleNewPlannedSets} = plannedSetSlice.actions
+const { setPlannedSets, addNewPlannedSet, addMultipleNewPlannedSets, removePlannedSet} = plannedSetSlice.actions
 
 // ACTIONS
 
@@ -27,6 +30,8 @@ export const initializePlannedSets = () => {
     dispatch(setPlannedSets(plannedSets))
   }
 }
+
+export const refetchPlannedSets = () => initializePlannedSets()
 
 export const createPlannedSet = (plannedSet) => {
   return async (dispatch) => {
@@ -41,6 +46,14 @@ export const createMultiplePlannedSets = (plannedSets) => {
     const newPlannedSets = await plannedSetService.create(plannedSets)
     dispatch(addMultipleNewPlannedSets(newPlannedSets))    
     return newPlannedSets
+  }
+}
+
+export const deletePlannedSet = (id) => {
+  return async (dispatch) => {    
+    const deletedPlannedSet = await plannedSetService.remove(id)
+    dispatch(removePlannedSet(id))   
+    return deletedPlannedSet 
   }
 }
 

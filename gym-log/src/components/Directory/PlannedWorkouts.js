@@ -1,54 +1,55 @@
-import React, { createRef, useState } from "react"
+import React, { useState, createRef } from "react"
 import {
+  Text,
   View,
   FlatList,
-  Keyboard,
+  Pressable,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  Keyboard,
   Alert,
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import {
-  selectExercisesByQuery,
-  deleteExercise,
-} from "../../redux/reducers/exerciseReducer"
+import Search from "../Utils/Search"
+import { useSelector, useDispatch } from "react-redux"
+import { selectPlannedWorkoutsByQuery, deletePlannedWorkout } from "../../redux/reducers/plannedWorkoutReducer"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-import theme from "../../theme"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  selectWorkouts,
-  initializeWorkouts,
-} from "../../redux/reducers/workoutReducer"
-import { initializeSets } from "../../redux/reducers/setReducer"
-import { initializePlannedSets } from "../../redux/reducers/plannedSetReducer"
-import { initializePlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
+import { useTheme } from "@react-navigation/native"
+import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 
 const Stack = createStackNavigator()
 
-const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
-  const confirmDeletion = (exercise) => {
+const PlannedWorkoutListItem = ({
+  plannedWorkout,
+  navigation,
+  removePlannedWorkout,
+}) => {
+  const confirmDeletion = (plannedWorkout) => {
     Alert.alert(
-      `Delete ${exercise.name}?`,
-      "This will delete the exercise and all related data (sets, planned sets, exercise in workouts and planned workouts)",
+      `Delete ${plannedWorkout.name}?`,
+      "This will delete the planned workout and all related data (planned sets)",
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Delete", onPress: () => removeExercise(exercise) },
+        { text: "Delete", onPress: () => removePlannedWorkout(plannedWorkout._id) },
       ]
     )
   }
 
   return (
     <ListItem.Swipeable
-      onPress={() => navigation.navigate("ExerciseDetails", exercise._id)}
+      onPress={() =>
+        navigation.navigate("PlannedWorkoutDetails", plannedWorkout._id)
+      }
       leftContent={(reset) => (
         <Button
           title="Edit"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            navigation.navigate("CreateExercise", exercise)
+            navigation.navigate("CreatePlannedWorkout", plannedWorkout._id)
             reset()
           }}
           icon={{ name: "edit", color: "white" }}
@@ -60,7 +61,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
           title="Delete"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            confirmDeletion(exercise)
+            confirmDeletion(plannedWorkout)
             reset()
           }}
           icon={{ name: "delete", color: "white" }}
@@ -68,13 +69,10 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
         />
       )}
     >
-      <Icon name="image" size={50} />
+      <Icon name="dumbbell" type="material-community" size={50} />
       <ListItem.Content>
-        <ListItem.Title>{exercise.name}</ListItem.Title>
-        <ListItem.Subtitle>
-          Sets: {exercise.sets.length} | Volume:{" "}
-          {exercise.sets.map((set) => set.weight).reduce((a, b) => a + b, 0)} kg
-        </ListItem.Subtitle>
+        <ListItem.Title>{plannedWorkout.name}</ListItem.Title>
+        <ListItem.Subtitle>Exercises: {plannedWorkout.plannedExercises.length} | Duration: {plannedWorkout.estimatedDuration} </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem.Swipeable>
@@ -83,21 +81,17 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const ExerciseList = ({ navigation, searchQuery }) => {
+const PlannedWorkoutList = ({ navigation, searchQuery }) => {
   const dispatch = useDispatch()
-  const exercises = useSelector((state) =>
-    selectExercisesByQuery(state, searchQuery)
+  const plannedWorkouts = useSelector((state) =>
+    selectPlannedWorkoutsByQuery(state, searchQuery)
   )
+  const { colors } = useTheme()
 
-  //
-  const removeExercise = (exercise) => {
+  const removePlannedWorkout = (id) => {
     try {
-      dispatch(deleteExercise(exercise._id)).then((res) => {
-        //refresh cascading deleted
-        dispatch(initializeSets())
-        dispatch(initializeWorkouts())
-        dispatch(initializePlannedSets())
-        dispatch(initializePlannedWorkouts())
+      dispatch(deletePlannedWorkout(id)).then(() => {
+        dispatch(refetchPlannedSets())
       })
     } catch (error) {
       console.log(error)
@@ -108,34 +102,44 @@ const ExerciseList = ({ navigation, searchQuery }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
         <FlatList
-          data={exercises}
+          data={plannedWorkouts}
           ItemSeparatorComponent={ItemSeparator}
+          ListFooterComponent={<View style={{height: 100}}></View>}
           renderItem={({ item }) => (
-            <ExerciseListItem
-              exercise={item}
+            <PlannedWorkoutListItem
+              plannedWorkout={item}
               navigation={navigation}
-              removeExercise={removeExercise}
+              removePlannedWorkout={removePlannedWorkout}
             />
           )}
         />
         <FAB
-          icon={{ name: "add", color: theme.colors.paleDogwood }}
-          onPress={() => navigation.navigate("CreateExercise")}
+          icon={{ name: "add", color: colors.background }}
+          onPress={() => navigation.navigate("CreatePlannedWorkout")}
         />
       </>
     </TouchableWithoutFeedback>
   )
 }
 
-const Exercises = () => {
+const PlannedWorkouts = ({ params }) => {
   const [searchQuery, setSearchQuery] = useState("")
   const onChangeSearch = (query) => setSearchQuery(query)
+  const { colors } = useTheme()
   let searchRef = createRef()
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStatusBarHeight: 0,
+        headerStyle: {
+          height: 60,
+        },
+        cardStyle: {},
+      }}
+    >
       <Stack.Screen
-        name="ExerciseList"
+        name="PlannedWorkoutList"
         options={({ navigation }) => ({
           header: (props) => (
             <>
@@ -161,7 +165,7 @@ const Exercises = () => {
                     name: "sort-alpha-asc",
                     type: "font-awesome",
                     size: 20,
-                    color: theme.colors.chineseViolet,
+                    color: colors.primary,
                   }}
                   onPress={() => console.log("Sort ascending!")}
                   type="outline"
@@ -173,7 +177,7 @@ const Exercises = () => {
                     name: "arm-flex",
                     type: "material-community",
                     size: 20,
-                    color: theme.colors.chineseViolet,
+                    color: colors.primary,
                   }}
                   onPress={() => console.log("Filter by muscle!")}
                   type="outline"
@@ -184,10 +188,10 @@ const Exercises = () => {
           ),
         })}
       >
-        {(props) => <ExerciseList searchQuery={searchQuery} {...props} />}
+        {(props) => <PlannedWorkoutList searchQuery={searchQuery} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   )
 }
 
-export default Exercises
+export default PlannedWorkouts

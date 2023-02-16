@@ -36,6 +36,8 @@ export const initializeExercises = () => {
   }
 }
 
+export const refetchExercises = () => initializeExercises()
+
 export const createExercise = (exercise) => {
   return async (dispatch) => {
     const newExercise = await exerciseService.create(exercise)

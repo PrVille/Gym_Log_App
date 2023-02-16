@@ -19,6 +19,8 @@ import CreateExercise from "./Screens/CreateExercise"
 
 import useInitialization from "../hooks/useInitialization"
 
+import CloseButton from "./Buttons/CloseButton"
+
 const Stack = createStackNavigator()
 
 const MainStack = () => {
@@ -80,15 +82,11 @@ const MainStack = () => {
       <Stack.Screen
         name="ExerciseDetails"
         component={ExerciseDetails}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           presentation: "transparentModal",
-          headerTitle: "",
+          headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="X"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -101,12 +99,7 @@ const MainStack = () => {
           headerTitle: "Create new exercise",
           headerShadowVisible: false,
           headerLeft: () => (
-            <Icon
-              style={{marginStart: 5}}
-              onPress={() => navigation.goBack()}
-              name="close"
-              size={30}
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -115,13 +108,10 @@ const MainStack = () => {
         component={WorkoutHistory}
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: "",
+          headerTitle: "Workout history",
+          headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="X"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -131,12 +121,9 @@ const MainStack = () => {
         options={({ navigation }) => ({
           presentation: "transparentModal",
           headerTitle: "",
+          headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="X"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -149,11 +136,7 @@ const MainStack = () => {
           headerTitle: "",
           headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="X"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
           ),
         })}
       />

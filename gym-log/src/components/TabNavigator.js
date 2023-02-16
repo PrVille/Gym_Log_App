@@ -4,7 +4,7 @@ import Constants from "expo-constants"
 
 import Statistics from "./Statistics/Statistics"
 import Settings from "./Settings/Settings"
-import ProgramsNavigator from "./Programs/ProgramsNavigator"
+import ProgramsNavigator from "./Directory/ProgramsNavigator"
 import Overview from "./Overview/Overview"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"

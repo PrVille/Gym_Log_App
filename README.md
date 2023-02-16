@@ -32,4 +32,6 @@
 | 15.02.23 | 2     | middleware to handle cascading removal for exercise, |
 | 15.02.23 | 1     | can now create, edit and delete exercises |
 | 15.02.23 | 1     | fixed broken 1rm updating |
+| 16.02.23 | 3     | styled planned workout list to match exercise list, can now delete planned workouts, backend middleware for cascading deletion of planned workouts |
+| 16.02.23 | 4     | can now create exercise in exercise picker, styled workout history and planned workouts list, can now edit planned workout |
 | sum      | ??    | | 

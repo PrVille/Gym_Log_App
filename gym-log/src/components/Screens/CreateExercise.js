@@ -34,6 +34,7 @@ const Notify = ({ errorMessage }) => {
   )
 }
 
+//also for editing, rename to form?
 const CreateExercise = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { colors } = useTheme()

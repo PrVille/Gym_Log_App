@@ -16,11 +16,6 @@ router.get("/:id", async (req, res) => {
   res.json(set)
 })
 
-router.get("/exercise/:id", async (req, res) => {
-  const sets = await PlannedSet.find({ exercise: req.params.id })
-  res.json(sets)
-})
-
 router.post("/", async (req, res) => {
   if (Array.isArray(req.body)) {
     const sets = req.body    
@@ -34,8 +29,9 @@ router.post("/", async (req, res) => {
 })
 
 router.delete("/:id", async (req, res) => {
-  const deleted = await PlannedSet.deleteOne({ _id: req.params.id })
-  res.json(deleted)
+  const plannedSetToDelete = await PlannedSet.findById(req.params.id)
+  await plannedSetToDelete.remove()
+  res.json(plannedSetToDelete)
 })
 
 module.exports = router

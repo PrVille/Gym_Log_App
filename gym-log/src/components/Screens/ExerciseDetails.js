@@ -2,14 +2,20 @@ import { View, Text, Button } from "react-native"
 import { useSelector } from "react-redux";
 import { selectExerciseById } from "../../redux/reducers/exerciseReducer"
 import { useTheme } from '@react-navigation/native';
+import { useEffect } from "react";
 
 
 const ExerciseDetails = ({ route, navigation }) => {
   const id = route.params
   const exercise = useSelector(state => selectExerciseById(state, id))    
   const { colors } = useTheme();
-  
   const { name, instructions, primaryMuscles, secondaryMuscles, oneRepMax } = exercise
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: name,
+    });
+  }, [])
 
   return (
     <View
@@ -25,7 +31,6 @@ const ExerciseDetails = ({ route, navigation }) => {
           alignItems: "center",
         }}
       >
-        <Button onPress={() => navigation.goBack()} title="go back" />
         <Text>{name}</Text>
         <Text>{oneRepMax}</Text>
         <Text>{instructions}</Text>

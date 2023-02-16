@@ -1,17 +1,11 @@
 const router = require("express").Router()
 const Exercise = require("../models/exercise")
 
-Exercise.watch().on("change", (data) => console.log(data))
+//Exercise.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
   const exercises = await Exercise.find({}).populate("sets")  
   res.json(exercises)
-})
-
-// useless ??
-router.get("/:id", async (req, res) => {
-    const exercise = await Exercise.findById(req.params.id).populate("sets")   
-    res.json(exercise)
 })
 
 router.post("/", async (req, res) => {
@@ -23,8 +17,6 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const exercise = req.body
   const updatedExercise = await Exercise.findByIdAndUpdate(req.params.id, exercise, { new: true, runValidators: true, context: 'query'}).populate("sets") 
-  console.log(updatedExercise);
-  
   res.json(updatedExercise)
 })
 

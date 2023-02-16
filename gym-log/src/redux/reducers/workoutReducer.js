@@ -22,11 +22,13 @@ const { setWorkouts, addNewWorkout, removeWorkout } = workoutSlice.actions
 // ACTIONS
 
 export const initializeWorkouts = () => {
-  return async (dispatch) => {
+  return async (dispatch) => {    
     const workouts = await workoutService.getAll()    
     dispatch(setWorkouts(workouts))
   }
 }
+
+export const refetchWorkouts = () => initializeWorkouts()
 
 export const createWorkout = (workout) => {
   return async (dispatch) => {

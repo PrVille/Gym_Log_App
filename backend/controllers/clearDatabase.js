@@ -15,7 +15,6 @@ router.delete("/exercises", async (req, res) => {
 })
 
 router.delete("/sets", async (req, res) => {
-  //REMOVE REF FROM EXERCISES
   const deleted = await Set.deleteMany()
   res.json(deleted)
 })
