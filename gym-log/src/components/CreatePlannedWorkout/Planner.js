@@ -6,15 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native"
-import ExerciseCard from "./ExerciseCard"
+import ExerciseCard from "../Utils/ExerciseCard"
 import RestTimer from "../Utils/RestTimer"
 import theme from "../../theme"
+import { Button, Chip } from "@rneui/themed"
 
-const Planner = ({
-  navigation,
-  exercises,
-  plannedWorkout
-}) => {
+const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView style={styles.scrollView}>
@@ -23,22 +20,87 @@ const Planner = ({
         </View>
 
         {exercises.map((exercise, i) => (
-          <ExerciseCard
-            key={i}
-            exercise={exercise}
-            navigation={navigation}
-          />
+          <ExerciseCard key={exercise.exercise._id}>
+            <ExerciseCard.Header
+              divider
+              buttonTitle="Exercise Details"
+              onButtonPress={() =>
+                navigation.navigate("ExerciseDetails", exercise.exercise._id)
+              }
+            >
+              {exercise.exercise.name}
+            </ExerciseCard.Header>
+            <ExerciseCard.Body divider>
+              {exercise.sets.map((set, index) => (
+                <ExerciseCard.Row
+                  key={set._id}
+                  onDeletePress={() =>
+                    removeSet(exercise.exercise._id, set._id)
+                  }
+                >
+                  <ExerciseCard.Column alignItems="flex-start">
+                    {index + 1}
+                  </ExerciseCard.Column>
+
+                  <ExerciseCard.IconColumn
+                    name={set.type === "warmup" ? "fitness" : "weight-lifter"}
+                    type={
+                      set.type === "warmup" ? "ionicon" : "material-community"
+                    }
+                  />
+                  <ExerciseCard.IconColumn
+                    name={
+                      set.plannedWeightType === "previousWeight"
+                        ? "skip-backward"
+                        : set.plannedWeightType === "oneRepMaxPercentage"
+                        ? "percent"
+                        : "weight-kilogram"
+                    }
+                    type="material-community"
+                  />
+                  <ExerciseCard.Column>{set.plannedReps}</ExerciseCard.Column>
+
+                  <ExerciseCard.Column>
+                    {set.plannedWeightType === "previousWeight"
+                      ? "-"
+                      : set.plannedWeightType === "oneRepMaxPercentage"
+                      ? set.oneRepMaxPercentage
+                      : set.plannedWeight}
+                  </ExerciseCard.Column>
+                </ExerciseCard.Row>
+              ))}
+            </ExerciseCard.Body>
+            <ExerciseCard.Footer>
+              <Chip
+                containerStyle={{
+                  marginVertical: 5,
+                  alignItems: "flex-end",
+                }}
+                buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                titleStyle={{
+                  color: theme.colors.chineseViolet,
+                }}
+                title="Add Set"
+                icon={{
+                  name: "playlist-add",
+                  type: "material-icon",
+                  color: theme.colors.chineseViolet,
+                }}
+                iconRight
+                onPress={() =>
+                  navigation.navigate("CreatePlannedSet", exercise.exercise._id)
+                }
+              />
+            </ExerciseCard.Footer>
+          </ExerciseCard>
         ))}
 
-        <TouchableOpacity
-          style={styles.button}
+        <Button
+          title="Add Exercise"
+          containerStyle={{ margin: 10 }}
           onPress={() => navigation.navigate("ExercisePicker")}
-        >
-          <Text style={{ fontWeight: "bold" }}>Add Exercise</Text>
-        </TouchableOpacity>
+        />
       </ScrollView>
-
-      <RestTimer />
     </SafeAreaView>
   )
 }
@@ -49,7 +111,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    padding: 10,
   },
   container: {
     alignItems: "center",
@@ -59,6 +120,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: theme.fontSizes.heading,
     textAlign: "center",
+    color: theme.colors.chineseViolet,
   },
   button: {
     alignItems: "center",

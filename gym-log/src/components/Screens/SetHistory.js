@@ -9,38 +9,38 @@ import {
   TouchableWithoutFeedback,
 } from "react-native"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-import { selectWorkouts } from "../../redux/reducers/workoutReducer"
+import { refetchWorkouts, selectWorkouts } from "../../redux/reducers/workoutReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWorkout } from "../../redux/reducers/workoutReducer"
-import { deleteSet } from "../../redux/reducers/setReducer"
+import { deleteSet, selectSetsByExerciseId } from "../../redux/reducers/setReducer"
 import { useTheme } from "@react-navigation/native"
 import { selectSets, refetchSets } from "../../redux/reducers/setReducer"
+import { refetchExercises } from "../../redux/reducers/exerciseReducer"
 
-const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
-  const confirmDeletion = (workout) => {
+const SetListItem = ({ set, navigation, removeSet }) => {
+  const confirmDeletion = (set) => {
     Alert.alert(
-      `Delete ${workout.name}?`,
-      "This will delete the workout and all related data (sets)",
+      `Delete set?`,
+      "This will delete the set and all related data",
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Delete", onPress: () => removeWorkout(workout._id) },
+        { text: "Delete", onPress: () => removeSet(set._id) },
       ]
     )
   }
 
   return (
     <ListItem.Swipeable
-      onPress={() => navigation.navigate("WorkoutDetails", workout._id)}
       rightContent={(reset) => (
         <Button
           title="Delete"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            confirmDeletion(workout)
+            confirmDeletion(set)
             reset()
           }}
           icon={{ name: "delete", color: "white" }}
@@ -50,9 +50,9 @@ const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
     >
       <Icon name="archive-check" type="material-community" size={50} />
       <ListItem.Content>
-        <ListItem.Title>{workout.name}</ListItem.Title>
+        <ListItem.Title>{set.createdAt}</ListItem.Title>
         <ListItem.Subtitle>
-          Exercises: {workout.exercises.length} | Duration: {workout.duration}
+          {set.type} | {set.reps} reps | {set.weight} kg
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
@@ -62,15 +62,17 @@ const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const WorkoutHistory = ({ params, navigation }) => {
-  const workouts = useSelector(selectWorkouts)
-  const sets = useSelector(selectSets)
+const SetHistory = ({ route, navigation }) => {
+  const sets = useSelector(state => selectSetsByExerciseId(state, route.params))
   const dispatch = useDispatch()
   const { colors } = useTheme()
 
-  const removeWorkout = (id) => {
+  const removeSet = async (id) => {
     try {
-      dispatch(deleteWorkout(id)).then(dispatch(refetchSets()))
+      dispatch(deleteSet(id)).then(() => {
+        dispatch(refetchExercises())
+        dispatch(refetchWorkouts())
+      })
     } catch (error) {
       console.log(error)
     }
@@ -86,14 +88,14 @@ const WorkoutHistory = ({ params, navigation }) => {
           }}
         >
           <FlatList
-            data={workouts}
+            data={sets}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item }) => (
-              <WorkoutListItem
-              workout={item}
-              navigation={navigation}
-              removeWorkout={removeWorkout}
-            />
+              <SetListItem
+                set={item}
+                navigation={navigation}
+                removeSet={removeSet}
+              />
             )}
           />
         </View>
@@ -102,4 +104,4 @@ const WorkoutHistory = ({ params, navigation }) => {
   )
 }
 
-export default WorkoutHistory
+export default SetHistory

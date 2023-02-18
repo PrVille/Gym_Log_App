@@ -15,21 +15,18 @@ const getById = async (id) => {
 }
 
 const create = async (newObject) => {
-
-  const response = await axios.post(baseUrl, newObject)//.catch(err => console.log(err.response.data))
-  
+  const response = await axios.post(baseUrl, newObject)
   return response.data
 }
 
 const update = async (id, newObject) => {
-  const reponse = await axios.put(`${baseUrl}/${id}`, newObject);
+  const reponse = await axios.put(`${baseUrl}/${id}`, newObject)
   return reponse.data
-};
+}
 
 const remove = async (id) => {
-  const reponse = await axios.delete(`${baseUrl}/${id}`);
+  const reponse = await axios.delete(`${baseUrl}/${id}`)
   return reponse.data
-};
+}
 
-
-export default { getAll, getById, create, update, remove}
+export default { getAll, getById, create, update, remove }

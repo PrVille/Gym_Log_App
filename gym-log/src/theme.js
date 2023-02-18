@@ -39,18 +39,6 @@ export const defaultNavigationTheme = {
   },
 }
 
-export const darkNavigationTheme = {
-  dark: true,
-  colors: {
-    primary: theme.colors.chineseViolet,
-    background: theme.colors.paleDogwood,
-    card: theme.colors.paleDogwood,
-    text: theme.colors.chineseViolet,
-    border: theme.colors.chineseViolet,
-    notification: "rgb(255, 69, 58)", // ??
-  },
-}
-
 export const defaultRNETheme = createTheme({
   components: {
     ListItemSwipeable: {
@@ -88,7 +76,7 @@ export const defaultRNETheme = createTheme({
         backgroundColor: theme.colors.paleDogwood,
       },
       checkedColor: theme.colors.chineseViolet,
-      uncheckedColor: theme.colors.chineseViolet
+      uncheckedColor: theme.colors.chineseViolet,
     },
     SearchBar: {
       containerStyle: {
@@ -128,6 +116,7 @@ export const defaultRNETheme = createTheme({
       titleStyle: {
         color: theme.colors.paleDogwood,
       },
+      radius: "sm",
       raised: true,
       type: "outline",
       activeOpacity: 0.2, //default
@@ -145,17 +134,35 @@ export const defaultRNETheme = createTheme({
       placeholderTextColor: theme.colors.roseQuartz,
     },
     Divider: {
-      color: theme.colors.roseQuartz
+      color: theme.colors.roseQuartz,
     },
+    CardDivider: {
+      color: theme.colors.chineseViolet,
+    },
+    Card: {
+      containerStyle: {
+        borderRadius: 20,
+        backgroundColor: theme.colors.fairyTale,
+        borderColor: theme.colors.chineseViolet,
+      },
+    },
+    CardTitle: {
+      style: {
+        color: theme.colors.chineseViolet,
+      },
+    },
+    CheckBox: {
+      containerStyle: {
+        backgroundColor: theme.colors.paleDogwood,
+        color: theme.colors.chineseViolet
+      },
+      textStyle: {
+        color: theme.colors.chineseViolet
+      },
+      checkedColor: theme.colors.chineseViolet,
+      uncheckedColor: theme.colors.thistle
+    }
   },
 })
-
-// const darkRNETheme = createTheme({
-//   components: {
-//     [themeKey]: {
-//       // ... props
-//     },
-//   },
-// });
 
 export default theme

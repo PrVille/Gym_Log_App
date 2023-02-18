@@ -1,11 +1,48 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Text, View } from "react-native"
+import { useTheme } from "@react-navigation/native"
+import { Input, Divider } from "@rneui/themed"
 
-const FinishWorkoutScreen = ({ startTime, finishTime }) => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>{new Date(startTime).toUTCString()}</Text>
-    <Text>{new Date(finishTime).toUTCString()}</Text>
-  </View>
-)
+const FinishWorkoutScreen = ({
+  startTime,
+  finishTime,
+  workout,
+  setWorkout,
+}) => {
+  useEffect(() => {
+    setWorkout({
+      ...workout,
+      duration: Math.floor((finishTime - startTime) / 1000 / 60),
+    })
+  }, [])
+
+  return (
+    <View style={{ flex: 1, paddingTop: 20 }}>
+      <Input
+        label={"Name"}
+        value={workout.name}
+        placeholder={`Name`}
+        onChangeText={(value) => setWorkout({ ...workout, name: value })}
+      />
+
+      <Input
+        label={"Notes"}
+        value={workout.notes}
+        placeholder={`Notes`}
+        onChangeText={(value) => setWorkout({ ...workout, notes: value })}
+      />
+
+      <Input
+        keyboardType="number-pad"
+        label={"Duration"}
+        value={`${workout.duration}`}
+        placeholder={`Duration`}
+        onChangeText={(value) => setWorkout({ ...workout, duration: value })}
+      />
+
+      <Divider style={{ marginVertical: 20 }} />
+    </View>
+  )
+}
 
 export default FinishWorkoutScreen

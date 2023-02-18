@@ -28,7 +28,7 @@ const { setExercises, addNewExercise, updateOneExercise, removeExercise } =
 // ACTIONS
 
 export const initializeExercises = () => {
-  return async (dispatch) => {
+  return async (dispatch) => {    
     const exercises = await exerciseService.getAll()
     setTimeout(() => {
       dispatch(setExercises(exercises))
@@ -52,8 +52,6 @@ export const updateExercise = (exerciseToUpdate) => {
       exerciseToUpdate._id,
       exerciseToUpdate
     )
-    console.log("exercise reducer", updatedExercise);
-    
     dispatch(updateOneExercise(updatedExercise))
     return updatedExercise
   }
@@ -82,6 +80,17 @@ export const selectExercisesByQuery = (state, query) => {
   return state.exercises.filter((e) =>
     e.name.toLowerCase().includes(query.toLowerCase())
   )
+}
+
+export const selectExercisesSortedByName = (order) => {
+  switch (order) {
+    case "asc":
+      return state.exercises.sort((a, b) => (a.name > b.name ? 1 : -1))
+    case "desc":
+      return state.exercises.sort((a, b) => (a.name < b.name ? 1 : -1))
+    default:
+      return state.exercises
+  }
 }
 
 export const selectExercisesWithFields = (state, fields) => {

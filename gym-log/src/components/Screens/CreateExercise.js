@@ -48,6 +48,7 @@ const CreateExercise = ({ navigation, route }) => {
     name: "",
     instructions: "",
     oneRepMax: 0,
+    oneRepMaxGoal: 0,
     primaryMuscles: [],
     secondaryMuscles: [],
     sets: [],
@@ -151,6 +152,7 @@ const CreateExercise = ({ navigation, route }) => {
         inputContainerStyle={{}}
         label={"Name"}
         value={newExercise.name}
+        selectTextOnFocus={true}
         placeholder={`Name`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, name: value })
@@ -161,6 +163,7 @@ const CreateExercise = ({ navigation, route }) => {
         inputContainerStyle={{}}
         label={"Instructions"}
         value={newExercise.instructions}
+        selectTextOnFocus={true}
         placeholder={`Instructions`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, instructions: value })
@@ -170,10 +173,26 @@ const CreateExercise = ({ navigation, route }) => {
       <Input
         inputContainerStyle={{}}
         label={"1RM"}
-        value={`${newExercise.oneRepMax}`}
+        keyboardType="decimal-pad"
+        maxLength={6}
+        selectTextOnFocus={true}
+        value={`${newExercise.oneRepMax}`.replace(",", ".")}
         placeholder={`Defaults to 0, will update automatically`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, oneRepMax: value })
+        }
+      />
+
+      <Input
+        inputContainerStyle={{}}
+        label={"1RM Goal"}
+        keyboardType="decimal-pad"
+        maxLength={6}
+        selectTextOnFocus={true}
+        value={`${newExercise.oneRepMaxGoal}`.replace(",", ".")}
+        placeholder={`Defaults to 0, will update automatically`}
+        onChangeText={(value) =>
+          setNewExercise({ ...newExercise, oneRepMaxGoal: value })
         }
       />
 

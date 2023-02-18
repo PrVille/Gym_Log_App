@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 
-import { StyleSheet, Text, View,  } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-
 
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
@@ -21,10 +20,14 @@ import useInitialization from "../hooks/useInitialization"
 
 import CloseButton from "./Buttons/CloseButton"
 
+import { useTheme } from "@react-navigation/native"
+import SetHistory from "./Screens/SetHistory"
+
 const Stack = createStackNavigator()
 
 const MainStack = () => {
   const stateInitializer = useInitialization()
+  const { colors } = useTheme()
 
   useEffect(() => {
     stateInitializer()
@@ -85,9 +88,11 @@ const MainStack = () => {
         options={({ navigation, route }) => ({
           presentation: "transparentModal",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+          cardStyle: {
+            flex: 1,
+            backgroundColor: colors.background,
+          },
         })}
       />
 
@@ -98,9 +103,7 @@ const MainStack = () => {
           presentation: "transparentModal",
           headerTitle: "Create new exercise",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
@@ -110,9 +113,7 @@ const MainStack = () => {
           presentation: "transparentModal",
           headerTitle: "Workout history",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
@@ -120,11 +121,12 @@ const MainStack = () => {
         component={PlannedWorkoutDetails}
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: "",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+          cardStyle: {
+            flex: 1,
+            backgroundColor: colors.background,
+          },
         })}
       />
 
@@ -135,9 +137,18 @@ const MainStack = () => {
           presentation: "transparentModal",
           headerTitle: "",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+        })}
+      />
+
+      <Stack.Screen
+        name="SetHistory"
+        component={SetHistory}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "Set History",
+          headerShadowVisible: false,
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
         })}
       />
     </Stack.Navigator>

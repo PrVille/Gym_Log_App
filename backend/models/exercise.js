@@ -17,6 +17,10 @@ const schema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  oneRepMaxGoal: {
+    type: Number,
+    default: 0,
+  },
   primaryMuscles: [
     {
       type: String,

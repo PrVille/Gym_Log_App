@@ -25,8 +25,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 )
 
-schema.post('remove', (doc) => {
-  console.log("removed set", doc._id);
-});
+
 
 module.exports = mongoose.model("Set", schema)

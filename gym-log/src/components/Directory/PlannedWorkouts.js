@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react"
+import React, { useState, createRef, useMemo } from "react"
 import {
   Text,
   View,
@@ -8,14 +8,15 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Vibration
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import Search from "../Utils/Search"
 import { useSelector, useDispatch } from "react-redux"
 import { selectPlannedWorkoutsByQuery, deletePlannedWorkout } from "../../redux/reducers/plannedWorkoutReducer"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
 import { useTheme } from "@react-navigation/native"
 import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
+import Header from "../Utils/Header"
 
 const Stack = createStackNavigator()
 
@@ -81,12 +82,20 @@ const PlannedWorkoutListItem = ({
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const PlannedWorkoutList = ({ navigation, searchQuery }) => {
+const PlannedWorkoutList = ({ navigation, searchQuery, order }) => {
   const dispatch = useDispatch()
   const plannedWorkouts = useSelector((state) =>
     selectPlannedWorkoutsByQuery(state, searchQuery)
   )
   const { colors } = useTheme()
+
+  useMemo(
+    () =>
+      order === "asc"
+        ? plannedWorkouts.sort((a, b) => (a.name > b.name ? 1 : -1))
+        : plannedWorkouts.sort((a, b) => (a.name < b.name ? 1 : -1)),
+    [order, plannedWorkouts]
+  )
 
   const removePlannedWorkout = (id) => {
     try {
@@ -124,7 +133,11 @@ const PlannedWorkoutList = ({ navigation, searchQuery }) => {
 
 const PlannedWorkouts = ({ params }) => {
   const [searchQuery, setSearchQuery] = useState("")
+  const [order, setOrder] = useState("asc")
+
   const onChangeSearch = (query) => setSearchQuery(query)
+  const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc")
+
   const { colors } = useTheme()
   let searchRef = createRef()
 
@@ -142,53 +155,19 @@ const PlannedWorkouts = ({ params }) => {
         name="PlannedWorkoutList"
         options={({ navigation }) => ({
           header: (props) => (
-            <>
-              <SearchBar
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-                searchIcon={<Icon name="search" />}
-                ref={(search) => (searchRef = search)}
-                clearIcon={
-                  <Icon name="clear" onPress={() => searchRef.clear()} />
-                }
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 5,
-                  marginBottom: 5,
-                }}
-              >
-                <Chip
-                  title="Sort"
-                  icon={{
-                    name: "sort-alpha-asc",
-                    type: "font-awesome",
-                    size: 20,
-                    color: colors.primary,
-                  }}
-                  onPress={() => console.log("Sort ascending!")}
-                  type="outline"
-                  containerStyle={{ marginEnd: 5 }}
-                />
-                <Chip
-                  title="Filter"
-                  icon={{
-                    name: "arm-flex",
-                    type: "material-community",
-                    size: 20,
-                    color: colors.primary,
-                  }}
-                  onPress={() => console.log("Filter by muscle!")}
-                  type="outline"
-                  containerStyle={{ marginEnd: 5 }}
-                />
-              </View>
-            </>
+            
+            <Header
+              onChangeSearch={onChangeSearch}
+              searchQuery={searchQuery}
+              searchRef={searchRef}
+              order={order}
+              toggleOrder={toggleOrder}
+            />
+              
           ),
         })}
       >
-        {(props) => <PlannedWorkoutList searchQuery={searchQuery} {...props} />}
+        {(props) => <PlannedWorkoutList searchQuery={searchQuery} order={order} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   )

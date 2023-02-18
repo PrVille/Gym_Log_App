@@ -121,6 +121,13 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
       })
     )
   }
+  
+  const removeSet = (exerciseId, setId) => {
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
+    exercise.sets = exercise.sets.filter((set) => set._id !== setId)
+    return setExercises(copyOfExercises)
+  }
 
   return (
     <Stack.Navigator>
@@ -144,6 +151,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           <Planner
             exercises={exercises}
             plannedWorkout={plannedWorkout}
+            removeSet={removeSet}
             {...props}
           />
         )}
@@ -155,11 +163,8 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           headerTitle: "Choose Exercise",
           headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
+
           ),
           headerRight: null, //search button here
         })}
@@ -207,12 +212,10 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
         options={({ navigation }) => ({
           presentation: "transparentModal",
           headerTitle: "Create Planned Set",
+          headerShadowVisible: false,
           headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="cancel"
-              color="black"
-            />
+            <CloseButton onPress={() => navigation.goBack()} />
+            
           ),
         })}
       >

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import {
   Text,
   View,
-  Button,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
@@ -24,106 +23,13 @@ import {
   update1RMForExerciseById,
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
-import { useTheme } from '@react-navigation/native';
-
-const ExerciseCard = ({
-  exercise,
-  addWorkingSet,
-  addWarmupSet,
-  updateWeightForSet,
-  updateRepsForSet,
-  navigation,
-}) => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        padding: 10,
-        marginHorizontal: 5,
-        marginTop: 10,
-        borderRadius: 5,
-        borderWidth: 2,
-        overflow: "hidden",
-        borderColor: "grey",
-      }}
-    >
-      {/** HEADER */}
-      <View
-        style={{
-          alignItems: "center",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          paddingBottom: 5,
-          borderBottomColor: "grey",
-          borderBottomWidth: 1,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-          }}
-        >
-          {exercise.exercise.name}
-        </Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("ExerciseDetails", exercise.exercise._id)
-          }
-        >
-          <Text>Exercise Details</Text>
-        </TouchableOpacity>
-      </View>
-      {/** SETS */}
-      <View
-        style={{
-          margin: 5,
-        }}
-      >
-        <TouchableOpacity onPress={() => addWarmupSet(exercise.exercise._id)}>
-          <Text>ADD WARMUP SET</Text>
-        </TouchableOpacity>
-        {exercise.sets.map((set, i) => {
-          return (
-            <View
-              key={i}
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 5,
-              }}
-            >
-              <Text>{i + 1}</Text>
-              <Text>{set.type}</Text>
-              <TextInput
-                inputMode="numeric"
-                keyboardType="numbers-and-punctuation"
-                keyboardAppearance="dark"
-                value={`${set.weight}`}
-                placeholder={`kg`}
-                onChangeText={(value) =>
-                  updateWeightForSet(exercise.exercise._id, set._id, value)
-                }
-              />
-              <TextInput
-                inputMode="numeric"
-                placeholder={"reps"}
-                value={`${set.reps}`}
-                onChangeText={(value) =>
-                  updateRepsForSet(exercise.exercise._id, set._id, value)
-                }
-              />
-            </View>
-          )
-        })}
-        <TouchableOpacity onPress={() => addWorkingSet(exercise.exercise._id)}>
-          <Text>ADD WORKING SET</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  )
-}
+import { useTheme } from "@react-navigation/native"
+import CloseButton from "../Buttons/CloseButton"
+import BackButton from "../Buttons/BackButton"
+import ForwardButton from "../Buttons/ForwardButton"
+import DoneButton from "../Buttons/DoneButton"
+import { Button, Chip, Icon } from "@rneui/themed"
+import ExerciseCard from "../Utils/ExerciseCard"
 
 const Logger = ({
   navigation,
@@ -133,6 +39,7 @@ const Logger = ({
   updateWeightForSet,
   updateRepsForSet,
   workout,
+  removeSet,
 }) => {
   const { colors } = useTheme()
 
@@ -167,32 +74,103 @@ const Logger = ({
         </View>
 
         {exercises.map((exercise, i) => (
-          <ExerciseCard
-            key={i}
-            exercise={exercise}
-            addWorkingSet={addWorkingSet}
-            addWarmupSet={addWarmupSet}
-            updateWeightForSet={updateWeightForSet}
-            updateRepsForSet={updateRepsForSet}
-            navigation={navigation}
-          />
+          <ExerciseCard key={exercise.exercise._id}>
+            <ExerciseCard.Header
+              divider
+              buttonTitle="Exercise Details"
+              onButtonPress={() =>
+                navigation.navigate("ExerciseDetails", exercise.exercise._id)
+              }
+            >
+              {exercise.exercise.name}
+            </ExerciseCard.Header>
+            <ExerciseCard.Body divider>
+              <ExerciseCard.BodyHeader divider>
+                <Chip
+                  containerStyle={{
+                    marginVertical: 5,
+                    alignItems: "flex-end",
+                  }}
+                  buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                  titleStyle={{
+                    color: theme.colors.chineseViolet,
+                  }}
+                  title="Add Warmup Set"
+                  icon={{
+                    name: "playlist-add",
+                    type: "material-icon",
+                    color: theme.colors.chineseViolet,
+                  }}
+                  iconRight
+                  onPress={() => addWarmupSet(exercise.exercise._id)}
+                />
+              </ExerciseCard.BodyHeader>
+              {exercise.sets.map((set, index) => (
+                <ExerciseCard.Row
+                  key={set._id}
+                  onDeletePress={() =>
+                    removeSet(exercise.exercise._id, set._id)
+                  }
+                >
+                  <ExerciseCard.Column alignItems="flex-start">
+                    {index + 1}
+                  </ExerciseCard.Column>
+
+                  <ExerciseCard.IconColumn
+                    alignItems="flex-start"
+                    name={set.type === "warmup" ? "fitness" : "weight-lifter"}
+                    type={
+                      set.type === "warmup" ? "ionicon" : "material-community"
+                    }
+                  />
+
+                  <ExerciseCard.InputColumn
+                    placeholder="Reps"
+                    value={`${set.reps}`}
+                    onChangeText={(value) =>
+                      updateRepsForSet(exercise.exercise._id, set._id, value)
+                    }
+                  />
+
+                  <ExerciseCard.InputColumn
+                    keyboardType="decimal-pad"
+                    placeholder="Kg"
+                    value={`${set.weight}`}
+                    onChangeText={(value) =>
+                      updateWeightForSet(exercise.exercise._id, set._id, value)
+                    }
+                  />
+                </ExerciseCard.Row>
+              ))}
+            </ExerciseCard.Body>
+            <ExerciseCard.Footer>
+              <Chip
+                containerStyle={{
+                  marginVertical: 5,
+                  alignItems: "flex-end",
+                }}
+                buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                titleStyle={{
+                  color: theme.colors.chineseViolet,
+                }}
+                title="Add Working Set"
+                icon={{
+                  name: "playlist-add",
+                  type: "material-icon",
+                  color: theme.colors.chineseViolet,
+                }}
+                iconRight
+                onPress={() => addWorkingSet(exercise.exercise._id)}
+              />
+            </ExerciseCard.Footer>
+          </ExerciseCard>
         ))}
 
-        <TouchableOpacity
-          style={{
-            alignItems: "center",
-            borderRadius: 5,
-            borderWidth: 2,
-            overflow: "hidden",
-            borderColor: "black",
-            padding: 10,
-            marginHorizontal: 5,
-            marginVertical: 40,
-          }}
+        <Button
+          title="Add Exercise"
+          containerStyle={{ margin: 10 }}
           onPress={() => navigation.navigate("ExercisePicker")}
-        >
-          <Text style={{ fontWeight: "bold" }}>Add Exercise</Text>
-        </TouchableOpacity>
+        />
       </ScrollView>
 
       <RestTimer />
@@ -208,9 +186,9 @@ const LoggerStack = ({ route, navigation }) => {
   const [finishTime, setFinishTime] = useState()
   const [exercises, setExercises] = useState([])
   const [workout, setWorkout] = useState({
-    name: `${uuid.v4()}`,
-    notes: "test",
-    duration: 90,
+    name: "",
+    notes: "",
+    duration: 0,
   })
 
   useEffect(() => {
@@ -223,7 +201,6 @@ const LoggerStack = ({ route, navigation }) => {
           const set = exercise.sets.find(
             (set) => set.reps === plannedSet.plannedReps
           )
-          console.log(set);
           if (!set) return 0
           return !set.weight ? 0 : set.weight
         case "oneRepMaxPercentage":
@@ -249,7 +226,9 @@ const LoggerStack = ({ route, navigation }) => {
             type: plannedSet.type,
             exercise: plannedSet.exercise,
             reps: plannedSet.plannedReps,
-            weight: selectWeight(plannedSet, exercise.exercise),
+            weight: parseFloat(
+              selectWeight(plannedSet, exercise.exercise)
+            ).toLocaleString("en-US", { maximumFractionDigits: 2 }),
           }
 
           plannedSets[j] = { ...set }
@@ -323,11 +302,14 @@ const LoggerStack = ({ route, navigation }) => {
     for (let i = 0; i < exercises.length; i++) {
       const sets = exercises[i].sets
       for (let j = 0; j < sets.length; j++) {
-        exercises[i].exercise.oneRepMax = getUpdated1RM(sets[j], exercises[i].exercise)        
+        exercises[i].exercise.oneRepMax = getUpdated1RM(
+          sets[j],
+          exercises[i].exercise
+        )
         delete sets[j]._id
       }
 
-      await dispatch(createMultipleSets(sets)).then((createdSets) => {        
+      await dispatch(createMultipleSets(sets)).then((createdSets) => {
         exercises[i].sets = createdSets
         dispatch(
           updateExercise({
@@ -402,28 +384,28 @@ const LoggerStack = ({ route, navigation }) => {
     return setExercises(copyOfExercises)
   }
 
+  const removeSet = (exerciseId, setId) => {
+    const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
+    const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
+    exercise.sets = exercise.sets.filter((set) => set._id !== setId)
+    return setExercises(copyOfExercises)
+  }
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Logger"
         options={({ navigation }) => ({
           presentation: "transparentModal",
+          headerShadowVisible: false,
           headerTitle: () => <Stopwatch startTime={startTime} />,
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="black"
-            />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
-            <Button
+            <ForwardButton
               onPress={() => {
                 setFinishTime(Date.now())
                 navigation.navigate("FinishWorkout")
               }}
-              title="Finish"
-              color="black"
             />
           ),
         })}
@@ -436,6 +418,7 @@ const LoggerStack = ({ route, navigation }) => {
             updateWeightForSet={updateWeightForSet}
             updateRepsForSet={updateRepsForSet}
             workout={workout}
+            removeSet={removeSet}
             {...props}
           />
         )}
@@ -446,13 +429,7 @@ const LoggerStack = ({ route, navigation }) => {
           presentation: "transparentModal",
           headerTitle: "Choose Exercise",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="black"
-            />
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
           headerRight: null, //search button here
         })}
       >
@@ -471,22 +448,15 @@ const LoggerStack = ({ route, navigation }) => {
         options={({ navigation }) => ({
           presentation: "card",
           headerTitle: "Finish workout",
-          headerLeft: () => (
-            <Button
-              onPress={() => navigation.goBack()}
-              title="<--"
-              color="black"
-            />
-          ),
+          headerShadowVisible: false,
+          headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
-            <Button
+            <DoneButton
               onPress={() => {
                 submitWorkout()
                 navigation.navigate("TabNavigator")
                 navigation.navigate("Overview")
               }}
-              title="Finish Workout"
-              color="black"
             />
           ),
         })}
@@ -495,6 +465,8 @@ const LoggerStack = ({ route, navigation }) => {
           <FinishWorkoutScreen
             startTime={startTime}
             finishTime={finishTime}
+            workout={workout}
+            setWorkout={setWorkout}
             {...props}
           />
         )}

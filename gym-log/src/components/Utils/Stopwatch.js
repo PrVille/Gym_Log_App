@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { Text, View } from "react-native"
 
-{/** FORMAT TIME TO HH:MM:SS */}
 const Stopwatch = ({ startTime }) => {
-  const [time, setTime] = useState(Math.floor( (Date.now() - startTime) / 1000 ))
+  const [time, setTime] = useState(Math.floor(Date.now() - startTime))
 
   useEffect(() => {
     let interval = null
 
     interval = setInterval(() => {
-      setTime(Math.floor( (Date.now() - startTime) / 1000 ))
+      setTime(Math.floor(Date.now() - startTime))
     }, 1000)
 
     return () => {
@@ -19,7 +18,7 @@ const Stopwatch = ({ startTime }) => {
 
   return (
     <View>
-      <Text>{time}</Text>
+      <Text>{new Date(time).toISOString().slice(11, -5)}</Text>
     </View>
   )
 }

@@ -1,4 +1,5 @@
 import { View, Text } from "react-native"
+import React, { useState, useEffect } from "react"
 
 const RestTimer = () => {
   return (

@@ -51,7 +51,7 @@ export const createMultipleSets = (sets) => {
   }
 }
 
-//needed?
+// refetch exercises and workouts 
 export const deleteSet = (id) => {
   return async (dispatch) => {    
     const deletedSet = await setService.remove(id)
@@ -63,6 +63,10 @@ export const deleteSet = (id) => {
 // SELECTORS
 
 export const selectSets = (state) => state.sets
+
+export const selectSetsByExerciseId = (state, id) => {
+  return state.sets.filter((set) => set.exercise._id === id)
+}
 
 export const selectSetById = (state, id) => {
   return state.sets.find((set) => set._id === id)

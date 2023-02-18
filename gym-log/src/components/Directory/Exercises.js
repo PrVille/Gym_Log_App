@@ -1,4 +1,4 @@
-import React, { createRef, useState } from "react"
+import React, { createRef, useMemo, useState } from "react"
 import {
   View,
   FlatList,
@@ -18,6 +18,7 @@ import { refetchWorkouts } from "../../redux/reducers/workoutReducer"
 import { refetchSets } from "../../redux/reducers/setReducer"
 import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 import { refetchPlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
+import Header from "../Utils/Header"
 
 const Stack = createStackNavigator()
 
@@ -70,7 +71,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
         <ListItem.Title>{exercise.name}</ListItem.Title>
         <ListItem.Subtitle>
           Sets: {exercise.sets.length} | Volume:{" "}
-          {exercise.sets.map((set) => set.weight).reduce((a, b) => a + b, 0)} kg
+          {exercise.sets.map((set) => set.weight * set.reps).reduce((a, b) => a + b, 0)} kg
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
@@ -80,10 +81,17 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const ExerciseList = ({ navigation, searchQuery }) => {
+const ExerciseList = ({ navigation, searchQuery, order }) => {
   const dispatch = useDispatch()
   const exercises = useSelector((state) =>
     selectExercisesByQuery(state, searchQuery)
+  )
+  useMemo(
+    () =>
+      order === "asc"
+        ? exercises.sort((a, b) => (a.name > b.name ? 1 : -1))
+        : exercises.sort((a, b) => (a.name < b.name ? 1 : -1)),
+    [order, exercises]
   )
 
   const removeExercise = (id) => {
@@ -102,10 +110,11 @@ const ExerciseList = ({ navigation, searchQuery }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
+
         <FlatList
           data={exercises}
           ItemSeparatorComponent={ItemSeparator}
-          ListFooterComponent={<View style={{height: 100}}></View>}
+          ListFooterComponent={<View style={{ height: 100 }}></View>}
           renderItem={({ item }) => (
             <ExerciseListItem
               exercise={item}
@@ -125,7 +134,10 @@ const ExerciseList = ({ navigation, searchQuery }) => {
 
 const Exercises = () => {
   const [searchQuery, setSearchQuery] = useState("")
+  const [order, setOrder] = useState("asc")
   const onChangeSearch = (query) => setSearchQuery(query)
+  const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc")
+
   let searchRef = createRef()
 
   return (
@@ -134,53 +146,19 @@ const Exercises = () => {
         name="ExerciseList"
         options={({ navigation }) => ({
           header: (props) => (
-            <>
-              <SearchBar
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-                searchIcon={<Icon name="search" />}
-                ref={(search) => (searchRef = search)}
-                clearIcon={
-                  <Icon name="clear" onPress={() => searchRef.clear()} />
-                }
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 5,
-                  marginBottom: 5,
-                }}
-              >
-                <Chip
-                  title="Sort"
-                  icon={{
-                    name: "sort-alpha-asc",
-                    type: "font-awesome",
-                    size: 20,
-                    color: theme.colors.chineseViolet,
-                  }}
-                  onPress={() => console.log("Sort ascending!")}
-                  type="outline"
-                  containerStyle={{ marginEnd: 5 }}
-                />
-                <Chip
-                  title="Filter"
-                  icon={{
-                    name: "arm-flex",
-                    type: "material-community",
-                    size: 20,
-                    color: theme.colors.chineseViolet,
-                  }}
-                  onPress={() => console.log("Filter by muscle!")}
-                  type="outline"
-                  containerStyle={{ marginEnd: 5 }}
-                />
-              </View>
-            </>
+            <Header
+              onChangeSearch={onChangeSearch}
+              searchQuery={searchQuery}
+              searchRef={searchRef}
+              order={order}
+              toggleOrder={toggleOrder}
+            />
           ),
         })}
       >
-        {(props) => <ExerciseList searchQuery={searchQuery} {...props} />}
+        {(props) => (
+          <ExerciseList searchQuery={searchQuery} order={order} {...props} />
+        )}
       </Stack.Screen>
     </Stack.Navigator>
   )

@@ -34,4 +34,15 @@
 | 15.02.23 | 1     | fixed broken 1rm updating |
 | 16.02.23 | 3     | styled planned workout list to match exercise list, can now delete planned workouts, backend middleware for cascading deletion of planned workouts |
 | 16.02.23 | 4     | can now create exercise in exercise picker, styled workout history and planned workouts list, can now edit planned workout |
-| sum      | ??    | | 
+| 17.02.23 | 2     | sorting and styling exercise list, Header component, sorting and styling planned workouts |
+| 17.02.23 | 4     | learned about react subcomponents and children, created section component, improved and styled exercise details view |
+| subsum   | 103   | | 
+| 17.02.23 | 4     | exerciseCard, improved and styled planned workout view |
+| 17.02.23 | 1     | improved and styled planner |
+| 18.02.23 | 2     | improved and styled create planned set view, styled exercise picker and added search and filtering |
+| 18.02.23 | 1     | improved and styled logger view |
+| 18.02.23 | 1     | removal of set in planner and logger |
+| 18.02.23 | 1     | some input validation |
+| 18.02.23 | 1     | setHistory, deletion of a set |
+| 18.02.23 | 1     | logger finish screen, stopwatch formatting |
+| sum      | ???   | | 
