@@ -24,11 +24,11 @@ const LoggerOptions = ({ navigation }) => {
           <Button
             title="Plan a workout"
             buttonStyle={{
-              backgroundColor: theme.colors.paleDogwood,
-              borderColor: theme.colors.chineseViolet,
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.primary,
             }}
             titleStyle={{
-              color: theme.colors.chineseViolet,
+              color: theme.colors.primary,
             }}
             containerStyle={{
               marginBottom: 30,

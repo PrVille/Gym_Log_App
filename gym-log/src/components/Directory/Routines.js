@@ -1,52 +1,51 @@
-import React, { createRef, useMemo, useState } from "react"
+import React, { useState, createRef, useMemo } from "react"
 import {
   View,
   FlatList,
-  Keyboard,
   TouchableWithoutFeedback,
+  Keyboard,
   Alert,
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import {
-  selectExercisesByQuery,
-  deleteExercise,
-} from "../../redux/reducers/exerciseReducer"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-import theme from "../../theme"
-import { useDispatch, useSelector } from "react-redux"
-import { refetchWorkouts } from "../../redux/reducers/workoutReducer"
-import { refetchSets } from "../../redux/reducers/setReducer"
-import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
-import { refetchPlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
+import { useSelector, useDispatch } from "react-redux"
+import { ListItem, Icon, Button, FAB } from "@rneui/themed"
 import Header from "../Utils/Header"
+import theme from "../../theme"
+import { selectRoutinesByQuery } from "../../redux/reducers/routineReducer"
 
 const Stack = createStackNavigator()
 
-const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
-  const confirmDeletion = (exercise) => {
+const RoutineListItem = ({
+  routine,
+  navigation,
+  removeRoutine,
+}) => {
+  const confirmDeletion = (routine) => {
     Alert.alert(
-      `Delete ${exercise.name}?`,
-      "This will delete the exercise and all related data (sets, planned sets, exercise in workouts and planned workouts)",
+      `Delete ${routine.name}?`,
+      "This will delete the routine and all related data (?)",
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Delete", onPress: () => removeExercise(exercise._id) },
+        { text: "Delete", onPress: () => removeRoutine(routine._id) },
       ]
     )
   }
 
   return (
     <ListItem.Swipeable
-      onPress={() => navigation.navigate("ExerciseDetails", exercise._id)}
+      onPress={() =>
+        navigation.navigate("RoutineDetails", routine._id)
+      }
       leftContent={(reset) => (
         <Button
           title="Edit"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            navigation.navigate("CreateExercise", exercise)
+            console.log("navigate to edit/create routine")
             reset()
           }}
           icon={{ name: "edit", color: "white" }}
@@ -58,7 +57,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
           title="Delete"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            confirmDeletion(exercise)
+            confirmDeletion(routine)
             reset()
           }}
           icon={{ name: "delete", color: "white" }}
@@ -66,16 +65,10 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
         />
       )}
     >
-      <Icon name="image" size={50} />
+      <Icon name="calendar" type="material-community" size={50} />
       <ListItem.Content>
-        <ListItem.Title>{exercise.name}</ListItem.Title>
-        <ListItem.Subtitle>
-          Sets: {exercise.sets.length} | Volume:{" "}
-          {exercise.sets
-            .map((set) => set.weight * set.reps)
-            .reduce((a, b) => a + b, 0)}{" "}
-          kg
-        </ListItem.Subtitle>
+        <ListItem.Title>{routine.name}</ListItem.Title>
+        <ListItem.Subtitle>Workouts: {routine.weeks.map(week => week.plannedWorkouts).flat().length}</ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem.Swipeable>
@@ -84,27 +77,24 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
-const ExerciseList = ({ navigation, searchQuery, order }) => {
+const RoutinesList = ({ navigation, searchQuery, order }) => {
   const dispatch = useDispatch()
-  const exercises = useSelector((state) =>
-    selectExercisesByQuery(state, searchQuery)
+  const routines = useSelector((state) =>
+    selectRoutinesByQuery(state, searchQuery)
   )
+
   useMemo(
     () =>
       order === "asc"
-        ? exercises.sort((a, b) => (a.name > b.name ? 1 : -1))
-        : exercises.sort((a, b) => (a.name < b.name ? 1 : -1)),
-    [order, exercises]
+        ? routines.sort((a, b) => (a.name > b.name ? 1 : -1))
+        : routines.sort((a, b) => (a.name < b.name ? 1 : -1)),
+    [order, routines]
   )
 
-  const removeExercise = (id) => {
+  const removeRoutine = (id) => {
     try {
-      dispatch(deleteExercise(id)).then(() => {
-        dispatch(refetchSets())
-        dispatch(refetchWorkouts())
-        dispatch(refetchPlannedSets())
-        dispatch(refetchPlannedWorkouts())
-      })
+      console.log("removing routine");
+      
     } catch (error) {
       console.log(error)
     }
@@ -113,30 +103,31 @@ const ExerciseList = ({ navigation, searchQuery, order }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
-        <FlatList
-          data={exercises}
+      <FlatList
+          data={routines}
           ItemSeparatorComponent={ItemSeparator}
-          ListFooterComponent={<View style={{ height: 100 }}></View>}
+          ListFooterComponent={<View style={{height: 100}}></View>}
           renderItem={({ item }) => (
-            <ExerciseListItem
-              exercise={item}
+            <RoutineListItem
+              routine={item}
               navigation={navigation}
-              removeExercise={removeExercise}
+              removeRoutine={removeRoutine}
             />
           )}
         />
         <FAB
           icon={{ name: "add", color: theme.colors.background }}
-          onPress={() => navigation.navigate("CreateExercise")}
+          onPress={() => console.log("navigate to create routine")}
         />
       </>
     </TouchableWithoutFeedback>
   )
 }
 
-const Exercises = () => {
+const Routines = ({ params }) => {
   const [searchQuery, setSearchQuery] = useState("")
   const [order, setOrder] = useState("asc")
+
   const onChangeSearch = (query) => setSearchQuery(query)
   const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc")
 
@@ -145,7 +136,7 @@ const Exercises = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ExerciseList"
+        name="RoutinesList"
         options={({ navigation }) => ({
           header: (props) => (
             <Header
@@ -159,11 +150,11 @@ const Exercises = () => {
         })}
       >
         {(props) => (
-          <ExerciseList searchQuery={searchQuery} order={order} {...props} />
+          <RoutinesList searchQuery={searchQuery} order={order} {...props} />
         )}
       </Stack.Screen>
     </Stack.Navigator>
   )
 }
 
-export default Exercises
+export default Routines

@@ -4,7 +4,7 @@ import Constants from "expo-constants"
 
 import Statistics from "./Statistics/Statistics"
 import Settings from "./Settings/Settings"
-import ProgramsNavigator from "./Directory/ProgramsNavigator"
+import DirectoryNavigator from "./Directory/DirectoryNavigator"
 import Overview from "./Overview/Overview"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"
@@ -36,7 +36,7 @@ const TabNavigator = () => {
             iconName = focused ? "bar-chart" : "bar-chart-outline"
           } else if (route.name === "LoggerOptions") {
             iconName = "add-circle-outline"
-          } else if (route.name === "ProgramsNavigator") {
+          } else if (route.name === "DirectoryNavigator") {
             iconName = focused ? "list-circle" : "list-circle-outline"
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline"
@@ -57,7 +57,7 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"ProgramsNavigator"}
+      initialRouteName={"DirectoryNavigator"}
     >
       <Tab.Screen name="Overview" component={Overview} />
       <Tab.Screen name="Statistics" component={Statistics} />
@@ -71,7 +71,7 @@ const TabNavigator = () => {
           },
         })}
       />
-      <Tab.Screen name="ProgramsNavigator" component={ProgramsNavigator} />
+      <Tab.Screen name="DirectoryNavigator" component={DirectoryNavigator} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   )

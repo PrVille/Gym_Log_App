@@ -19,6 +19,8 @@ const setsRouter = require("./controllers/sets")
 const workoutsRouter = require("./controllers/workouts")
 const plannedSetsRouter = require("./controllers/plannedSets")
 const plannedWorkoutsRouter = require("./controllers/plannedWorkouts")
+const routinesRouter = require("./controllers/routines")
+
 
 app.use(express.json())
 app.use(cors())
@@ -32,6 +34,8 @@ app.use('/api/sets', setsRouter)
 app.use('/api/workouts', workoutsRouter)
 app.use("/api/plannedsets", plannedSetsRouter)
 app.use("/api/plannedworkouts", plannedWorkoutsRouter)
+app.use("/api/routines", routinesRouter)
+
 
 app.use(middleware.errorHandler)
 

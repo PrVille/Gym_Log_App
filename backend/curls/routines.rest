@@ -1,0 +1,21 @@
+### get all routines
+GET http://localhost:3001/api/routines
+
+### add routine
+POST http://localhost:3001/api/routines
+Content-Type: application/json
+
+{
+    "name": "test routine",
+    "notes": "awesome test routine",
+    "weeks": [
+        {
+            "week": 1,
+            "plannedWorkouts": [
+                "63ee290358c6498edaeb7c51",
+                "63ee304558c6498edaeb7cca"
+            ]
+        }
+        
+    ]
+}

@@ -191,7 +191,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
               onPress={() => {
                 submitWorkout()
                 navigation.navigate("TabNavigator")
-                navigation.navigate("ProgramsNavigator")
+                navigation.navigate("DirectoryNavigator")
                 navigation.navigate("PlannedWorkouts")
               }}
             />

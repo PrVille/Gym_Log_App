@@ -45,4 +45,6 @@
 | 18.02.23 | 1     | some input validation |
 | 18.02.23 | 1     | setHistory, deletion of a set |
 | 18.02.23 | 1     | logger finish screen, stopwatch formatting |
+| 19.02.23 | 1     | started working on routines, backend routines model and crud operations |
+| 19.02.23 | 3     | routinesService, routineReducer, routines list screen, routine details screen |
 | sum      | ???   | | 

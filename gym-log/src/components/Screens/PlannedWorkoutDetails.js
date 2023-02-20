@@ -24,8 +24,8 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
   }, [])
 
   return (
-    <SafeAreaView>
-    <ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+    <ScrollView >
       <Section>
         <Section.SubSection divider>
           <Section.SubSectionItem>
@@ -71,7 +71,7 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
 
           <ExerciseCard.Body>
             {exercise.sets.map((set, index) => (
-              <ExerciseCard.Row key={set._id}>
+              <ExerciseCard.Row key={set._id} disableSwipe>
                 <ExerciseCard.Column alignItems="flex-start">
                   {index + 1}
                 </ExerciseCard.Column>

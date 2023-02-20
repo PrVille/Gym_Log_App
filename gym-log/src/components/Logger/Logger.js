@@ -14,15 +14,10 @@ import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
 import uuid from "react-native-uuid"
 import ExercisePicker from "../Screens/ExercisePicker"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { createWorkout } from "../../redux/reducers/workoutReducer"
 import { createMultipleSets } from "../../redux/reducers/setReducer"
-import {
-  addSetForExerciseById,
-  selectExerciseById,
-  update1RMForExerciseById,
-  updateExercise,
-} from "../../redux/reducers/exerciseReducer"
+import { updateExercise } from "../../redux/reducers/exerciseReducer"
 import { useTheme } from "@react-navigation/native"
 import CloseButton from "../Buttons/CloseButton"
 import BackButton from "../Buttons/BackButton"
@@ -91,15 +86,15 @@ const Logger = ({
                     marginVertical: 5,
                     alignItems: "flex-end",
                   }}
-                  buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                  buttonStyle={{ backgroundColor: theme.colors.background }}
                   titleStyle={{
-                    color: theme.colors.chineseViolet,
+                    color: theme.colors.primary,
                   }}
                   title="Add Warmup Set"
                   icon={{
                     name: "playlist-add",
                     type: "material-icon",
-                    color: theme.colors.chineseViolet,
+                    color: theme.colors.primary,
                   }}
                   iconRight
                   onPress={() => addWarmupSet(exercise.exercise._id)}
@@ -149,15 +144,15 @@ const Logger = ({
                   marginVertical: 5,
                   alignItems: "flex-end",
                 }}
-                buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                buttonStyle={{ backgroundColor: theme.colors.background }}
                 titleStyle={{
-                  color: theme.colors.chineseViolet,
+                  color: theme.colors.primary,
                 }}
                 title="Add Working Set"
                 icon={{
                   name: "playlist-add",
                   type: "material-icon",
-                  color: theme.colors.chineseViolet,
+                  color: theme.colors.primary,
                 }}
                 iconRight
                 onPress={() => addWorkingSet(exercise.exercise._id)}

@@ -2,7 +2,6 @@ import { Children } from "react"
 import { View, Text, TouchableOpacity, TextInput } from "react-native"
 import { Divider, Icon, Input, Button, ListItem } from "@rneui/themed"
 import theme from "../../theme"
-import { Swipeable } from "react-native-gesture-handler"
 
 const ExerciseCard = ({ children }) => {
   const subComponentList = Object.keys(ExerciseCard)
@@ -18,7 +17,7 @@ const ExerciseCard = ({ children }) => {
       <View
         style={{
           margin: 10,
-          backgroundColor: theme.colors.chineseViolet,
+          backgroundColor: theme.colors.primary,
           borderRadius: 10,
           paddingVertical: 10,
           paddingHorizontal: 15,
@@ -29,6 +28,7 @@ const ExerciseCard = ({ children }) => {
     </>
   )
 }
+
 
 const Header = (props) => {
   return (
@@ -43,7 +43,7 @@ const Header = (props) => {
           style={{
             fontSize: theme.fontSizes.heading,
             flex: 1,
-            color: theme.colors.paleDogwood,
+            color: theme.colors.background,
             fontWeight: theme.fontWeights.bold,
           }}
         >
@@ -60,7 +60,7 @@ const Header = (props) => {
           <Text
             style={{
               fontSize: theme.fontSizes.subheading,
-              color: theme.colors.paleDogwood,
+              color: theme.colors.secondaryVariant,
             }}
           >
             {props.buttonTitle}
@@ -110,7 +110,7 @@ const HeaderColumn = (props) => {
       <Text
         style={{
           fontSize: theme.fontSizes.body,
-          color: theme.colors.paleDogwood,
+          color: theme.colors.background,
           fontWeight: theme.fontWeights.bold,
         }}
       >
@@ -121,10 +121,32 @@ const HeaderColumn = (props) => {
 }
 
 const Row = (props) => {
+  if (props.disableSwipe) {
+    return (
+      <ListItem
+        containerStyle={{
+          backgroundColor: theme.colors.primary,
+          flex: 1,
+          maxHeight: 50,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            minHeight: 50,
+            justifyContent: "space-between",
+          }}
+        >
+          {props.children}
+        </View>
+      </ListItem>
+    )
+  }
+
   return (
     <ListItem.Swipeable
       containerStyle={{
-        backgroundColor: theme.colors.chineseViolet,
+        backgroundColor: theme.colors.primary,
         flex: 1,
         maxHeight: 50,
       }}
@@ -165,7 +187,7 @@ const Column = (props) => {
     >
       <Text
         style={{
-          color: theme.colors.paleDogwood,
+          color: theme.colors.background,
           fontSize: theme.fontSizes.subheading,
         }}
       >
@@ -188,7 +210,7 @@ const IconColumn = (props) => {
         containerStyle={{ justifyContent: "center", alignItems: "flex-start" }}
         name={props.name}
         type={props.type}
-        color={theme.colors.paleDogwood}
+        color={theme.colors.background}
       />
     </View>
   )
@@ -210,14 +232,14 @@ const InputColumn = (props) => {
           textAlign: "center",
           fontSize: theme.fontSizes.heading,
           fontWeight: theme.fontWeights.bold,
-          color: theme.colors.paleDogwood,
+          color: theme.colors.background,
         }}
         keyboardType={props.keyboardType ? props.keyboardType : "number-pad"}
         selectTextOnFocus={true}
         placeholder={props.placeholder}
-        value={props.value.replace(',', '.')}
+        value={props.value.replace(",", ".")}
         maxLength={6}
-        placeholderTextColor={theme.colors.thistle}
+        placeholderTextColor={theme.colors.secondary}
         onChangeText={props.onChangeText}
       />
     </View>

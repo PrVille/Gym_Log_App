@@ -1,23 +1,31 @@
 import React from "react"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
-import Programs from "./Programs"
+import Routines from "./Routines"
 import Exercises from "./Exercises"
 import PlannedWorkouts from "./PlannedWorkouts"
 
 const Tab = createMaterialTopTabNavigator()
 
-const ProgramsNavigator = ({ params }) => (
+const DirectoryNavigator = ({ params }) => (
   <Tab.Navigator
-    initialRouteName={"PlannedWorkouts"}
+    initialRouteName={"Routines"}
     screenOptions={{
       swipeEnabled: false,
       tabBarStyle: { shadowOpacity: 0 },
     }}
   >
-    <Tab.Screen name="Programs" component={Programs} options={{title: "Routines"}}/>
-    <Tab.Screen name="PlannedWorkouts" component={PlannedWorkouts} options={{title: "Workouts"}} />
+    <Tab.Screen
+      name="Routines"
+      component={Routines}
+      options={{ title: "Routines" }}
+    />
+    <Tab.Screen
+      name="PlannedWorkouts"
+      component={PlannedWorkouts}
+      options={{ title: "Workouts" }}
+    />
     <Tab.Screen name="Exercises" component={Exercises} />
   </Tab.Navigator>
 )
 
-export default ProgramsNavigator
+export default DirectoryNavigator

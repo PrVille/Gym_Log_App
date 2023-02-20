@@ -1,13 +1,29 @@
 import { Platform } from "react-native"
 import { createTheme } from "@rneui/themed"
 
+const colors = {
+  paleDogwood: "rgb(247, 209, 205)",
+  fairyTale: "rgb(232, 194, 202)",
+  thistle: "rgb(209, 179, 196)",
+  roseQuartz: "rgb(179, 146, 172)",
+  chineseViolet: "rgb(115, 93, 120)",
+}
+
+const colors2 = {
+  paleDogwood: "rgb(202, 240, 248)",
+  fairyTale: "rgb(144, 224, 239)",
+  thistle: "rgb(0, 180, 216)",
+  roseQuartz: "rgb(0, 119, 182)",
+  chineseViolet: "rgb(3, 4, 94)",
+}
+
 const theme = {
   colors: {
-    paleDogwood: "rgb(247, 209, 205)",
-    fairyTale: "rgb(232, 194, 202)",
-    thistle: "rgb(209, 179, 196)",
-    roseQuartz: "rgb(179, 146, 172)",
-    chineseViolet: "rgb(115, 93, 120)",
+    background: colors.paleDogwood,
+    secondaryVariant: colors.fairyTale,
+    secondary: colors.thistle,
+    primaryVariant: colors.roseQuartz,
+    primary: colors.chineseViolet,
   },
   fontSizes: {
     body: 14,
@@ -30,11 +46,11 @@ const theme = {
 export const defaultNavigationTheme = {
   dark: false,
   colors: {
-    primary: theme.colors.chineseViolet,
-    background: theme.colors.paleDogwood,
-    card: theme.colors.paleDogwood,
-    text: theme.colors.chineseViolet,
-    border: theme.colors.chineseViolet,
+    primary: theme.colors.primary,
+    background: theme.colors.background,
+    card: theme.colors.background,
+    text: theme.colors.primary,
+    border: theme.colors.primary,
     notification: "rgb(255, 69, 58)", // ??
   },
 }
@@ -43,78 +59,78 @@ export const defaultRNETheme = createTheme({
   components: {
     ListItemSwipeable: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
       },
     },
     ListItemTitle: {
       style: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
         fontSize: theme.fontSizes.subheading,
         fontWeight: theme.fontWeights.bold,
       },
     },
     ListItemSubtitle: {
       style: {
-        color: theme.colors.roseQuartz,
+        color: theme.colors.primaryVariant,
       },
     },
     ListItemChevron: {
-      color: theme.colors.chineseViolet,
+      color: theme.colors.primary,
     },
     ListItem: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
       },
     },
     ListItemAccordion: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
       },
     },
     ListItemCheckBox: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
       },
-      checkedColor: theme.colors.chineseViolet,
-      uncheckedColor: theme.colors.chineseViolet,
+      checkedColor: theme.colors.primary,
+      uncheckedColor: theme.colors.primary,
     },
     SearchBar: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
         borderTopWidth: 0,
         borderBottomWidth: 0,
       },
       inputContainerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
+        backgroundColor: theme.colors.background,
       },
       inputStyle: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
       },
-      placeholderTextColor: theme.colors.roseQuartz,
+      placeholderTextColor: theme.colors.primaryVariant,
       placeholder: "Search...",
     },
     Icon: {
-      color: theme.colors.chineseViolet,
+      color: theme.colors.primary,
     },
     FAB: {
-      color: theme.colors.chineseViolet,
+      color: theme.colors.primary,
       placement: "right",
     },
     Chip: {
       buttonStyle: {
-        borderColor: theme.colors.chineseViolet,
+        borderColor: theme.colors.primary,
       },
       titleStyle: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
       },
     },
     Button: {
       buttonStyle: {
-        backgroundColor: theme.colors.chineseViolet,
-        borderColor: theme.colors.chineseViolet,
+        backgroundColor: theme.colors.primary,
+        borderColor: theme.colors.primary,
       },
       titleStyle: {
-        color: theme.colors.paleDogwood,
+        color: theme.colors.background,
       },
       radius: "sm",
       raised: true,
@@ -123,45 +139,45 @@ export const defaultRNETheme = createTheme({
     },
     Input: {
       inputContainerStyle: {
-        borderColor: theme.colors.chineseViolet,
+        borderColor: theme.colors.primary,
       },
       labelStyle: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
       },
       inputStyle: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
       },
-      placeholderTextColor: theme.colors.roseQuartz,
+      placeholderTextColor: theme.colors.primaryVariant,
     },
     Divider: {
-      color: theme.colors.roseQuartz,
+      color: theme.colors.primaryVariant,
     },
     CardDivider: {
-      color: theme.colors.chineseViolet,
+      color: theme.colors.primary,
     },
     Card: {
       containerStyle: {
         borderRadius: 20,
-        backgroundColor: theme.colors.fairyTale,
-        borderColor: theme.colors.chineseViolet,
+        backgroundColor: theme.colors.secondaryVariant,
+        borderColor: theme.colors.primary,
       },
     },
     CardTitle: {
       style: {
-        color: theme.colors.chineseViolet,
+        color: theme.colors.primary,
       },
     },
     CheckBox: {
       containerStyle: {
-        backgroundColor: theme.colors.paleDogwood,
-        color: theme.colors.chineseViolet
+        backgroundColor: theme.colors.background,
+        color: theme.colors.primary,
       },
       textStyle: {
-        color: theme.colors.chineseViolet
+        color: theme.colors.primary,
       },
-      checkedColor: theme.colors.chineseViolet,
-      uncheckedColor: theme.colors.thistle
-    }
+      checkedColor: theme.colors.primary,
+      uncheckedColor: theme.colors.secondary,
+    },
   },
 })
 

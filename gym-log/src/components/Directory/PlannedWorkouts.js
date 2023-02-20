@@ -142,15 +142,7 @@ const PlannedWorkouts = ({ params }) => {
   let searchRef = createRef()
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStatusBarHeight: 0,
-        headerStyle: {
-          height: 60,
-        },
-        cardStyle: {},
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="PlannedWorkoutList"
         options={({ navigation }) => ({

@@ -1,25 +1,8 @@
 import React, { useState } from "react"
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-  ScrollView,
-} from "react-native"
-import {
-  Input,
-  Button,
-  ListItem,
-  Divider,
-  ButtonGroup,
-  CheckBox,
-  Icon,
-} from "@rneui/themed"
-import { RadioButton } from "react-native-paper"
+import { View, SafeAreaView, ScrollView } from "react-native"
+import { Input, Button, CheckBox, Icon } from "@rneui/themed"
 import uuid from "react-native-uuid"
 import { useTheme } from "@react-navigation/native"
-import theme from "../../theme"
 import Section from "../Utils/Section"
 
 const CreatePlannedSet = ({ route, navigation, addPlannedSet }) => {

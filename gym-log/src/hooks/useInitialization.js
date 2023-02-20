@@ -4,6 +4,7 @@ import { initializeWorkouts } from "../redux/reducers/workoutReducer"
 import { initializeSets } from "../redux/reducers/setReducer"
 import { initializePlannedSets } from "../redux/reducers/plannedSetReducer"
 import { initializePlannedWorkouts } from "../redux/reducers/plannedWorkoutReducer"
+import { initializeRoutines } from "../redux/reducers/routineReducer"
 
 const useInitialization = () => {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const useInitialization = () => {
     dispatch(initializeExercises())
     dispatch(initializeWorkouts())
     dispatch(initializePlannedWorkouts())
+    dispatch(initializeRoutines())
   }
 }
 

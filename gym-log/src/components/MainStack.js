@@ -22,6 +22,7 @@ import CloseButton from "./Buttons/CloseButton"
 
 import { useTheme } from "@react-navigation/native"
 import SetHistory from "./Screens/SetHistory"
+import RoutineDetails from "./Screens/RoutineDetails"
 
 const Stack = createStackNavigator()
 
@@ -40,7 +41,8 @@ const MainStack = () => {
     !state.workouts ||
     !state.plannedSets ||
     !state.sets ||
-    !state.plannedWorkouts
+    !state.plannedWorkouts ||
+    !state.routines
   )
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -148,6 +150,21 @@ const MainStack = () => {
           presentation: "transparentModal",
           headerTitle: "Set History",
           headerShadowVisible: false,
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+        })}
+      />
+
+      <Stack.Screen
+        name="RoutineDetails"
+        component={RoutineDetails}
+        options={({ navigation }) => ({
+          presentation: "transparentModal",
+          headerTitle: "",
+          headerShadowVisible: false,
+          cardStyle: {
+            flex: 1,
+            backgroundColor: colors.background,
+          },
           headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
         })}
       />

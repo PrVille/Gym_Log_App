@@ -31,7 +31,14 @@ const Title = (props) => {
         marginEnd: 20,
       }}
     >
-      <Text style={{ fontSize: theme.fontSizes.heading, flex: 1, color: theme.colors.chineseViolet, fontWeight: theme.fontWeights.bold, }}>
+      <Text
+        style={{
+          fontSize: theme.fontSizes.heading,
+          flex: 1,
+          color: theme.colors.primary,
+          fontWeight: theme.fontWeights.bold,
+        }}
+      >
         {props.children}
       </Text>
       <TouchableOpacity
@@ -42,30 +49,49 @@ const Title = (props) => {
         }}
         onPress={props.onButtonPress}
       >
-          <Text style={{ fontSize: theme.fontSizes.subheading, color: theme.colors.chineseViolet, }}>
-            {props.buttonTitle}
-          </Text>
-
+        <Text
+          style={{
+            fontSize: theme.fontSizes.subheading,
+            color: theme.colors.primary,
+          }}
+        >
+          {props.buttonTitle}
+        </Text>
       </TouchableOpacity>
     </View>
   )
 }
 
-const SubSection = (props) => {  
+const SubSection = (props) => {
   return (
     <View>
-    <View style={{ flexDirection: "row", marginTop: props.divider ? 0 : 10, marginEnd: 20,  }}>
-      {props.children}
-      
-    </View>
-    {props.divider && <Divider style={{ marginVertical: 10, marginEnd: 20 }} />}
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: props.divider ? 0 : 10,
+          marginEnd: 20,
+        }}
+      >
+        {props.children}
+      </View>
+      {props.divider && (
+        <Divider style={{ marginVertical: 10, marginEnd: 20 }} />
+      )}
     </View>
   )
 }
 
-const SubSectionTitle = (props) => {  
+const SubSectionTitle = (props) => {
   return (
-    <Text style={{ fontSize: theme.fontSizes.body, color: theme.colors.chineseViolet, fontWeight: theme.fontWeights.bold, }}>{props.children}</Text>
+    <Text
+      style={{
+        fontSize: theme.fontSizes.body,
+        color: theme.colors.primary,
+        fontWeight: theme.fontWeights.bold,
+      }}
+    >
+      {props.children}
+    </Text>
   )
 }
 
@@ -75,13 +101,25 @@ const SubSectionItem = (props) => {
 
 const SubSectionItemTitle = (props) => {
   return (
-    <Text style={{ fontSize: theme.fontSizes.body, color: theme.colors.chineseViolet, fontWeight: theme.fontWeights.bold, }}>{props.children}</Text>
+    <Text
+      style={{
+        fontSize: theme.fontSizes.body,
+        color: theme.colors.primary,
+        fontWeight: theme.fontWeights.bold,
+      }}
+    >
+      {props.children}
+    </Text>
   )
 }
 
 const SubSectionItemBody = (props) => {
   return (
-    <Text style={{ fontSize: theme.fontSizes.heading, color: theme.colors.chineseViolet }}>{props.children}</Text>
+    <Text
+      style={{ fontSize: theme.fontSizes.heading, color: theme.colors.primary }}
+    >
+      {props.children}
+    </Text>
   )
 }
 Section.Title = Title
