@@ -9,8 +9,6 @@ import Overview from "./Overview/Overview"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"
 
-import theme from "../theme"
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
@@ -25,6 +23,7 @@ const TabNavigator = () => {
   const { colors } = useTheme()
 
   return (
+
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -59,6 +58,7 @@ const TabNavigator = () => {
       sceneContainerStyle={styles.container}
       initialRouteName={"DirectoryNavigator"}
     >
+
       <Tab.Screen name="Overview" component={Overview} />
       <Tab.Screen name="Statistics" component={Statistics} />
       <Tab.Screen

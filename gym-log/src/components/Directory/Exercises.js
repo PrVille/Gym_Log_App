@@ -19,6 +19,7 @@ import { refetchSets } from "../../redux/reducers/setReducer"
 import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 import { refetchPlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
 import Header from "../Utils/Header"
+import { refetchRoutines } from "../../redux/reducers/routineReducer"
 
 const Stack = createStackNavigator()
 
@@ -104,6 +105,7 @@ const ExerciseList = ({ navigation, searchQuery, order }) => {
         dispatch(refetchWorkouts())
         dispatch(refetchPlannedSets())
         dispatch(refetchPlannedWorkouts())
+        dispatch(refetchRoutines())
       })
     } catch (error) {
       console.log(error)

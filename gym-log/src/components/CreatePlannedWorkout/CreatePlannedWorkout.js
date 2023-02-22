@@ -109,6 +109,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           ...plannedWorkout,
           plannedExercises: exercises,
           _id: workoutToEdit._id,
+          active: workoutToEdit.active
         })
       )
       return
@@ -190,9 +191,8 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
             <DoneButton
               onPress={() => {
                 submitWorkout()
-                navigation.navigate("TabNavigator")
-                navigation.navigate("DirectoryNavigator")
-                navigation.navigate("PlannedWorkouts")
+                navigation.goBack()
+                navigation.goBack()
               }}
             />
           ),

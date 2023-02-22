@@ -76,15 +76,15 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
                   marginVertical: 5,
                   alignItems: "flex-end",
                 }}
-                buttonStyle={{ backgroundColor: theme.colors.paleDogwood }}
+                buttonStyle={{ backgroundColor: theme.colors.background }}
                 titleStyle={{
-                  color: theme.colors.chineseViolet,
+                  color: theme.colors.primary,
                 }}
                 title="Add Set"
                 icon={{
                   name: "playlist-add",
                   type: "material-icon",
-                  color: theme.colors.chineseViolet,
+                  color: theme.colors.primary,
                 }}
                 iconRight
                 onPress={() =>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: theme.fontSizes.heading,
     textAlign: "center",
-    color: theme.colors.chineseViolet,
+    color: theme.colors.primary,
   },
   button: {
     alignItems: "center",

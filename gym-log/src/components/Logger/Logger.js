@@ -62,6 +62,7 @@ const Logger = ({
               fontWeight: "bold",
               fontSize: theme.fontSizes.heading,
               textAlign: "center",
+              color: theme.colors.primary
             }}
           >
             {workout.name}

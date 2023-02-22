@@ -77,4 +77,8 @@ export const selectRoutinesByQuery = (state, query) => {
   )
 }
 
+export const selectActiveRoutine = (state) => {
+  return state.routines.find((routine) => routine.active)
+}
+
 export default routineSlice.reducer

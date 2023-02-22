@@ -17,6 +17,7 @@ import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
 import { useTheme } from "@react-navigation/native"
 import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 import Header from "../Utils/Header"
+import { refetchRoutines } from "../../redux/reducers/routineReducer"
 
 const Stack = createStackNavigator()
 
@@ -101,6 +102,7 @@ const PlannedWorkoutList = ({ navigation, searchQuery, order }) => {
     try {
       dispatch(deletePlannedWorkout(id)).then(() => {
         dispatch(refetchPlannedSets())
+        dispatch(refetchRoutines())
       })
     } catch (error) {
       console.log(error)

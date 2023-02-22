@@ -5,6 +5,7 @@ import setReducer from './reducers/setReducer';
 import plannedSetReducer from './reducers/plannedSetReducer';
 import plannedWorkoutReducer from './reducers/plannedWorkoutReducer';
 import routineReducer from './reducers/routineReducer';
+import notificationReducer from './reducers/notificationReducer';
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     plannedWorkouts: plannedWorkoutReducer,
     sets: setReducer,
     plannedSets: plannedSetReducer,
-    routines: routineReducer
+    routines: routineReducer,
+    notification: notificationReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     immutableCheck: { warnAfter: 128 },

@@ -5,6 +5,7 @@ import {
   createExercise,
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
+import { setNotification } from "../../redux/reducers/notificationReducer"
 import { useTheme } from "@react-navigation/native"
 import { Input, Button, ListItem, Divider } from "@rneui/themed"
 
@@ -23,22 +24,10 @@ const data = [
   { id: 12, muscle: "calves", isChecked: false },
 ]
 
-const Notify = ({ errorMessage }) => {
-  if (!errorMessage) {
-    return null
-  }
-  return (
-    <Text style={{ color: "red", alignSelf: "center", marginVertical: 10 }}>
-      {errorMessage}
-    </Text>
-  )
-}
-
 //also for editing, rename to form?
 const CreateExercise = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { colors } = useTheme()
-  const [errorMessage, setErrorMessage] = useState(null)
   const [primaryMuscles, setPrimaryMuscles] = useState(data)
   const [primaryMusclesExpanded, setPrimaryMusclesExpanded] = useState(false)
   const [secondaryMuscles, setSecondaryMuscles] = useState(data)
@@ -74,11 +63,8 @@ const CreateExercise = ({ navigation, route }) => {
     }
   }, [])
 
-  const notify = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 10000)
+  const notify = (message, type = "info") => {
+    dispatch(setNotification({ message, type }, 5))
   }
 
   const addExercise = async () => {
@@ -146,7 +132,6 @@ const CreateExercise = ({ navigation, route }) => {
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background, paddingTop: 20 }}
     >
-      <Notify errorMessage={errorMessage} />
 
       <Input
         inputContainerStyle={{}}

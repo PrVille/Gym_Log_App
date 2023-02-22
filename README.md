@@ -47,4 +47,7 @@
 | 18.02.23 | 1     | logger finish screen, stopwatch formatting |
 | 19.02.23 | 1     | started working on routines, backend routines model and crud operations |
 | 19.02.23 | 3     | routinesService, routineReducer, routines list screen, routine details screen |
+| 21.02.23 | 2     | notification, notificationReducer, delete routine, new logger options,  |
+| 22.02.23 | 3     | create and edit routine |
+
 | sum      | ???   | | 

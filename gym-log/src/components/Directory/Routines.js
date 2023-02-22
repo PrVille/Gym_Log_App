@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { ListItem, Icon, Button, FAB } from "@rneui/themed"
 import Header from "../Utils/Header"
 import theme from "../../theme"
-import { selectRoutinesByQuery } from "../../redux/reducers/routineReducer"
+import { deleteRoutine, selectRoutinesByQuery } from "../../redux/reducers/routineReducer"
 
 const Stack = createStackNavigator()
 
@@ -45,7 +45,7 @@ const RoutineListItem = ({
           title="Edit"
           titleStyle={{ color: "white" }}
           onPress={() => {
-            console.log("navigate to edit/create routine")
+            navigation.navigate("RoutineFormStack", routine._id)
             reset()
           }}
           icon={{ name: "edit", color: "white" }}
@@ -93,8 +93,7 @@ const RoutinesList = ({ navigation, searchQuery, order }) => {
 
   const removeRoutine = (id) => {
     try {
-      console.log("removing routine");
-      
+      dispatch(deleteRoutine(id))  
     } catch (error) {
       console.log(error)
     }
@@ -117,7 +116,7 @@ const RoutinesList = ({ navigation, searchQuery, order }) => {
         />
         <FAB
           icon={{ name: "add", color: theme.colors.background }}
-          onPress={() => console.log("navigate to create routine")}
+          onPress={() => navigation.navigate("RoutineFormStack")}
         />
       </>
     </TouchableWithoutFeedback>

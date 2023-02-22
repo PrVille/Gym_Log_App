@@ -22,7 +22,46 @@ const LoggerOptions = ({ navigation }) => {
           }}
         >
           <Button
-            title="Plan a workout"
+            title="New Routine"
+            buttonStyle={{
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.primary,
+            }}
+            titleStyle={{
+              color: theme.colors.primary,
+            }}
+            containerStyle={{
+              marginBottom: 10,
+              marginHorizontal: 20,
+            }}
+            onPress={() => {
+              navigation.goBack()
+              console.log("CREATE ROUTINE");
+              
+            }}
+          />
+
+          <Button
+            title="New Exercise"
+            buttonStyle={{
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.primary,
+            }}
+            titleStyle={{
+              color: theme.colors.primary,
+            }}
+            containerStyle={{
+              marginBottom: 10,
+              marginHorizontal: 20,
+            }}
+            onPress={() => {
+              navigation.goBack()
+              navigation.navigate("CreateExercise")
+            }}
+          />
+
+          <Button
+            title="New Workout"
             buttonStyle={{
               backgroundColor: theme.colors.background,
               borderColor: theme.colors.primary,
@@ -41,7 +80,7 @@ const LoggerOptions = ({ navigation }) => {
           />
 
           <Button
-            title="Log an improvised workout"
+            title="New Improvised Workout"
             containerStyle={{
               marginBottom: 100,
               marginHorizontal: 20,
