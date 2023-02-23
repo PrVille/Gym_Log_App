@@ -55,6 +55,33 @@ export const updateRoutine = (routineToUpdate) => {
   }
 }
 
+export const updateRoutineCompletedCount = (routineToUpdate) => {
+  return async (dispatch) => {
+    const workoutsCount = routineToUpdate.weeks
+      .map((week) => week.plannedWorkouts)
+      .flat().length
+
+    if (routineToUpdate.completedCount === workoutsCount - 1) {
+      const updatedRoutine = await routineService.update(routineToUpdate._id, {
+        ...routineToUpdate,
+        completedCount: 0,
+      })
+      dispatch(updateOneRoutine(updatedRoutine))
+      return updatedRoutine
+    }
+
+    const updatedRoutine = await routineService.update(
+      routineToUpdate._id,
+      {
+        ...routineToUpdate,
+        completedCount: routineToUpdate.completedCount + 1,
+      }
+    )
+    dispatch(updateOneRoutine(updatedRoutine))
+    return updatedRoutine
+  }
+}
+
 export const deleteRoutine = (id) => {
   return async (dispatch) => {
     const deletedRoutine = await routineService.remove(id)

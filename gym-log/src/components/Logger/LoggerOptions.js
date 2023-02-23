@@ -36,8 +36,7 @@ const LoggerOptions = ({ navigation }) => {
             }}
             onPress={() => {
               navigation.goBack()
-              console.log("CREATE ROUTINE");
-              
+              navigation.navigate("RoutineFormStack")
             }}
           />
 
@@ -87,7 +86,7 @@ const LoggerOptions = ({ navigation }) => {
             }}
             onPress={() => {
               navigation.goBack()
-              navigation.navigate("LoggerStack", { mode: "logImprovised" })
+              navigation.navigate("LoggerStack")
             }}
           />
         </View>

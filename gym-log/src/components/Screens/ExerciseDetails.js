@@ -7,13 +7,17 @@ import {
 } from "react-native"
 import { Icon, Button } from "@rneui/themed"
 
-import { useSelector } from "react-redux"
-import { selectExerciseById } from "../../redux/reducers/exerciseReducer"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  selectExerciseById,
+  updateExercise,
+} from "../../redux/reducers/exerciseReducer"
 import { useTheme } from "@react-navigation/native"
 import { useEffect } from "react"
 import Section from "../Utils/Section"
 
 const ExerciseDetails = ({ route, navigation }) => {
+  const dispatch = useDispatch()
   const id = route.params
   const exercise = useSelector((state) => selectExerciseById(state, id))
   const { colors } = useTheme()
@@ -21,6 +25,7 @@ const ExerciseDetails = ({ route, navigation }) => {
   const {
     name,
     instructions,
+    favourite,
     primaryMuscles,
     secondaryMuscles,
     oneRepMax,
@@ -31,15 +36,28 @@ const ExerciseDetails = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       title: name,
+      headerRight: () => (
+        <Icon
+          style={{ marginEnd: 10 }}
+          size={30}
+          name={favourite ? "star" : "star-outline"}
+          type="material-community"
+          onPress={() =>
+            dispatch(
+              updateExercise({ ...exercise, favourite: !exercise.favourite })
+            )
+          }
+        />
+      ),
     })
-  }, [])
+  }, [exercise])
 
   const SetVolumeRecord = () => {
     if (sets.length === 0) return 0
     const recordSet = sets.reduce((prev, current) =>
       prev.weight * prev.reps > current.weight * current.reps ? prev : current
     )
-    return `${(recordSet.weight * recordSet.reps)} kg in ${recordSet.reps} reps`
+    return `${recordSet.weight * recordSet.reps} kg in ${recordSet.reps} reps`
   }
 
   return (
@@ -74,7 +92,10 @@ const ExerciseDetails = ({ route, navigation }) => {
               Weight Record
             </Section.SubSectionItemTitle>
             <Section.SubSectionItemBody>
-              {sets.length === 0 ? 0 : Math.max(...sets.map((set) => set.weight))} kg
+              {sets.length === 0
+                ? 0
+                : Math.max(...sets.map((set) => set.weight))}{" "}
+              kg
             </Section.SubSectionItemBody>
           </Section.SubSectionItem>
 
@@ -83,7 +104,7 @@ const ExerciseDetails = ({ route, navigation }) => {
               Volume Record
             </Section.SubSectionItemTitle>
             <Section.SubSectionItemBody>
-            {SetVolumeRecord()}
+              {SetVolumeRecord()}
             </Section.SubSectionItemBody>
           </Section.SubSectionItem>
         </Section.SubSection>
@@ -103,7 +124,10 @@ const ExerciseDetails = ({ route, navigation }) => {
               Total Volume
             </Section.SubSectionItemTitle>
             <Section.SubSectionItemBody>
-              {sets.map((set) => set.weight * set.reps).reduce((a, b) => a + b, 0)} kg
+              {sets
+                .map((set) => set.weight * set.reps)
+                .reduce((a, b) => a + b, 0)}{" "}
+              kg
             </Section.SubSectionItemBody>
           </Section.SubSectionItem>
         </Section.SubSection>

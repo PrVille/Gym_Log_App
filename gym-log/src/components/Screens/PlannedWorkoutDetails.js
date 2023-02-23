@@ -1,13 +1,9 @@
-import {
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-} from "react-native"
+import { StyleSheet, ScrollView, SafeAreaView } from "react-native"
 import { useSelector } from "react-redux"
 import { selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
 import { useEffect } from "react"
 import Section from "../Utils/Section"
-import ExerciseCard from "../Utils/ExerciseCard"
+import Card from "../Utils/Card"
 import { Button } from "@rneui/themed"
 
 const PlannedWorkoutDetails = ({ route, navigation }) => {
@@ -24,89 +20,89 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
   }, [])
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-    <ScrollView >
-      <Section>
-        <Section.SubSection divider>
-          <Section.SubSectionItem>
-            <Section.SubSectionItemTitle>Exercises</Section.SubSectionItemTitle>
-            <Section.SubSectionItemBody>
-              {plannedExercises.length}
-            </Section.SubSectionItemBody>
-          </Section.SubSectionItem>
-          <Section.SubSectionItem>
-            <Section.SubSectionItemTitle>
-              Estimated Duration
-            </Section.SubSectionItemTitle>
-            <Section.SubSectionItemBody>
-              {estimatedDuration}
-            </Section.SubSectionItemBody>
-          </Section.SubSectionItem>
-        </Section.SubSection>
-        <Section.SubSection divider>
-          <Section.SubSectionItem>
-            <Section.SubSectionItemTitle>Notes</Section.SubSectionItemTitle>
-            <Section.SubSectionItemBody>{notes}</Section.SubSectionItemBody>
-          </Section.SubSectionItem>
-        </Section.SubSection>
-      </Section>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
+        <Section>
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>
+                Exercises
+              </Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {plannedExercises.length}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>
+                Estimated Duration
+              </Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {estimatedDuration}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>Notes</Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>{notes}</Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+        </Section>
 
-      <Button
-        containerStyle={{ marginBottom: 10, marginHorizontal: 10 }}
-        onPress={() => navigation.navigate("LoggerStack", { plannedWorkout })}
-        title="Start workout"
-      />
+        <Button
+          containerStyle={{ marginBottom: 10, marginHorizontal: 10 }}
+          onPress={() => navigation.navigate("LoggerStack", id)}
+          title="Start workout"
+        />
 
-      {plannedExercises.map((exercise) => (
-        <ExerciseCard key={exercise.exercise._id}>
-          <ExerciseCard.Header
-            divider
-            buttonTitle="Exercise Details"
-            onButtonPress={() =>
-              navigation.navigate("ExerciseDetails", exercise.exercise._id)
-            }
-          >
-            {exercise.exercise.name}
-          </ExerciseCard.Header>
+        {plannedExercises.map((exercise) => (
+          <Card key={exercise.exercise._id}>
+            <Card.Header
+              divider
+              buttonTitle="Exercise Details"
+              onButtonPress={() =>
+                navigation.navigate("ExerciseDetails", exercise.exercise._id)
+              }
+            >
+              {exercise.exercise.name}
+            </Card.Header>
 
-          <ExerciseCard.Body>
-            {exercise.sets.map((set, index) => (
-              <ExerciseCard.Row key={set._id} disableSwipe>
-                <ExerciseCard.Column alignItems="flex-start">
-                  {index + 1}
-                </ExerciseCard.Column>
+            <Card.Body>
+              {exercise.sets.map((set, index) => (
+                <Card.Row key={set._id} disableSwipe>
+                  <Card.Column alignItems="flex-start">{index + 1}</Card.Column>
 
-                <ExerciseCard.IconColumn
-                  name={set.type === "warmup" ? "fitness" : "weight-lifter"}
-                  type={
-                    set.type === "warmup" ? "ionicon" : "material-community"
-                  }
-                />
-                <ExerciseCard.IconColumn
-                  name={
-                    set.plannedWeightType === "previousWeight"
-                      ? "skip-backward"
+                  <Card.IconColumn
+                    name={set.type === "warmup" ? "fitness" : "weight-lifter"}
+                    type={
+                      set.type === "warmup" ? "ionicon" : "material-community"
+                    }
+                  />
+                  <Card.IconColumn
+                    name={
+                      set.plannedWeightType === "previousWeight"
+                        ? "skip-backward"
+                        : set.plannedWeightType === "oneRepMaxPercentage"
+                        ? "percent"
+                        : "weight-kilogram"
+                    }
+                    type="material-community"
+                  />
+                  <Card.Column>{set.plannedReps}</Card.Column>
+
+                  <Card.Column>
+                    {set.plannedWeightType === "previousWeight"
+                      ? "-"
                       : set.plannedWeightType === "oneRepMaxPercentage"
-                      ? "percent"
-                      : "weight-kilogram"
-                  }
-                  type="material-community"
-                />
-                <ExerciseCard.Column>{set.plannedReps}</ExerciseCard.Column>
-
-                <ExerciseCard.Column>
-                  {set.plannedWeightType === "previousWeight"
-                    ? "-"
-                    : set.plannedWeightType === "oneRepMaxPercentage"
-                    ? set.oneRepMaxPercentage
-                    : set.plannedWeight}
-                </ExerciseCard.Column>
-              </ExerciseCard.Row>
-            ))}
-          </ExerciseCard.Body>
-        </ExerciseCard>
-      ))}
-    </ScrollView>
+                      ? set.oneRepMaxPercentage
+                      : set.plannedWeight}
+                  </Card.Column>
+                </Card.Row>
+              ))}
+            </Card.Body>
+          </Card>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   )
 }

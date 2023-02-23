@@ -20,7 +20,6 @@ import {
   selectActiveRoutine,
   updateRoutine,
 } from "../../redux/reducers/routineReducer"
-import ExerciseCard from "../Utils/ExerciseCard"
 import theme from "../../theme"
 
 const RoutineFormFinish = ({ setRoutine, routine }) => {

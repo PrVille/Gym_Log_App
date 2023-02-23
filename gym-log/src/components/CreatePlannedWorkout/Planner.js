@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native"
-import ExerciseCard from "../Utils/ExerciseCard"
+import Card from "../Utils/Card"
 import RestTimer from "../Utils/RestTimer"
 import theme from "../../theme"
 import { Button, Chip } from "@rneui/themed"
@@ -20,8 +20,8 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
         </View>
 
         {exercises.map((exercise, i) => (
-          <ExerciseCard key={exercise.exercise._id}>
-            <ExerciseCard.Header
+          <Card key={exercise.exercise._id}>
+            <Card.Header
               divider
               buttonTitle="Exercise Details"
               onButtonPress={() =>
@@ -29,26 +29,26 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
               }
             >
               {exercise.exercise.name}
-            </ExerciseCard.Header>
-            <ExerciseCard.Body divider>
+            </Card.Header>
+            <Card.Body divider>
               {exercise.sets.map((set, index) => (
-                <ExerciseCard.Row
+                <Card.Row
                   key={set._id}
                   onDeletePress={() =>
                     removeSet(exercise.exercise._id, set._id)
                   }
                 >
-                  <ExerciseCard.Column alignItems="flex-start">
+                  <Card.Column alignItems="flex-start">
                     {index + 1}
-                  </ExerciseCard.Column>
+                  </Card.Column>
 
-                  <ExerciseCard.IconColumn
+                  <Card.IconColumn
                     name={set.type === "warmup" ? "fitness" : "weight-lifter"}
                     type={
                       set.type === "warmup" ? "ionicon" : "material-community"
                     }
                   />
-                  <ExerciseCard.IconColumn
+                  <Card.IconColumn
                     name={
                       set.plannedWeightType === "previousWeight"
                         ? "skip-backward"
@@ -58,19 +58,19 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
                     }
                     type="material-community"
                   />
-                  <ExerciseCard.Column>{set.plannedReps}</ExerciseCard.Column>
+                  <Card.Column>{set.plannedReps}</Card.Column>
 
-                  <ExerciseCard.Column>
+                  <Card.Column>
                     {set.plannedWeightType === "previousWeight"
                       ? "-"
                       : set.plannedWeightType === "oneRepMaxPercentage"
                       ? set.oneRepMaxPercentage
                       : set.plannedWeight}
-                  </ExerciseCard.Column>
-                </ExerciseCard.Row>
+                  </Card.Column>
+                </Card.Row>
               ))}
-            </ExerciseCard.Body>
-            <ExerciseCard.Footer>
+            </Card.Body>
+            <Card.Footer>
               <Chip
                 containerStyle={{
                   marginVertical: 5,
@@ -91,8 +91,8 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
                   navigation.navigate("CreatePlannedSet", exercise.exercise._id)
                 }
               />
-            </ExerciseCard.Footer>
-          </ExerciseCard>
+            </Card.Footer>
+          </Card>
         ))}
 
         <Button

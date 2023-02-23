@@ -30,6 +30,10 @@ const routineSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: false
+    },
+    completedCount: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }

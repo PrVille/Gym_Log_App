@@ -17,6 +17,22 @@ const colors2 = {
   chineseViolet: "rgb(3, 4, 94)",
 }
 
+const colors3 = {
+  paleDogwood: "rgb(248, 249, 250)",
+  fairyTale: "rgb(222, 226, 230)",
+  thistle: "rgb(173, 181, 189)",
+  roseQuartz: "rgb(73, 80, 87)",
+  chineseViolet: "rgb(33, 37, 41)",
+}
+
+const colors4 = {
+  paleDogwood: "rgb(33, 37, 41)",
+  fairyTale: "rgb(73, 80, 87)",
+  thistle: "rgb(173, 181, 189)",
+  roseQuartz: "rgb(222, 226, 230)",
+  chineseViolet: "rgb(248, 249, 250)",
+}
+
 const theme = {
   colors: {
     background: colors.paleDogwood,

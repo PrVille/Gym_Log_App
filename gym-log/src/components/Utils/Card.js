@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, TextInput } from "react-native"
 import { Divider, Icon, Input, Button, ListItem } from "@rneui/themed"
 import theme from "../../theme"
 
-const ExerciseCard = ({ children }) => {
-  const subComponentList = Object.keys(ExerciseCard)
+const Card = ({ children, backgroundColor }) => {
+  const subComponentList = Object.keys(Card)
 
   const subComponents = subComponentList.map((key) => {
     return Children.map(children, (child) =>
@@ -17,7 +17,7 @@ const ExerciseCard = ({ children }) => {
       <View
         style={{
           margin: 10,
-          backgroundColor: theme.colors.primary,
+          backgroundColor: backgroundColor ? backgroundColor : theme.colors.primary,
           borderRadius: 10,
           paddingVertical: 10,
           paddingHorizontal: 15,
@@ -93,7 +93,7 @@ const BodyHeader = (props) => {
 const HeaderRow = (props) => {
   return (
     <View>
-      <View style={{ flexDirection: "row" }}>{props.children}</View>
+      <View style={{ flexDirection: "row", marginVertical: props.marginVertical ? props.marginVertical : 0 }}>{props.children}</View>
       {props.divider && <Divider style={{ marginVertical: 5 }} />}
     </View>
   )
@@ -104,12 +104,12 @@ const HeaderColumn = (props) => {
     <View
       style={{
         flex: 1,
-        alignItems: "center",
+        alignItems: props.alignItems ? props.alignItems : "center",
       }}
     >
       <Text
         style={{
-          fontSize: theme.fontSizes.body,
+          fontSize: theme.fontSizes.subheading,
           color: theme.colors.background,
           fontWeight: theme.fontWeights.bold,
         }}
@@ -250,15 +250,15 @@ const Footer = (props) => {
   return <View>{props.children}</View>
 }
 
-ExerciseCard.Header = Header
-ExerciseCard.Body = Body
-ExerciseCard.BodyHeader = BodyHeader
-ExerciseCard.HeaderRow = HeaderRow
-ExerciseCard.HeaderColumn = HeaderColumn
-ExerciseCard.Row = Row
-ExerciseCard.Column = Column
-ExerciseCard.IconColumn = IconColumn
-ExerciseCard.InputColumn = InputColumn
-ExerciseCard.Footer = Footer
+Card.Header = Header
+Card.Body = Body
+Card.BodyHeader = BodyHeader
+Card.HeaderRow = HeaderRow
+Card.HeaderColumn = HeaderColumn
+Card.Row = Row
+Card.Column = Column
+Card.IconColumn = IconColumn
+Card.InputColumn = InputColumn
+Card.Footer = Footer
 
-export default ExerciseCard
+export default Card

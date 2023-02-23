@@ -14,17 +14,23 @@ import FinishWorkoutScreen from "./FinishWorkoutScreen"
 import theme from "../../theme"
 import uuid from "react-native-uuid"
 import ExercisePicker from "../Screens/ExercisePicker"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { createWorkout } from "../../redux/reducers/workoutReducer"
 import { createMultipleSets } from "../../redux/reducers/setReducer"
 import { updateExercise } from "../../redux/reducers/exerciseReducer"
+import { selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
 import { useTheme } from "@react-navigation/native"
 import CloseButton from "../Buttons/CloseButton"
 import BackButton from "../Buttons/BackButton"
 import ForwardButton from "../Buttons/ForwardButton"
 import DoneButton from "../Buttons/DoneButton"
 import { Button, Chip, Icon } from "@rneui/themed"
-import ExerciseCard from "../Utils/ExerciseCard"
+import Card from "../Utils/Card"
+import {
+  selectActiveRoutine,
+  updateRoutine,
+  updateRoutineCompletedCount,
+} from "../../redux/reducers/routineReducer"
 
 const Logger = ({
   navigation,
@@ -62,7 +68,7 @@ const Logger = ({
               fontWeight: "bold",
               fontSize: theme.fontSizes.heading,
               textAlign: "center",
-              color: theme.colors.primary
+              color: theme.colors.primary,
             }}
           >
             {workout.name}
@@ -70,8 +76,8 @@ const Logger = ({
         </View>
 
         {exercises.map((exercise, i) => (
-          <ExerciseCard key={exercise.exercise._id}>
-            <ExerciseCard.Header
+          <Card key={exercise.exercise._id}>
+            <Card.Header
               divider
               buttonTitle="Exercise Details"
               onButtonPress={() =>
@@ -79,9 +85,9 @@ const Logger = ({
               }
             >
               {exercise.exercise.name}
-            </ExerciseCard.Header>
-            <ExerciseCard.Body divider>
-              <ExerciseCard.BodyHeader divider>
+            </Card.Header>
+            <Card.Body divider>
+              <Card.BodyHeader divider>
                 <Chip
                   containerStyle={{
                     marginVertical: 5,
@@ -100,19 +106,17 @@ const Logger = ({
                   iconRight
                   onPress={() => addWarmupSet(exercise.exercise._id)}
                 />
-              </ExerciseCard.BodyHeader>
+              </Card.BodyHeader>
               {exercise.sets.map((set, index) => (
-                <ExerciseCard.Row
-                  key={set._id}
+                <Card.Row
+                  key={index}
                   onDeletePress={() =>
                     removeSet(exercise.exercise._id, set._id)
                   }
                 >
-                  <ExerciseCard.Column alignItems="flex-start">
-                    {index + 1}
-                  </ExerciseCard.Column>
+                  <Card.Column alignItems="flex-start">{index + 1}</Card.Column>
 
-                  <ExerciseCard.IconColumn
+                  <Card.IconColumn
                     alignItems="flex-start"
                     name={set.type === "warmup" ? "fitness" : "weight-lifter"}
                     type={
@@ -120,7 +124,7 @@ const Logger = ({
                     }
                   />
 
-                  <ExerciseCard.InputColumn
+                  <Card.InputColumn
                     placeholder="Reps"
                     value={`${set.reps}`}
                     onChangeText={(value) =>
@@ -128,7 +132,7 @@ const Logger = ({
                     }
                   />
 
-                  <ExerciseCard.InputColumn
+                  <Card.InputColumn
                     keyboardType="decimal-pad"
                     placeholder="Kg"
                     value={`${set.weight}`}
@@ -136,10 +140,10 @@ const Logger = ({
                       updateWeightForSet(exercise.exercise._id, set._id, value)
                     }
                   />
-                </ExerciseCard.Row>
+                </Card.Row>
               ))}
-            </ExerciseCard.Body>
-            <ExerciseCard.Footer>
+            </Card.Body>
+            <Card.Footer>
               <Chip
                 containerStyle={{
                   marginVertical: 5,
@@ -158,8 +162,8 @@ const Logger = ({
                 iconRight
                 onPress={() => addWorkingSet(exercise.exercise._id)}
               />
-            </ExerciseCard.Footer>
-          </ExerciseCard>
+            </Card.Footer>
+          </Card>
         ))}
 
         <Button
@@ -186,6 +190,10 @@ const LoggerStack = ({ route, navigation }) => {
     notes: "",
     duration: 0,
   })
+  const plannedWorkout = route.params
+    ? useSelector((state) => selectPlannedWorkoutById(state, route.params))
+    : null
+  const activeRoutine = useSelector(selectActiveRoutine)
 
   useEffect(() => {
     const selectWeight = (plannedSet, exercise) => {
@@ -208,8 +216,7 @@ const LoggerStack = ({ route, navigation }) => {
       }
     }
 
-    if (route.params.plannedWorkout) {
-      const plannedWorkout = route.params.plannedWorkout
+    if (plannedWorkout) {
       const plannedExercises = plannedWorkout.plannedExercises
 
       for (let i = 0; i < plannedExercises.length; i++) {
@@ -241,14 +248,6 @@ const LoggerStack = ({ route, navigation }) => {
   }, [])
 
   const updateExercises = (newExercise) => {
-    const existingExercise = exercises.find(
-      (exercise) => exercise.exercise._id === newExercise._id
-    )
-    if (existingExercise) {
-      console.log("EXERCISE ALREADY IN WORKOUT")
-      return
-    }
-
     const newSet = {
       _id: uuid.v4(),
       type: "work",
@@ -314,6 +313,16 @@ const LoggerStack = ({ route, navigation }) => {
           })
         )
       })
+    }
+
+    if (activeRoutine && plannedWorkout) {
+      const routineWorkouts = activeRoutine.weeks
+        .map((week) => week.plannedWorkouts)
+        .flat()
+      if (
+        routineWorkouts[activeRoutine.completedCount]._id === plannedWorkout._id
+      )
+        dispatch(updateRoutineCompletedCount(activeRoutine))
     }
 
     dispatch(
@@ -451,7 +460,7 @@ const LoggerStack = ({ route, navigation }) => {
               onPress={() => {
                 submitWorkout()
                 navigation.navigate("TabNavigator")
-                navigation.navigate("Overview")
+                navigation.navigate("Home")
               }}
             />
           ),

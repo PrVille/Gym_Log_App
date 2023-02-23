@@ -11,7 +11,7 @@ export const setSlice = createSlice({
     addNewSet(state, { payload }) {
       return state.concat(payload)
     },
-    addMultipleNewSets(state, { payload }) {
+    addMultipleNewSets(state, { payload }) {      
       return state.concat(payload)
     },
     removeSet(state, { payload }) {
@@ -65,7 +65,7 @@ export const deleteSet = (id) => {
 export const selectSets = (state) => state.sets
 
 export const selectSetsByExerciseId = (state, id) => {
-  return state.sets.filter((set) => set.exercise._id === id)
+  return state.sets.filter((set) => set.exercise === id)
 }
 
 export const selectSetById = (state, id) => {

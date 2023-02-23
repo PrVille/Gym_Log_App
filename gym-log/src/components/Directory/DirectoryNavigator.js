@@ -8,7 +8,6 @@ const Tab = createMaterialTopTabNavigator()
 
 const DirectoryNavigator = ({ params }) => (
   <Tab.Navigator
-    initialRouteName={"Routines"}
     screenOptions={{
       swipeEnabled: false,
       tabBarStyle: { shadowOpacity: 0 },

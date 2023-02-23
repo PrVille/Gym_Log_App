@@ -49,5 +49,6 @@
 | 19.02.23 | 3     | routinesService, routineReducer, routines list screen, routine details screen |
 | 21.02.23 | 2     | notification, notificationReducer, delete routine, new logger options,  |
 | 22.02.23 | 3     | create and edit routine |
-
+| 22.02.23 | 4     | Homescreen, widgets, routine logic |
+| 22.02.23 | 1     | Favourites for exercises |
 | sum      | ???   | | 

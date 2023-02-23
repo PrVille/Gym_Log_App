@@ -5,7 +5,7 @@ import Constants from "expo-constants"
 import Statistics from "./Statistics/Statistics"
 import Settings from "./Settings/Settings"
 import DirectoryNavigator from "./Directory/DirectoryNavigator"
-import Overview from "./Overview/Overview"
+import Home from "./Home/Home"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"
 
@@ -29,7 +29,7 @@ const TabNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
-          if (route.name === "Overview") {
+          if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline"
           } else if (route.name === "Statistics") {
             iconName = focused ? "bar-chart" : "bar-chart-outline"
@@ -56,10 +56,10 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"DirectoryNavigator"}
+      initialRouteName={"Home"}
     >
 
-      <Tab.Screen name="Overview" component={Overview} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Statistics" component={Statistics} />
       <Tab.Screen
         name="LoggerOptions"

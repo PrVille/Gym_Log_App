@@ -28,7 +28,7 @@ const { setExercises, addNewExercise, updateOneExercise, removeExercise } =
 // ACTIONS
 
 export const initializeExercises = () => {
-  return async (dispatch) => {    
+  return async (dispatch) => {
     const exercises = await exerciseService.getAll()
     setTimeout(() => {
       dispatch(setExercises(exercises))
@@ -70,6 +70,10 @@ export const deleteExercise = (id) => {
 
 // useSelector(selectExercises) === useSelector(state => selectExercises(state))
 export const selectExercises = (state) => state.exercises
+
+export const selectFavouriteExercises = (state) => {
+  return state.exercises.filter((e) => e.favourite)
+}
 
 // useSelector(state => selectExerciseById(state, id))
 export const selectExerciseById = (state, id) => {

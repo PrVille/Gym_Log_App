@@ -128,6 +128,11 @@ const PlannedWorkoutList = ({ navigation, searchQuery, order }) => {
           icon={{ name: "add", color: colors.background }}
           onPress={() => navigation.navigate("CreatePlannedWorkout")}
         />
+        <FAB
+          placement="left"
+          icon={{ name: "archive", type: "material-community", color: colors.background }}
+          onPress={() => navigation.navigate("WorkoutHistory")}
+        />
       </>
     </TouchableWithoutFeedback>
   )

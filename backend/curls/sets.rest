@@ -1,5 +1,5 @@
 ### get all sets
-GET http://localhost:3001/api/sets/63e671c055a0cc3ca3859a01
+GET http://localhost:3001/api/sets
 
 ### add set
 POST http://localhost:3001/api/sets
