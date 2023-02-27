@@ -8,14 +8,15 @@ const Header = ({
   searchRef,
   order,
   toggleOrder,
+  showSort = true,
 }) => {
   const { colors } = useTheme()
-  
+
   return (
     <View
       style={{
         flexDirection: "row",
-        backgroundColor: colors.background
+        backgroundColor: colors.background,
       }}
     >
       <SearchBar
@@ -26,17 +27,19 @@ const Header = ({
         ref={(search) => (searchRef = search)}
         clearIcon={<Icon name="clear" onPress={() => searchRef.clear()} />}
       />
-      <Chip
-        icon={{
-          name: order === "asc" ? "sort-asc" : "sort-desc",
-          type: "octicon",
-          size: 20,
-          color: colors.primary,
-        }}
-        onPress={toggleOrder}
-        type="outline"
-        containerStyle={{ alignSelf: "center", marginEnd: 5 }}
-      />
+      {showSort && (
+        <Chip
+          icon={{
+            name: order === "asc" ? "sort-asc" : "sort-desc",
+            type: "octicon",
+            size: 20,
+            color: colors.primary,
+          }}
+          onPress={toggleOrder}
+          type="outline"
+          containerStyle={{ alignSelf: "center", marginEnd: 5 }}
+        />
+      )}
     </View>
   )
 }

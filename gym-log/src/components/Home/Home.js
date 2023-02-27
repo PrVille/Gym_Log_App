@@ -5,6 +5,7 @@ import theme from "../../theme"
 import Overview from "./Widgets/Overview"
 import ActiveRoutine from "./Widgets/ActiveRoutine"
 import FavouriteExercises from "./Widgets/FavouriteExercises"
+import { WorkoutsGraph } from "../Statistics/GraphScreen"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
@@ -22,13 +23,15 @@ const Home = ({ params, navigation }) => {
   ])
 
   return (
-    <FlatList
-      data={selecetedWidgets}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => {
-        return <View>{widgets[item]}</View>
-      }}
-    />
+    <>
+      <FlatList
+        data={selecetedWidgets}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => {
+          return <View>{widgets[item]}</View>
+        }}
+      />
+    </>
   )
 }
 

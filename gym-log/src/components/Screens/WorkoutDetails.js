@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 
 
 const WorkoutDetails = ({ params, route, navigation }) => {
-  const id = route.params
+  const id = route.params  
   const workout = useSelector(state => selectWorkoutById(state, id))
   const { colors } = useTheme()
 

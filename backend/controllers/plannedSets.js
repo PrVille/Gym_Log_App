@@ -1,31 +1,24 @@
 const router = require("express").Router()
 const PlannedSet = require("../models/plannedSet")
 
-//PlannedSet.watch().on("change", (data) => console.log(data))
-
-
 router.get("/", async (req, res) => {
-  const sets = await PlannedSet.find({})
-    .populate("exercise")
-
-  res.json(sets)
-})
-
-router.get("/:id", async (req, res) => {
-  const set = await PlannedSet.findById(req.params.id)
-  res.json(set)
+  const user = req.user
+  const plannedSets = await PlannedSet.find({ user: user._id }).populate("exercise")
+  res.json(plannedSets)
 })
 
 router.post("/", async (req, res) => {
+  const user = req.user
+
   if (Array.isArray(req.body)) {
-    const sets = req.body    
-    const inserts = await PlannedSet.insertMany(sets)
+    const plannedSets = req.body.map(plannedSet => ({...plannedSet, user: user._id}))
+    const inserts = await PlannedSet.insertMany(plannedSets)
     res.json(inserts)
-    return  
+    return
   }
 
-  const newSet = await PlannedSet.create(req.body)
-  res.json(newSet)
+  const newPlannedSet = await PlannedSet.create({ ...req.body, user: user._id })
+  res.json(newPlannedSet)
 })
 
 router.delete("/:id", async (req, res) => {

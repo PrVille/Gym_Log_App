@@ -4,7 +4,9 @@ const Routine = require("../models/routine")
 //Workout.watch().on("change", (data) => console.log(data))
 
 router.get("/", async (req, res) => {
-  const routines = await Routine.find({})
+  const user = req.user
+
+  const routines = await Routine.find({ user: user._id })
     .populate("weeks.plannedWorkouts")
     .populate({
       path: "weeks.plannedWorkouts",
@@ -21,26 +23,13 @@ router.get("/", async (req, res) => {
   res.json(routines)
 })
 
-router.get("/:id", async (req, res) => {
-  const routine = await Routine.findById(req.params.id)
-    .populate("weeks.plannedWorkouts")
-    .populate({
-      path: "weeks.plannedWorkouts",
-      populate: {
-        path: "plannedExercises.exercise",
-      },
-    })
-    .populate({
-      path: "weeks.plannedWorkouts",
-      populate: {
-        path: "plannedExercises.sets",
-      },
-    })
-  res.json(routine)
-})
-
 router.post("/", async (req, res) => {
-  const newRoutine = await Routine.create(req.body)
+  const user = req.user
+
+  const newRoutine = await Routine.create({
+    ...req.body,
+    user: user._id,
+  })
   const newPopulatedRoutine = await Routine.findById(newRoutine._id)
     .populate("weeks.plannedWorkouts")
     .populate({

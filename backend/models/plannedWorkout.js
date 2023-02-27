@@ -20,6 +20,11 @@ const plannedWorkoutSchema = new mongoose.Schema(
       type: String,
       default: "Improvised Workout",
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
     notes: {
       type: String,
     },

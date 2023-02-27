@@ -29,7 +29,7 @@ const { setExercises, addNewExercise, updateOneExercise, removeExercise } =
 
 export const initializeExercises = () => {
   return async (dispatch) => {
-    const exercises = await exerciseService.getAll()
+    const exercises = await exerciseService.getAll()    
     setTimeout(() => {
       dispatch(setExercises(exercises))
     }, 0)
@@ -86,14 +86,14 @@ export const selectExercisesByQuery = (state, query) => {
   )
 }
 
-export const selectExercisesSortedByName = (order) => {
+export const selectExercisesSortedByName = (state, order) => {
   switch (order) {
     case "asc":
-      return state.exercises.sort((a, b) => (a.name > b.name ? 1 : -1))
+      return [...state.exercises].sort((a, b) => (a.name > b.name ? 1 : -1))
     case "desc":
-      return state.exercises.sort((a, b) => (a.name < b.name ? 1 : -1))
+      return [...state.exercises].sort((a, b) => (a.name < b.name ? 1 : -1))
     default:
-      return state.exercises
+      return [...state.exercises]
   }
 }
 

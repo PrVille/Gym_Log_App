@@ -194,6 +194,17 @@ export const defaultRNETheme = createTheme({
       checkedColor: theme.colors.primary,
       uncheckedColor: theme.colors.secondary,
     },
+    ButtonGroup: {
+      buttonStyle: { backgroundColor: theme.colors.background },
+      innerBorderStyle: { width: 0 },
+      containerStyle: {
+        borderRadius: 15,
+        borderColor: theme.colors.primary,
+      },
+      textStyle: { color: theme.colors.primary },
+      selectedButtonStyle: { backgroundColor: theme.colors.primary },
+      selectedTextStyle: { color: theme.colors.background },
+    },
   },
 })
 

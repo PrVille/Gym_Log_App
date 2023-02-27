@@ -19,6 +19,8 @@ import Section from "../Utils/Section"
 const ExerciseDetails = ({ route, navigation }) => {
   const dispatch = useDispatch()
   const id = route.params
+  console.log(id);
+
   const exercise = useSelector((state) => selectExerciseById(state, id))
   const { colors } = useTheme()
   const { width } = Dimensions.get("screen")

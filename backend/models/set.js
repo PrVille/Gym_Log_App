@@ -8,6 +8,11 @@ const schema = new mongoose.Schema(
       enum: ["work", "warmup"],
       required: true,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
     exercise: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Exercise",

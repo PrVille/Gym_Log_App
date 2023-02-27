@@ -5,7 +5,6 @@ import {
   createExercise,
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
-import { setNotification } from "../../redux/reducers/notificationReducer"
 import { useTheme } from "@react-navigation/native"
 import { Input, Button, ListItem, Divider } from "@rneui/themed"
 
@@ -59,13 +58,9 @@ const CreateExercise = ({ navigation, route }) => {
 
       setPrimaryMuscles(pms)
       setSecondaryMuscles(sms)
-      setNewExercise(route.params)
+      setNewExercise(JSON.parse(JSON.stringify(route.params)))
     }
   }, [])
-
-  const notify = (message, type = "info") => {
-    dispatch(setNotification({ message, type }, 5))
-  }
 
   const addExercise = async () => {
     const pms = primaryMuscles
@@ -76,15 +71,10 @@ const CreateExercise = ({ navigation, route }) => {
       .map((sm) => sm.muscle)
     newExercise.primaryMuscles = pms
     newExercise.secondaryMuscles = sms
-    try {
-      await dispatch(createExercise(newExercise)).then((res) =>
-        console.log(res)
-      )
-    } catch (error) {
-      notify(error.response.data.error)
-      return
-    }
-    navigation.goBack()
+
+    await dispatch(createExercise(newExercise))
+      .then(() => navigation.goBack())
+      .catch((err) => err)
   }
 
   const updateEditedExercise = async () => {
@@ -96,16 +86,10 @@ const CreateExercise = ({ navigation, route }) => {
       .map((sm) => sm.muscle)
     newExercise.primaryMuscles = pms
     newExercise.secondaryMuscles = sms
-    try {
-      await dispatch(updateExercise(newExercise)).then((res) =>
-        console.log(res)
-      )
-    } catch (error) {
-      console.log(error)
 
-      return
-    }
-    navigation.goBack()
+    await dispatch(updateExercise(newExercise))
+      .then(() => navigation.goBack())
+      .catch((err) => err)
   }
 
   const handleChangePrimary = (id) => {
@@ -132,7 +116,6 @@ const CreateExercise = ({ navigation, route }) => {
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background, paddingTop: 20 }}
     >
-
       <Input
         inputContainerStyle={{}}
         label={"Name"}

@@ -6,6 +6,9 @@ import plannedSetReducer from './reducers/plannedSetReducer';
 import plannedWorkoutReducer from './reducers/plannedWorkoutReducer';
 import routineReducer from './reducers/routineReducer';
 import notificationReducer from './reducers/notificationReducer';
+import userReducer from "./reducers/userReducer"
+
+import { injectStore } from '../services/utils/axios';
 
 const store = configureStore({
   reducer: {
@@ -15,12 +18,15 @@ const store = configureStore({
     sets: setReducer,
     plannedSets: plannedSetReducer,
     routines: routineReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    user: userReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     immutableCheck: { warnAfter: 128 },
     serializableCheck: { warnAfter: 128 },
   })
 });
+
+injectStore(store)
 
 export default store;

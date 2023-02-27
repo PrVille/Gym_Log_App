@@ -24,18 +24,18 @@ import { useTheme } from "@react-navigation/native"
 import SetHistory from "./Screens/SetHistory"
 import RoutineDetails from "./Screens/RoutineDetails"
 import RoutineFormStack from "./Routine/RoutineFormStack"
+import GraphScreen from "./Statistics/GraphScreen"
 
 const Stack = createStackNavigator()
 
 const MainStack = () => {
-  const stateInitializer = useInitialization()
   const { colors } = useTheme()
+  const state = useSelector((state) => state)
+  const stateInitializer = useInitialization(state.user)
 
   useEffect(() => {
     stateInitializer()
-  }, [])
-
-  const state = useSelector((state) => state)
+  }, [state.user])
 
   if (
     !state.exercises ||
@@ -53,7 +53,7 @@ const MainStack = () => {
 
   return (
     <>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="">
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
@@ -193,7 +193,21 @@ const MainStack = () => {
           })}
         />
 
-        
+        <Stack.Screen
+          name="GraphScreen"
+          component={GraphScreen}
+          options={({ navigation, route }) => ({
+            presentation: "transparentModal",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <CloseButton onPress={() => navigation.goBack()} />
+            ),
+            cardStyle: {
+              flex: 1,
+              backgroundColor: colors.background,
+            },
+          })}
+        />
       </Stack.Navigator>
     </>
   )

@@ -1,16 +1,10 @@
-import axios from "axios"
-
+import axios from "./utils/axios"
 const webUrl = "http://localhost:3001/api/exercises"
 const mobileUrl = "http://192.168.0.105:3001/api/exercises"
 const baseUrl = mobileUrl
 
 const getAll = async () => {
   const res = await axios.get(baseUrl)
-  return res.data
-}
-
-const getById = async (id) => {
-  const res = await axios.get(`${baseUrl}/${id}`)
   return res.data
 }
 
@@ -29,4 +23,4 @@ const remove = async (id) => {
   return reponse.data
 }
 
-export default { getAll, getById, create, update, remove }
+export default { getAll, create, update, remove }

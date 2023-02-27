@@ -9,10 +9,6 @@ const getAll = async () => {
   return request.then((response) => response.data)
 }
 
-const getById = async (id) => {
-  const res = await axios.get(`${baseUrl}/${id}`)
-  return res.data
-}
 
 const create = async (newObject) => {
   const response = await axios.post(baseUrl, newObject)
@@ -32,4 +28,4 @@ const remove = async (id) => {
 };
 
 
-export default { create, getAll, getById, update, remove }
+export default { create, getAll, update, remove }

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 import Constants from "expo-constants"
 
-import Statistics from "./Statistics/Statistics"
+import StatisticsStack from "./Statistics/StatisticsStack"
 import Settings from "./Settings/Settings"
 import DirectoryNavigator from "./Directory/DirectoryNavigator"
 import Home from "./Home/Home"
@@ -31,7 +31,7 @@ const TabNavigator = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline"
-          } else if (route.name === "Statistics") {
+          } else if (route.name === "StatisticsStack") {
             iconName = focused ? "bar-chart" : "bar-chart-outline"
           } else if (route.name === "LoggerOptions") {
             iconName = "add-circle-outline"
@@ -56,11 +56,11 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"Home"}
+      initialRouteName={"StatisticsStack"}
     >
 
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Statistics" component={Statistics} />
+      <Tab.Screen name="StatisticsStack" component={StatisticsStack} />
       <Tab.Screen
         name="LoggerOptions"
         component={MockComponent}

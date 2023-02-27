@@ -19,14 +19,9 @@ const createMany = async (newObjects) => {
   return response.data
 }
 
-const update = async (id, newObject) => {
-  const reponse = await axios.put(`${baseUrl}/${id}`, newObject);
-  return reponse.data
-};
-
 const remove = async (id) => {
   const reponse = await axios.delete(`${baseUrl}/${id}`);
   return reponse.data
 };
 
-export default { getAll, create, createMany, update, remove }
+export default { getAll, create, createMany, remove }

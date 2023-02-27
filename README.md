@@ -36,7 +36,6 @@
 | 16.02.23 | 4     | can now create exercise in exercise picker, styled workout history and planned workouts list, can now edit planned workout |
 | 17.02.23 | 2     | sorting and styling exercise list, Header component, sorting and styling planned workouts |
 | 17.02.23 | 4     | learned about react subcomponents and children, created section component, improved and styled exercise details view |
-| subsum   | 103   | | 
 | 17.02.23 | 4     | exerciseCard, improved and styled planned workout view |
 | 17.02.23 | 1     | improved and styled planner |
 | 18.02.23 | 2     | improved and styled create planned set view, styled exercise picker and added search and filtering |
@@ -51,4 +50,7 @@
 | 22.02.23 | 3     | create and edit routine |
 | 22.02.23 | 4     | Homescreen, widgets, routine logic |
 | 22.02.23 | 1     | Favourites for exercises |
-| sum      | ???   | | 
+| 24.02.23 | 1     | backend users, login |
+| 25.02.23 | 5     | backend cleanup, frontend user |
+| 27.02.23 | 5     | statistics screen, graphs, learned to use Victory charts, workoutsGraph |
+| sum      | 140   | | 

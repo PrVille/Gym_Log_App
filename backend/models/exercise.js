@@ -4,11 +4,15 @@ const PlannedSet = require("./plannedSet")
 const Workout = require("./workout")
 const PlannedWorkout = require("./plannedWorkout")
 
-
 const schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   },
   instructions: {
     type: String,
@@ -23,7 +27,7 @@ const schema = new mongoose.Schema({
   },
   favourite: {
     type: Boolean,
-    default: false
+    default: false,
   },
   primaryMuscles: [
     {
@@ -47,7 +51,7 @@ schema.pre("remove", async function (next) {
   const doc = JSON.parse(JSON.stringify(this))
   console.log("Removing exercise", doc.name)
 
-  await Set.deleteMany({exercise: doc._id})
+  await Set.deleteMany({ exercise: doc._id })
   await Workout.updateMany(
     { "exercises.exercise": doc._id },
     {
@@ -56,8 +60,8 @@ schema.pre("remove", async function (next) {
       },
     }
   )
-  
-  await PlannedSet.deleteMany({exercise: doc._id})
+
+  await PlannedSet.deleteMany({ exercise: doc._id })
   await PlannedWorkout.updateMany(
     { "plannedExercises.exercise": doc._id },
     {
