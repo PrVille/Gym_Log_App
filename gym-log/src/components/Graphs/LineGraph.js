@@ -25,6 +25,8 @@ const LineGraph = ({ data, type }) => {
         return "Sets"
       case "Workouts":
         return "Workouts"
+      case "1RM":
+        return "Kg"
       default:
         return ""
     }
@@ -32,8 +34,8 @@ const LineGraph = ({ data, type }) => {
 
   return (
     <VictoryChart
-      height={Dimensions.get("window").height * 0.5}
-      domainPadding={10}
+      height={Dimensions.get("window").height * 0.6}
+      domainPadding={{ x: 5, y: 10 }}
       data={data}
       containerComponent={
         <VictoryVoronoiContainer
@@ -55,11 +57,7 @@ const LineGraph = ({ data, type }) => {
         tickFormat={(x) => format(x, "dd.MM")}
         style={styles.axis}
       />
-      <VictoryAxis
-        dependentAxis
-        tickFormat={(y) => (type === "Volume" ? (y / 1000).toFixed() : y)}
-        style={styles.axis}
-      />
+      <VictoryAxis dependentAxis tickFormat={(y) => y} style={styles.axis} />
       <VictoryLine
         interpolation={"monotoneX"}
         data={data}

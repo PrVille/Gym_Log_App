@@ -56,7 +56,7 @@ const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-export const getTestData = (n) => {
+export const getWorkoutsTestData = (n) => {
   const arr = Array(n)
     .fill()
     .map((_) => ({

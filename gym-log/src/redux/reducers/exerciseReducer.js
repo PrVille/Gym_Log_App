@@ -29,7 +29,7 @@ const { setExercises, addNewExercise, updateOneExercise, removeExercise } =
 
 export const initializeExercises = () => {
   return async (dispatch) => {
-    const exercises = await exerciseService.getAll()    
+    const exercises = await exerciseService.getAll()
     setTimeout(() => {
       dispatch(setExercises(exercises))
     }, 0)
@@ -97,13 +97,15 @@ export const selectExercisesSortedByName = (state, order) => {
   }
 }
 
-export const selectExercisesWithFields = (state, fields) => {
-  return state.exercises.map((exercise) =>
-    Object.fromEntries(
-      fields
-        .filter((field) => field in exercise)
-        .map((field) => [field, exercise[field]])
-    )
+export const selectExercisesByPrimaryMuscle = (state, muscle) => {
+  return state.exercises.filter((e) =>
+    e.primaryMuscles.includes(muscle.toLowerCase())
+  )
+}
+
+export const selectExercisesBySecondaryMuscle = (state, muscle) => {
+  return state.exercises.filter((e) =>
+    e.secondaryMuscles.includes(muscle.toLowerCase())
   )
 }
 

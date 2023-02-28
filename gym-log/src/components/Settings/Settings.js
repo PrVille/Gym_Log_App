@@ -9,6 +9,9 @@ const Settings = ({ params }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Settings</Text>
+      <Text>Home: Widget settings, graph period and grouping, fav exercise stats to show</Text>
+      <Text>Statistics: graph linetype, secondary muscle factor</Text>
+
       <Button
         title={"Sign Out"}
         onPress={() => dispatch(signOut())}

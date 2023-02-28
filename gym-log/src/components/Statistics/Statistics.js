@@ -1,4 +1,4 @@
-import { Divider, ListItem } from "@rneui/themed"
+import { Divider, ListItem, Icon } from "@rneui/themed"
 import { SafeAreaView } from "react-native"
 import { ScrollView, View, Text, StyleSheet } from "react-native"
 import theme from "../../theme"
@@ -23,6 +23,7 @@ const ExerciseStatsList = ({ searchQuery, navigation }) => {
               })
             }
           >
+            <Icon name="weight-lifter" type="material-community" />
             <ListItem.Content>
               <ListItem.Title>{exercise.name}</ListItem.Title>
             </ListItem.Content>
@@ -63,6 +64,7 @@ const TargetMuscleStatsList = ({ searchQuery, navigation }) => {
               })
             }
           >
+            <Icon name="arm-flex" type="material-community" />
             <ListItem.Content>
               <ListItem.Title>{item}</ListItem.Title>
             </ListItem.Content>
@@ -92,6 +94,7 @@ const OverallStatsList = ({ searchQuery, navigation }) => {
               })
             }
           >
+            <Icon name="dumbbell" type="material-community" />
             <ListItem.Content>
               <ListItem.Title>{item}</ListItem.Title>
             </ListItem.Content>

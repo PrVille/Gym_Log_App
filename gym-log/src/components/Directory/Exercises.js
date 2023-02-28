@@ -67,7 +67,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
         />
       )}
     >
-      <Icon name="image" size={50} />
+      <Icon name="weight-lifter" type="material-community" size={50} />
       <ListItem.Content>
         <ListItem.Title>{exercise.name}</ListItem.Title>
         <ListItem.Subtitle>

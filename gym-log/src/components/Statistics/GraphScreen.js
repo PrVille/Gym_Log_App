@@ -29,9 +29,9 @@ const GraphScreen = ({ navigation, route }) => {
       {category === "Overall" ? (
         <WorkoutsGraph type={type} />
       ) : category === "TargetMuscle" ? (
-        <TargetMuscleGraph type={type} />
+        <TargetMuscleGraph targetMuscle={type} />
       ) : (
-        <ExerciseGraph type={type} />
+        <ExerciseGraph exerciseId={type} />
       )}
     </>
   )

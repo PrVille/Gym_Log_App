@@ -15,6 +15,7 @@ import { deleteWorkout } from "../../redux/reducers/workoutReducer"
 import { deleteSet } from "../../redux/reducers/setReducer"
 import { useTheme } from "@react-navigation/native"
 import { selectSets, refetchSets } from "../../redux/reducers/setReducer"
+import { refetchExercises } from "../../redux/reducers/exerciseReducer"
 
 const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
   const confirmDeletion = (workout) => {
@@ -70,7 +71,9 @@ const WorkoutHistory = ({ params, navigation }) => {
 
   const removeWorkout = (id) => {
     try {
-      dispatch(deleteWorkout(id)).then(dispatch(refetchSets()))
+      dispatch(deleteWorkout(id)).then(() => {
+        dispatch(refetchExercises())
+        dispatch(refetchSets())})
     } catch (error) {
       console.log(error)
     }
