@@ -10,31 +10,41 @@ const Overview = () => {
   return (
     <Card>
       <Card.Header divider>Overview</Card.Header>
-      <Card.Body divider>
-        <Card.Row disableSwipe>
-          <Card.Column alignItems="flex-start">
-            Workouts: {workouts.length}
-          </Card.Column>
-          <Card.Column alignItems="flex-start">
-            Volume:{" "}
+      <Card.Body>
+        <Card.Row disableSwipe compact>
+          <Card.Column>Workouts</Card.Column>
+          <Card.Column>{workouts.length}</Card.Column>
+        </Card.Row>
+
+        <Card.Row disableSwipe compact>
+          <Card.Column>Volume</Card.Column>
+          <Card.Column>
             {sets
               .map((set) => set.weight * set.reps)
               .reduce((a, b) => a + b, 0)}{" "}
             kg
           </Card.Column>
         </Card.Row>
-        <Card.Row disableSwipe>
-          <Card.Column alignItems="flex-start">Sets: {sets.length}</Card.Column>
-          <Card.Column alignItems="flex-start">
-            Reps: {sets.map((set) => set.reps).reduce((a, b) => a + b, 0)}
+
+        <Card.Row disableSwipe compact>
+          <Card.Column>Sets</Card.Column>
+          <Card.Column>{sets.length}</Card.Column>
+        </Card.Row>
+
+        <Card.Row disableSwipe compact>
+          <Card.Column>Reps</Card.Column>
+          <Card.Column>
+            {sets.map((set) => set.reps).reduce((a, b) => a + b, 0)}
           </Card.Column>
         </Card.Row>
-        <Card.Row disableSwipe>
-          <Card.Column alignItems="flex-start">
-            Minutes:{" "}
+
+        <Card.Row disableSwipe compact>
+          <Card.Column>Duration</Card.Column>
+          <Card.Column>
             {workouts
               .map((workout) => workout.duration)
-              .reduce((a, b) => a + b, 0)}
+              .reduce((a, b) => a + b, 0)}{" "}
+            min
           </Card.Column>
         </Card.Row>
       </Card.Body>

@@ -1,13 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native"
 import Constants from "expo-constants"
 
 import StatisticsStack from "./Statistics/StatisticsStack"
-import Settings from "./Settings/Settings"
+import SettingsStack from "./Settings/SettingsStack"
 import DirectoryNavigator from "./Directory/DirectoryNavigator"
-import Home from "./Home/Home"
+import HomeStack from "./Home/HomeStack"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"
+import CloseButton from "./Buttons/CloseButton"
 
 const styles = StyleSheet.create({
   container: {
@@ -23,13 +24,12 @@ const TabNavigator = () => {
   const { colors } = useTheme()
 
   return (
-
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
-          if (route.name === "Home") {
+          if (route.name === "HomeStack") {
             iconName = focused ? "home" : "home-outline"
           } else if (route.name === "StatisticsStack") {
             iconName = focused ? "bar-chart" : "bar-chart-outline"
@@ -37,7 +37,7 @@ const TabNavigator = () => {
             iconName = "add-circle-outline"
           } else if (route.name === "DirectoryNavigator") {
             iconName = focused ? "list-circle" : "list-circle-outline"
-          } else if (route.name === "Settings") {
+          } else if (route.name === "SettingsStack") {
             iconName = focused ? "settings" : "settings-outline"
           }
 
@@ -56,10 +56,9 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"StatisticsStack"}
+      initialRouteName={"HomeStack"}
     >
-
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="StatisticsStack" component={StatisticsStack} />
       <Tab.Screen
         name="LoggerOptions"
@@ -72,7 +71,7 @@ const TabNavigator = () => {
         })}
       />
       <Tab.Screen name="DirectoryNavigator" component={DirectoryNavigator} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="SettingsStack" component={SettingsStack} />
     </Tab.Navigator>
   )
 }

@@ -127,13 +127,13 @@ const Row = (props) => {
         containerStyle={{
           backgroundColor: theme.colors.primary,
           flex: 1,
-          maxHeight: 50,
+          maxHeight: props.compact ? 25 : 50,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            minHeight: 50,
+            minHeight: props.compact ? 25 : 50,
             justifyContent: "space-between",
           }}
         >
@@ -148,7 +148,7 @@ const Row = (props) => {
       containerStyle={{
         backgroundColor: theme.colors.primary,
         flex: 1,
-        maxHeight: 50,
+        maxHeight: props.compact ? 25 : 50,
       }}
       rightWidth={100}
       rightContent={(reset) => (
@@ -166,7 +166,7 @@ const Row = (props) => {
       <View
         style={{
           flexDirection: "row",
-          minHeight: 50,
+          minHeight: props.compact ? 25 : 50,
           justifyContent: "space-between",
         }}
       >

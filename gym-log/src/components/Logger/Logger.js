@@ -31,6 +31,8 @@ import {
   updateRoutine,
   updateRoutineCompletedCount,
 } from "../../redux/reducers/routineReducer"
+import { useHeaderHeight } from '@react-navigation/elements';
+
 
 const Logger = ({
   navigation,
@@ -43,7 +45,8 @@ const Logger = ({
   removeSet,
 }) => {
   const { colors } = useTheme()
-
+  const headerHeight = useHeaderHeight()
+  console.log(headerHeight);
   return (
     <SafeAreaView
       style={{

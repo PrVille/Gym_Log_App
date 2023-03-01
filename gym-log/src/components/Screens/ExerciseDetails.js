@@ -54,7 +54,7 @@ const ExerciseDetails = ({ route, navigation }) => {
     })
   }, [exercise])
 
-  const SetVolumeRecord = () => {
+  const getVolumeRecord = () => {
     if (sets.length === 0) return 0
     const recordSet = sets.reduce((prev, current) =>
       prev.weight * prev.reps > current.weight * current.reps ? prev : current
@@ -106,7 +106,7 @@ const ExerciseDetails = ({ route, navigation }) => {
               Volume Record
             </Section.SubSectionItemTitle>
             <Section.SubSectionItemBody>
-              {SetVolumeRecord()}
+              {getVolumeRecord()}
             </Section.SubSectionItemBody>
           </Section.SubSectionItem>
         </Section.SubSection>

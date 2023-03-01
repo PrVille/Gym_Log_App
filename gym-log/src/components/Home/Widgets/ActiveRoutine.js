@@ -41,7 +41,7 @@ const ActiveRoutine = ({ navigation }) => {
         Followed Routine
       </Card.Header>
 
-      <Card.Body divider>
+      <Card.Body>
         <Card.BodyHeader>
           <Card.HeaderRow marginVertical={10}>
             <Card.HeaderColumn alignItems="flex-start">
@@ -49,7 +49,7 @@ const ActiveRoutine = ({ navigation }) => {
             </Card.HeaderColumn>
           </Card.HeaderRow>
         </Card.BodyHeader>
-        <Card.Row disableSwipe>
+        <Card.Row disableSwipe compact>
           <Card.Column alignItems="flex-start">Workouts</Card.Column>
           <Card.Column>
             {completedCount} / {workoutsCount}
@@ -58,10 +58,10 @@ const ActiveRoutine = ({ navigation }) => {
             {((completedCount / workoutsCount) * 100).toFixed(0)} %
           </Card.Column>
         </Card.Row>
-        <Card.Row disableSwipe>
+        <Card.Row disableSwipe compact>
           <Card.Column alignItems="flex-start">Next Workout:</Card.Column>
         </Card.Row>
-        <Card.Row disableSwipe>
+        <Card.Row disableSwipe compact>
           <Card.Column alignItems="flex-start">{nextWorkout.name}</Card.Column>
         </Card.Row>
       </Card.Body>

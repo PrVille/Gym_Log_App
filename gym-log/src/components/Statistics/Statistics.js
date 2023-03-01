@@ -5,6 +5,8 @@ import theme from "../../theme"
 import { useSelector } from "react-redux"
 import { selectExercisesSortedByName } from "../../redux/reducers/exerciseReducer"
 import { getTestData } from "../Graphs/helpers"
+import { useHeaderHeight } from '@react-navigation/elements';
+
 
 const ExerciseStatsList = ({ searchQuery, navigation }) => {
   const exercises = useSelector((state) =>
@@ -116,6 +118,8 @@ const Title = ({ children }) => {
 }
 
 const Statistics = ({ searchQuery, navigation }) => {
+  const headerHeight = useHeaderHeight()
+  console.log(headerHeight);
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView>

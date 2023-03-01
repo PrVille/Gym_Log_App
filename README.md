@@ -54,4 +54,6 @@
 | 25.02.23 | 5     | backend cleanup, frontend user |
 | 27.02.23 | 5     | statistics screen, graphs, learned to use Victory charts, workoutsGraph |
 | 28.02.23 | 4     | useDates hook, GraphOptions, TargetMuscleGraph, ExerciseGraph |
-| sum      | 140   | | 
+| 01.03.23 | 4     | settings, home |
+
+| sum      | ?     | | 

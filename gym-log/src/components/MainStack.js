@@ -53,7 +53,7 @@ const MainStack = () => {
 
   return (
     <>
-      <Stack.Navigator initialRouteName="">
+      <Stack.Navigator initialRouteName="" >
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}

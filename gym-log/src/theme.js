@@ -204,6 +204,18 @@ export const defaultRNETheme = createTheme({
       textStyle: { color: theme.colors.primary },
       selectedButtonStyle: { backgroundColor: theme.colors.primary },
       selectedTextStyle: { color: theme.colors.background },
+      disabledSelectedStyle: {
+        backgroundColor: theme.colors.primaryVariant,
+      },
+      disabledSelectedTextStyle: {
+        color: theme.colors.background,
+      },
+      disabledStyle: {
+        backgroundColor: theme.colors.background,
+      },
+      disabledTextStyle: {
+        color: theme.colors.primaryVariant
+      }
     },
   },
 })
