@@ -19,6 +19,13 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
     })
   }, [])
 
+  const primaryMuscles = [
+    ...new Set(plannedExercises.map((p) => p.exercise.primaryMuscles).flat()),
+  ]
+  const secondaryMuscles = [
+    ...new Set(plannedExercises.map((p) => p.exercise.secondaryMuscles).flat()),
+  ].filter((muscle) => !primaryMuscles.includes(muscle))
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
@@ -37,7 +44,7 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
                 Estimated Duration
               </Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>
-                {estimatedDuration}
+                {estimatedDuration} min
               </Section.SubSectionItemBody>
             </Section.SubSectionItem>
           </Section.SubSection>
@@ -45,6 +52,30 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
             <Section.SubSectionItem>
               <Section.SubSectionItemTitle>Notes</Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>{notes}</Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+        </Section>
+
+        <Section>
+          <Section.Title>Target muscles</Section.Title>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>Primary</Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {primaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>
+                Secondary
+              </Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {secondaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
             </Section.SubSectionItem>
           </Section.SubSection>
         </Section>

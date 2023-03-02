@@ -55,4 +55,9 @@ export const selectWorkoutById = (state, id) => {
   return state.workouts.find((workout) => workout._id === id)
 }
 
+export const selectWorkoutsByQuery = (state, query) => {
+  return state.workouts.filter((workout) =>
+    workout.name.toLowerCase().includes(query.toLowerCase())
+  )
+}
 export default workoutSlice.reducer

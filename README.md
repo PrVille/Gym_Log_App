@@ -55,5 +55,7 @@
 | 27.02.23 | 5     | statistics screen, graphs, learned to use Victory charts, workoutsGraph |
 | 28.02.23 | 4     | useDates hook, GraphOptions, TargetMuscleGraph, ExerciseGraph |
 | 01.03.23 | 4     | settings, home |
+| 02.03.23 | 2     | workout details, workout history search and sort by date, set history sort by date, set history styling |
+| sum      | 150   | | 
+| 02.03.23 | 2     | target muscles to planned workouts, workouts, logger, planner, RestTimer |
 
-| sum      | ?     | | 

@@ -127,11 +127,15 @@ const MainStack = () => {
           component={WorkoutHistory}
           options={({ navigation }) => ({
             presentation: "transparentModal",
-            headerTitle: "Workout history",
+            headerTitle: "Workout History",
             headerShadowVisible: false,
             headerLeft: () => (
               <CloseButton onPress={() => navigation.goBack()} />
             ),
+            cardStyle: {
+              flex: 1,
+              backgroundColor: colors.background,
+            },
           })}
         />
         <Stack.Screen
@@ -155,7 +159,6 @@ const MainStack = () => {
           component={WorkoutDetails}
           options={({ navigation }) => ({
             presentation: "transparentModal",
-            headerTitle: "",
             headerShadowVisible: false,
             headerLeft: () => (
               <CloseButton onPress={() => navigation.goBack()} />

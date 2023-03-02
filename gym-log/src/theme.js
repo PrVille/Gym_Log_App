@@ -127,6 +127,7 @@ export const defaultRNETheme = createTheme({
     },
     Icon: {
       color: theme.colors.primary,
+      disabledStyle: { backgroundColor: theme.colors.background },
     },
     FAB: {
       color: theme.colors.primary,
@@ -214,8 +215,8 @@ export const defaultRNETheme = createTheme({
         backgroundColor: theme.colors.background,
       },
       disabledTextStyle: {
-        color: theme.colors.primaryVariant
-      }
+        color: theme.colors.primaryVariant,
+      },
     },
   },
 })

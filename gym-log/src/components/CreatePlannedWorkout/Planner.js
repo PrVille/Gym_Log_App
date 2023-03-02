@@ -10,8 +10,16 @@ import Card from "../Utils/Card"
 import RestTimer from "../Utils/RestTimer"
 import theme from "../../theme"
 import { Button, Chip } from "@rneui/themed"
+import Section from "../Utils/Section"
 
 const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
+  const primaryMuscles = [
+    ...new Set(exercises.map((p) => p.exercise.primaryMuscles).flat()),
+  ]
+  const secondaryMuscles = [
+    ...new Set(exercises.map((p) => p.exercise.secondaryMuscles).flat()),
+  ].filter((muscle) => !primaryMuscles.includes(muscle))
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView style={styles.scrollView}>
@@ -100,6 +108,30 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
           containerStyle={{ margin: 10 }}
           onPress={() => navigation.navigate("ExercisePicker")}
         />
+
+<Section>
+          <Section.Title>Target muscles</Section.Title>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>Primary</Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {primaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>
+                Secondary
+              </Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {secondaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+        </Section>
       </ScrollView>
     </SafeAreaView>
   )

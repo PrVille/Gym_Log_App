@@ -31,8 +31,8 @@ import {
   updateRoutine,
   updateRoutineCompletedCount,
 } from "../../redux/reducers/routineReducer"
-import { useHeaderHeight } from '@react-navigation/elements';
-
+import { useHeaderHeight } from "@react-navigation/elements"
+import Section from "../Utils/Section"
 
 const Logger = ({
   navigation,
@@ -45,8 +45,14 @@ const Logger = ({
   removeSet,
 }) => {
   const { colors } = useTheme()
-  const headerHeight = useHeaderHeight()
-  console.log(headerHeight);
+
+  const primaryMuscles = [
+    ...new Set(exercises.map((p) => p.exercise.primaryMuscles).flat()),
+  ]
+  const secondaryMuscles = [
+    ...new Set(exercises.map((p) => p.exercise.secondaryMuscles).flat()),
+  ].filter((muscle) => !primaryMuscles.includes(muscle))
+
   return (
     <SafeAreaView
       style={{
@@ -174,9 +180,33 @@ const Logger = ({
           containerStyle={{ margin: 10 }}
           onPress={() => navigation.navigate("ExercisePicker")}
         />
+
+        <Section>
+          <Section.Title>Target muscles</Section.Title>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>Primary</Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {primaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+
+          <Section.SubSection divider>
+            <Section.SubSectionItem>
+              <Section.SubSectionItemTitle>
+                Secondary
+              </Section.SubSectionItemTitle>
+              <Section.SubSectionItemBody>
+                {secondaryMuscles.join(", ")}
+              </Section.SubSectionItemBody>
+            </Section.SubSectionItem>
+          </Section.SubSection>
+        </Section>
       </ScrollView>
 
-      <RestTimer />
+      <RestTimer/>
     </SafeAreaView>
   )
 }
@@ -291,7 +321,6 @@ const LoggerStack = ({ route, navigation }) => {
         reps <= 10 ? Brzycki1RM(weight, reps) : Epley1RM(weight, reps)
 
       if (new1RM > current1RM) {
-        console.log("NEW 1RM", new1RM.toFixed(2))
         return new1RM.toFixed(2)
       }
       return current1RM

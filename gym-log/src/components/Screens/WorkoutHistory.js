@@ -1,4 +1,4 @@
-import React from "react"
+import { useState, useMemo, createRef } from "react"
 import {
   Text,
   View,
@@ -7,15 +7,22 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from "react-native"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-import { selectWorkouts } from "../../redux/reducers/workoutReducer"
+import {
+  selectWorkouts,
+  selectWorkoutsByQuery,
+} from "../../redux/reducers/workoutReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWorkout } from "../../redux/reducers/workoutReducer"
 import { deleteSet } from "../../redux/reducers/setReducer"
 import { useTheme } from "@react-navigation/native"
 import { selectSets, refetchSets } from "../../redux/reducers/setReducer"
 import { refetchExercises } from "../../redux/reducers/exerciseReducer"
+import { createStackNavigator } from "@react-navigation/stack"
+import Header from "../Utils/Header"
+import { compareAsc, compareDesc, parseISO, format } from "date-fns"
 
 const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
   const confirmDeletion = (workout) => {
@@ -53,7 +60,7 @@ const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
       <ListItem.Content>
         <ListItem.Title>{workout.name}</ListItem.Title>
         <ListItem.Subtitle>
-          Exercises: {workout.exercises.length} | Duration: {workout.duration}
+          {format(parseISO(workout.createdAt), "dd.MM.yy hh:mm")}
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
@@ -63,45 +70,90 @@ const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
+const Stack = createStackNavigator()
+
 const WorkoutHistory = ({ params, navigation }) => {
-  const workouts = useSelector(selectWorkouts)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [order, setOrder] = useState("descDate")
+  const workouts = useSelector((state) =>
+    selectWorkoutsByQuery(state, searchQuery)
+  )
   const sets = useSelector(selectSets)
   const dispatch = useDispatch()
   const { colors } = useTheme()
+
+  const onChangeSearch = (query) => setSearchQuery(query)
+  const toggleOrder = () =>
+    setOrder(order === "ascDate" ? "descDate" : "ascDate")
+
+  let searchRef = createRef()
+
+  useMemo(
+    () =>
+      order === "ascDate"
+        ? workouts.sort((a, b) =>
+            compareAsc(parseISO(a.createdAt), parseISO(b.createdAt))
+          )
+        : workouts.sort((a, b) =>
+            compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+          ),
+    [order, workouts]
+  )
 
   const removeWorkout = (id) => {
     try {
       dispatch(deleteWorkout(id)).then(() => {
         dispatch(refetchExercises())
-        dispatch(refetchSets())})
+        dispatch(refetchSets())
+      })
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <>
-        <View
-          style={{
-            backgroundColor: colors.background,
-            flex: 1,
-          }}
-        >
-          <FlatList
-            data={workouts}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item }) => (
-              <WorkoutListItem
-              workout={item}
-              navigation={navigation}
-              removeWorkout={removeWorkout}
+    <Stack.Navigator>
+      <Stack.Screen
+        name="WorkoutHistoryWithSearchAndSorting"
+        options={({ navigation }) => ({
+          header: (props) => (
+            <Header
+              onChangeSearch={onChangeSearch}
+              searchQuery={searchQuery}
+              searchRef={searchRef}
+              order={order}
+              toggleOrder={toggleOrder}
             />
-            )}
-          />
-        </View>
-      </>
-    </TouchableWithoutFeedback>
+          ),
+        })}
+      >
+        {(props) => (
+          <SafeAreaView
+            style={{
+              backgroundColor: colors.background,
+              flex: 1,
+            }}
+          >
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <FlatList
+                data={workouts}
+                ItemSeparatorComponent={ItemSeparator}
+                renderItem={({ item }) => (
+                  <WorkoutListItem
+                    workout={item}
+                    navigation={navigation}
+                    removeWorkout={removeWorkout}
+                  />
+                )}
+              />
+            </TouchableWithoutFeedback>
+          </SafeAreaView>
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
   )
 }
 

@@ -12,17 +12,13 @@ import {
   selectExerciseById,
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
-import { useTheme } from "@react-navigation/native"
 import { useEffect } from "react"
 import Section from "../Utils/Section"
 
 const ExerciseDetails = ({ route, navigation }) => {
   const dispatch = useDispatch()
   const id = route.params
-  console.log(id);
-
   const exercise = useSelector((state) => selectExerciseById(state, id))
-  const { colors } = useTheme()
   const { width } = Dimensions.get("screen")
   const {
     name,
@@ -63,9 +59,7 @@ const ExerciseDetails = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView contentInset={{ bottom: 50 }}>
-      <Icon size={width} name="image" />
-
+    <ScrollView>
       <Section>
         <Section.Title
           buttonTitle="Show History"

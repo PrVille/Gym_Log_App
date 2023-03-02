@@ -100,7 +100,7 @@ const RoutineFormStack = ({ navigation, route }) => {
         name="RoutineForm"
         options={({ navigation }) => ({
           presentation: "transparentModal",
-          headerTitle: "",
+          headerTitle: "Create Routine",
           headerShadowVisible: false,
           cardStyle: {
             flex: 1,

@@ -10,12 +10,14 @@ const Settings = () => {
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>
           ALL SETTINGS HERE ? 
+          default rest timer minutes
+          count warmup sets?
         </Text>
         <Text>
-          Profile: name, measurements, achievements(overall, by target muscle) 
+          Profile: name, measurements, achievements(overall) 
         </Text>
         
-        <Text>Statistics: graph linetype, secondary muscle factor</Text>
+        <Text>Statistics: graph linetype, secondary muscle factor, count warmup sets</Text>
         <Text>Calculators: 1rm, plates, warmup</Text>
         <Button title={"Sign Out"} onPress={() => dispatch(signOut())} />
       </View>

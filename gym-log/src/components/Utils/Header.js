@@ -30,8 +30,15 @@ const Header = ({
       {showSort && (
         <Chip
           icon={{
-            name: order === "asc" ? "sort-asc" : "sort-desc",
-            type: "octicon",
+            name:
+              order === "asc"
+                ? "sort-alphabetical-ascending"
+                : order === "desc"
+                ? "sort-alphabetical-descending"
+                : order === "ascDate"
+                ? "sort-calendar-ascending"
+                : "sort-calendar-descending",
+            type: "material-community",
             size: 20,
             color: colors.primary,
           }}
