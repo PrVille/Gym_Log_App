@@ -58,4 +58,7 @@
 | 02.03.23 | 2     | workout details, workout history search and sort by date, set history sort by date, set history styling |
 | sum      | 150   | | 
 | 02.03.23 | 2     | target muscles to planned workouts, workouts, logger, planner, RestTimer |
+| 02.03.23 | 4     | backend user settings, home settings and screen integrated with user home settings |
+| 03.03.23 | 4     | favouriteGraphs backend and frontend, homescreen favourite graphs |
+
 

@@ -41,6 +41,14 @@ export const signOut = () => {
   }
 }
 
+export const updateUser = (user) => {
+  return async (dispatch) => {    
+    await userService.update(user._id, user)
+    await userService.setUser(user)
+    dispatch(setUser(user))
+  }
+}
+
 // SELECTORS
 
 export const selectUser = (state) => state.user

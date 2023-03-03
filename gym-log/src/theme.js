@@ -1,5 +1,5 @@
 import { Platform } from "react-native"
-import { createTheme } from "@rneui/themed"
+import { createTheme, Icon } from "@rneui/themed"
 
 const colors = {
   paleDogwood: "rgb(247, 209, 205)",
@@ -89,9 +89,6 @@ export const defaultRNETheme = createTheme({
       style: {
         color: theme.colors.primaryVariant,
       },
-    },
-    ListItemChevron: {
-      color: theme.colors.primary,
     },
     ListItem: {
       containerStyle: {

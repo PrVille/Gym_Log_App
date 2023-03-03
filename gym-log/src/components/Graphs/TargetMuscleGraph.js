@@ -11,8 +11,11 @@ import {
 import useDates from "../../hooks/useDates"
 import GraphOptions from "./GraphOptions"
 import theme from "../../theme"
+import { selectUser } from "../../redux/reducers/userReducer"
 
-const TargetMuscleGraph = ({ targetMuscle }) => {
+const TargetMuscleGraph = ({ targetMuscle, widget }) => {
+  const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
+
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
     months: 1,
@@ -34,10 +37,11 @@ const TargetMuscleGraph = ({ targetMuscle }) => {
       factor: 0.5,
     })
 
-  const [startDate, endDate, datesOfInterval, map] = useDates(
-    selectedInterval.months,
-    selectedGrouping.grouped
-  )
+  const grouping = widget ? settings.grouping : selectedGrouping.grouped
+  const months = widget ? settings.period : selectedInterval.months
+  const dataType = widget ? settings.targetMuscleData : selectedData.data
+
+  const [startDate, endDate, datesOfInterval, map] = useDates(months, grouping)
 
   const primaryExercises = useSelector((state) =>
     selectExercisesByPrimaryMuscle(state, targetMuscle)
@@ -72,32 +76,32 @@ const TargetMuscleGraph = ({ targetMuscle }) => {
   for (let i = 0; i < primarySetsOfInterval.length; i++) {
     const set = primarySetsOfInterval[i]
     const key =
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(set.createdAt, {
             weekStartsOn: 1,
           })
         : getMonth(set.createdAt)
 
-    if (selectedData.data === "Sets") map[key] += 1
-    else if (selectedData.data === "Reps") map[key] += set.reps
-    else if (selectedData.data === "Volume")
+    if (dataType === "Sets") map[key] += 1
+    else if (dataType === "Reps") map[key] += set.reps
+    else if (dataType === "Volume")
       map[key] += (set.reps * set.weight) / 1000
   }
 
   for (let i = 0; i < secondarySetsOfInterval.length; i++) {
     const set = secondarySetsOfInterval[i]
     const key =
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(set.createdAt, {
             weekStartsOn: 1,
           })
         : getMonth(set.createdAt)
 
-    if (selectedData.data === "Sets")
+    if (dataType === "Sets")
       map[key] += selectedSecondaryMuscleFactor.factor
-    else if (selectedData.data === "Reps")
+    else if (dataType === "Reps")
       map[key] += set.reps * selectedSecondaryMuscleFactor.factor
-    else if (selectedData.data === "Volume")
+    else if (dataType === "Volume")
       map[key] +=
         ((set.reps * set.weight) / 1000) * selectedSecondaryMuscleFactor.factor
   }
@@ -105,13 +109,15 @@ const TargetMuscleGraph = ({ targetMuscle }) => {
   const data = datesOfInterval.map((date) => ({
     x: date,
     y: +map[
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(date, {
             weekStartsOn: 1,
           })
         : getMonth(date)
     ].toFixed(1),
   }))
+
+  if (widget) return <LineGraph data={data} type={dataType} widget />
 
   return (
     <>
@@ -158,7 +164,7 @@ const TargetMuscleGraph = ({ targetMuscle }) => {
         </View>
       </View>
 
-      <LineGraph data={data} type={selectedData.data} />
+      <LineGraph data={data} type={dataType} />
     </>
   )
 }

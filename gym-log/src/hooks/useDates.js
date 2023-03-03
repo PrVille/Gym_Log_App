@@ -6,7 +6,7 @@ import {
   getWeek,
 } from "date-fns"
 
-const useDates = (months, grouped) => {
+const useDates = (months, grouped) => {  
   const startDate = sub(new Date(), {
     months,
   })
@@ -25,7 +25,7 @@ const useDates = (months, grouped) => {
           start: startDate,
           end: endDate,
         })
-
+        
   const map = datesOfInterval
     .map((date) =>
       grouped === "weekly" ? getWeek(date, { weekStartsOn: 1 }) : getMonth(date)

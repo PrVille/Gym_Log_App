@@ -118,8 +118,7 @@ const Title = ({ children }) => {
 }
 
 const Statistics = ({ searchQuery, navigation }) => {
-  const headerHeight = useHeaderHeight()
-  console.log(headerHeight);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView>

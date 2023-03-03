@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
     expiresIn: 60 * 60 * 24 * 365,
   })
 
-  res.json({ token, username: user.username, name: user.name, _id: user._id })
+  res.json({ token, username: user.username, name: user.name, _id: user._id, settings: user.settings, favouriteGraphs: user.favouriteGraphs })
 })
 
 module.exports = router

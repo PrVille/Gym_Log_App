@@ -20,6 +20,7 @@ import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 import { refetchPlannedWorkouts } from "../../redux/reducers/plannedWorkoutReducer"
 import Header from "../Utils/Header"
 import { refetchRoutines } from "../../redux/reducers/routineReducer"
+import { selectUser, updateUser } from "../../redux/reducers/userReducer"
 
 const Stack = createStackNavigator()
 
@@ -90,6 +91,7 @@ const ExerciseList = ({ navigation, searchQuery, order }) => {
   const exercises = useSelector((state) =>
     selectExercisesByQuery(state, searchQuery)
   )
+  const user = useSelector(selectUser)
   useMemo(
     () =>
       order === "asc"
@@ -106,6 +108,9 @@ const ExerciseList = ({ navigation, searchQuery, order }) => {
         dispatch(refetchPlannedSets())
         dispatch(refetchPlannedWorkouts())
         dispatch(refetchRoutines())
+        const copyOfUser = JSON.parse(JSON.stringify(user))
+        copyOfUser.favouriteGraphs.exercise = user.favouriteGraphs.exercise.filter(exercise => exercise != id)
+        dispatch(updateUser(copyOfUser))
       })
     } catch (error) {
       console.log(error)

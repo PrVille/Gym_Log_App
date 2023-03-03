@@ -6,7 +6,8 @@ import {
   updateExercise,
 } from "../../redux/reducers/exerciseReducer"
 import { useTheme } from "@react-navigation/native"
-import { Input, Button, ListItem, Divider } from "@rneui/themed"
+import { Input, Button, ListItem, Divider, Icon } from "@rneui/themed"
+import theme from "../../theme"
 
 const data = [
   { id: 1, muscle: "pectoralis", isChecked: false },
@@ -165,6 +166,13 @@ const CreateExercise = ({ navigation, route }) => {
       />
 
       <ListItem.Accordion
+        icon={
+          <Icon
+            name={"chevron-down"}
+            type="material-community"
+            style={{ color: theme.colors.primary }}
+          />
+        }
         content={
           <ListItem.Content>
             <ListItem.Title>Primary muscles</ListItem.Title>
@@ -202,6 +210,13 @@ const CreateExercise = ({ navigation, route }) => {
       <Divider style={{ marginVertical: 20 }} />
 
       <ListItem.Accordion
+        icon={
+          <Icon
+            name={"chevron-down"}
+            type="material-community"
+            style={{ color: theme.colors.primary }}
+          />
+        }
         content={
           <ListItem.Content>
             <ListItem.Title>Secondary muscles</ListItem.Title>

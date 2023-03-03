@@ -6,14 +6,15 @@ import { isWithinInterval, parseISO, getMonth, getWeek } from "date-fns"
 import LineGraph from "./LineGraph"
 import {
   selectExerciseById,
-  selectExercisesByPrimaryMuscle,
-  selectExercisesBySecondaryMuscle,
 } from "../../redux/reducers/exerciseReducer"
 import useDates from "../../hooks/useDates"
 import GraphOptions from "./GraphOptions"
 import theme from "../../theme"
+import { selectUser } from "../../redux/reducers/userReducer"
 
-const ExerciseGraph = ({ exerciseId }) => {
+const ExerciseGraph = ({ exerciseId, widget }) => {
+  const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
+
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
     months: 1,
@@ -29,10 +30,11 @@ const ExerciseGraph = ({ exerciseId }) => {
     data: "Sets",
   })
 
-  const [startDate, endDate, datesOfInterval, map] = useDates(
-    selectedInterval.months,
-    selectedGrouping.grouped
-  )
+  const grouping = widget ? settings.grouping : selectedGrouping.grouped
+  const months = widget ? settings.period : selectedInterval.months
+  const dataType = widget ? settings.exerciseData : selectedData.data
+
+  const [startDate, endDate, datesOfInterval, map] = useDates(months, grouping)
 
   const exercise = useSelector((state) => selectExerciseById(state, exerciseId))
 
@@ -59,17 +61,17 @@ const ExerciseGraph = ({ exerciseId }) => {
   for (let i = 0; i < setsOfInterval.length; i++) {
     const set = setsOfInterval[i]
     const key =
-      selectedGrouping.grouped === "weekly"
+    grouping === "weekly"
         ? getWeek(set.createdAt, {
             weekStartsOn: 1,
           })
         : getMonth(set.createdAt)
 
-    if (selectedData.data === "Sets") map[key] += 1
-    else if (selectedData.data === "Reps") map[key] += set.reps
-    else if (selectedData.data === "Volume")
+    if (dataType === "Sets") map[key] += 1
+    else if (dataType === "Reps") map[key] += set.reps
+    else if (dataType === "Volume")
       map[key] += (set.reps * set.weight) / 1000
-    else if (selectedData.data === "1RM") {
+    else if (dataType === "1RM") {
       const current1RM = map[key]
       const new1RM =
         set.reps <= 10
@@ -84,13 +86,15 @@ const ExerciseGraph = ({ exerciseId }) => {
   const data = datesOfInterval.map((date) => ({
     x: date,
     y: +map[
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(date, {
             weekStartsOn: 1,
           })
         : getMonth(date)
     ].toFixed(1),
   }))
+
+  if (widget) return <LineGraph data={data} type={dataType} widget />
 
   return (
     <>
@@ -126,7 +130,7 @@ const ExerciseGraph = ({ exerciseId }) => {
         </View>
       </View>
 
-      <LineGraph data={data} type={selectedData.data} />
+      <LineGraph data={data} type={dataType} />
 
     </>
   )

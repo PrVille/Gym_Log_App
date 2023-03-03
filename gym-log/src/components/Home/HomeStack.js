@@ -20,15 +20,6 @@ const HomeStack = ({ params, navigation }) => {
             headerStatusBarHeight: 0,
             headerShadowVisible: false,
             headerTitle: "Home",
-            headerRight: (props) => (
-              <Icon
-                style={{ marginEnd: 10 }}
-                onPress={() => navigation.navigate("SettingsStack", { screen: "HomeSettings"})}
-                name="home-edit"
-                type="material-community"
-                size={30}
-              />
-            ),
             headerLeft: (props) => (
               <Icon
                 style={{ marginStart: 10 }}

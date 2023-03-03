@@ -7,9 +7,14 @@ import LineGraph from "./LineGraph"
 import { getWorkoutsTestData } from "./helpers"
 import useDates from "../../hooks/useDates"
 import GraphOptions from "./GraphOptions"
+import { selectUser } from "../../redux/reducers/userReducer"
 
-const WorkoutsGraph = ({ type }) => {
-  const workouts = useSelector(selectWorkouts).map(w => ({...w, createdAt: parseISO(w.createdAt)})) //getWorkoutsTestData(100)
+const WorkoutsGraph = ({ type, widget }) => {
+  const workouts = useSelector(selectWorkouts).map((w) => ({
+    ...w,
+    createdAt: parseISO(w.createdAt),
+  })) //getWorkoutsTestData(100)
+  const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
 
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
@@ -20,10 +25,10 @@ const WorkoutsGraph = ({ type }) => {
     grouped: "weekly",
   })
 
-  const [startDate, endDate, datesOfInterval, map] = useDates(
-    selectedInterval.months,
-    selectedGrouping.grouped
-  )
+  const grouping = widget ? settings.grouping : selectedGrouping.grouped
+  const months = widget ? settings.period : selectedInterval.months
+
+  const [startDate, endDate, datesOfInterval, map] = useDates(months, grouping)
 
   const workoutsOfInterval = workouts.filter((workout) =>
     isWithinInterval(workout.createdAt, {
@@ -36,7 +41,7 @@ const WorkoutsGraph = ({ type }) => {
     const workout = workoutsOfInterval[i]
     const sets = workout.exercises.map((e) => e.sets).flat()
     const key =
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(workout.createdAt, {
             weekStartsOn: 1,
           })
@@ -50,7 +55,7 @@ const WorkoutsGraph = ({ type }) => {
       map[key] += sets.length
     } else if (type === "Volume") {
       map[key] += sets
-        .map((set) => (set.reps * set.weight / 1000))
+        .map((set) => (set.reps * set.weight) / 1000)
         .reduce((a, b) => a + b, 0)
     } else if (type === "Workouts") {
       map[key] += 1
@@ -60,13 +65,15 @@ const WorkoutsGraph = ({ type }) => {
   const data = datesOfInterval.map((date) => ({
     x: date,
     y: +map[
-      selectedGrouping.grouped === "weekly"
+      grouping === "weekly"
         ? getWeek(date, {
             weekStartsOn: 1,
           })
         : getMonth(date)
     ].toFixed(1),
   }))
+
+  if (widget) return <LineGraph data={data} type={type} widget />
 
   return (
     <>

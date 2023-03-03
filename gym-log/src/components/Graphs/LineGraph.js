@@ -12,7 +12,7 @@ import {
 
 import theme from "../../theme"
 
-const LineGraph = ({ data, type }) => {
+const LineGraph = ({ data, type, widget }) => {
   const getLabelText = () => {
     switch (type) {
       case "Duration":
@@ -34,11 +34,12 @@ const LineGraph = ({ data, type }) => {
 
   return (
     <VictoryChart
-      height={Dimensions.get("window").height * 0.6}
+      height={Dimensions.get("window").height * (widget ? 0.3 : 0.6)}
       domainPadding={{ x: 5, y: 10 }}
       data={data}
       containerComponent={
         <VictoryVoronoiContainer
+          disable={widget}
           labels={({ datum }) => datum.y}
           labelComponent={
             <VictoryTooltip
@@ -57,7 +58,7 @@ const LineGraph = ({ data, type }) => {
         tickFormat={(x) => format(x, "dd.MM")}
         style={styles.axis}
       />
-      <VictoryAxis dependentAxis tickFormat={(y) => y} style={styles.axis} />
+      <VictoryAxis dependentAxis tickFormat={(y) => Math.floor(y)} style={styles.axis} />
       <VictoryLine
         interpolation={"monotoneX"}
         data={data}

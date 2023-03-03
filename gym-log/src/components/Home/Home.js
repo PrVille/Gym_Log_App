@@ -7,36 +7,28 @@ import ActiveRoutine from "./Widgets/ActiveRoutine"
 import FavouriteExercises from "./Widgets/FavouriteExercises"
 import { WorkoutsGraph } from "../Statistics/GraphScreen"
 import { useHeaderHeight } from "@react-navigation/elements"
+import { useSelector } from "react-redux"
+import { selectUser } from "../../redux/reducers/userReducer"
+import FavouriteGraphs from "./Widgets/FavouriteGraphs"
 
-const ItemSeparator = () => <View style={{ height: 5 }} />
+const Home = ({ navigation, route }) => {
+  const user = useSelector(selectUser)
+  const settings = user.settings.home
 
-const Home = ({navigation, route}) => {
-    const headerHeight = useHeaderHeight()
-    console.log(headerHeight)
-  
-    const widgets = {
-      Overview: <Overview />,
-      ActiveRoutine: <ActiveRoutine navigation={navigation} />,
-      FavouriteExercises: <FavouriteExercises navigation={navigation} />,
-    }
-  
-    const [selecetedWidgets, setSelectedWidgets] = useState([
-      "Overview",
-      "ActiveRoutine",
-      "FavouriteExercises",
-    ])
-  
-    return (
-      <>
-        <FlatList
-          data={selecetedWidgets}
-          ItemSeparatorComponent={ItemSeparator}
-          renderItem={({ item }) => {
-            return <View>{widgets[item]}</View>
-          }}
-        />
-      </>
-    )
+  return (
+    <ScrollView>
+      {settings.overview.active && <Overview />}
+      {settings.followedRoutine.active && (
+        <ActiveRoutine navigation={navigation} />
+      )}
+      {settings.favouriteExercises.active && (
+        <FavouriteExercises navigation={navigation} />
+      )}
+      {settings.favouriteGraphs.active && (
+        <FavouriteGraphs navigation={navigation} />
+      )}
+    </ScrollView>
+  )
 }
 
 export default Home

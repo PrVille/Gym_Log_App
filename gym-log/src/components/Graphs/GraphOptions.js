@@ -7,13 +7,21 @@ const GraphOptions = ({
   setSelectedInterval,
   selectedGrouping,
   setSelectedGrouping,
-}) => {  
-
+  bold = true,
+}) => {
   return (
     <>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Period</Text>
+          <Text
+            style={{
+              fontSize: theme.fontSizes.subheading,
+              color: theme.colors.primary,
+              fontWeight: bold ? theme.fontWeights.bold : theme.fontWeights.normal,
+            }}
+          >
+            Period
+          </Text>
         </View>
         <View style={{ flex: 1 }}>
           <ButtonGroup
@@ -30,7 +38,15 @@ const GraphOptions = ({
       </View>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Group By</Text>
+          <Text
+            style={{
+              fontSize: theme.fontSizes.subheading,
+              color: theme.colors.primary,
+              fontWeight: bold ? theme.fontWeights.bold : theme.fontWeights.normal,
+            }}
+          >
+            Group By
+          </Text>
         </View>
         <View style={{ flex: 1 }}>
           <ButtonGroup
@@ -58,11 +74,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width / 4,
     marginStart: 10,
     justifyContent: "center",
-  },
-  text: {
-    fontSize: theme.fontSizes.subheading,
-    color: theme.colors.primary,
-    fontWeight: theme.fontWeights.bold,
   },
 })
 

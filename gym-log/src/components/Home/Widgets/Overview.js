@@ -2,21 +2,23 @@ import Card from "../../Utils/Card"
 import { useSelector } from "react-redux"
 import { selectWorkouts } from "../../../redux/reducers/workoutReducer"
 import { selectSets } from "../../../redux/reducers/setReducer"
+import { selectUser } from "../../../redux/reducers/userReducer"
 
 const Overview = () => {
   const workouts = useSelector(selectWorkouts)
   const sets = useSelector(selectSets)
+  const settings = useSelector(selectUser).settings.home.overview.options
 
   return (
     <Card>
       <Card.Header divider>Overview</Card.Header>
       <Card.Body>
-        <Card.Row disableSwipe compact>
+        {settings.workouts && <Card.Row disableSwipe compact>
           <Card.Column>Workouts</Card.Column>
           <Card.Column>{workouts.length}</Card.Column>
-        </Card.Row>
+        </Card.Row>}
 
-        <Card.Row disableSwipe compact>
+        {settings.volume && <Card.Row disableSwipe compact>
           <Card.Column>Volume</Card.Column>
           <Card.Column>
             {sets
@@ -24,21 +26,21 @@ const Overview = () => {
               .reduce((a, b) => a + b, 0)}{" "}
             kg
           </Card.Column>
-        </Card.Row>
+        </Card.Row>}
 
-        <Card.Row disableSwipe compact>
+        {settings.sets && <Card.Row disableSwipe compact>
           <Card.Column>Sets</Card.Column>
           <Card.Column>{sets.length}</Card.Column>
-        </Card.Row>
+        </Card.Row>}
 
-        <Card.Row disableSwipe compact>
+        {settings.reps && <Card.Row disableSwipe compact>
           <Card.Column>Reps</Card.Column>
           <Card.Column>
             {sets.map((set) => set.reps).reduce((a, b) => a + b, 0)}
           </Card.Column>
-        </Card.Row>
+        </Card.Row>}
 
-        <Card.Row disableSwipe compact>
+        {settings.duration && <Card.Row disableSwipe compact>
           <Card.Column>Duration</Card.Column>
           <Card.Column>
             {workouts
@@ -46,7 +48,7 @@ const Overview = () => {
               .reduce((a, b) => a + b, 0)}{" "}
             min
           </Card.Column>
-        </Card.Row>
+        </Card.Row>}
       </Card.Body>
     </Card>
   )
