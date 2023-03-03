@@ -22,6 +22,7 @@ const Section = ({ children }) => {
 }
 
 const Title = (props) => {
+  const size = props.lg ? theme.fontSizes.heading + 10 : props.md ? theme.fontSizes.heading : props.sm ? theme.fontSizes.subheading : theme.fontSizes.heading
   return (
     <View
       style={{
@@ -33,7 +34,48 @@ const Title = (props) => {
     >
       <Text
         style={{
-          fontSize: theme.fontSizes.heading,
+          fontSize: size,
+          flex: 1,
+          color: theme.colors.primary,
+          fontWeight: theme.fontWeights.bold,
+        }}
+      >
+        {props.children}
+      </Text>
+      <TouchableOpacity
+        style={{
+          minWidth: "20%",
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+        onPress={props.onButtonPress}
+      >
+        <Text
+          style={{
+            fontSize: theme.fontSizes.subheading,
+            color: theme.colors.primary,
+          }}
+        >
+          {props.buttonTitle}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+const Subtitle = (props) => {
+  return (
+    <View
+      style={{
+        marginBottom: 10,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        marginEnd: 20,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: theme.fontSizes.subheading,
           flex: 1,
           color: theme.colors.primary,
           fontWeight: theme.fontWeights.bold,
@@ -123,6 +165,7 @@ const SubSectionItemBody = (props) => {
   )
 }
 Section.Title = Title
+Section.Subtitle = Subtitle
 Section.SubSection = SubSection
 Section.SubSectionItem = SubSectionItem
 Section.SubSectionTitle = SubSectionTitle

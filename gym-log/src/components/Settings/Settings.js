@@ -48,12 +48,36 @@ const SettingsSection = ({
 const Settings = () => {
   const dispatch = useDispatch()
   const [homeIsExpanded, setHomeIsExpanded] = useState(false)
+  const [statsIsExpanded, setStatsIsExpanded] = useState(false)
+  const [generalIsExpanded, setGeneralIsExpanded] = useState(false)
+  const [accountIsExpanded, setAccountIsExpanded] = useState(false)
+  const [calculatorsIsExpanded, setCalculatorsIsExpanded] = useState(false)
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
         <SettingsSection
-          iconName="home-edit"
+          iconName="cog"
+          iconType="material-community"
+          title="General"
+          isExpanded={generalIsExpanded}
+          setExpanded={setGeneralIsExpanded}
+        >
+          <Text>default rest timer minutes, timer add/sub increment, disable timer vibrate/sound/notification, count warmup sets, round to nearest</Text>
+        </SettingsSection>
+
+        <SettingsSection
+          iconName="account"
+          iconType="material-community"
+          title="Account"
+          isExpanded={accountIsExpanded}
+          setExpanded={setAccountIsExpanded}
+        >
+          <Text>name, measurements, achievements(overall), signout, delete account && data</Text>
+        </SettingsSection>
+
+        <SettingsSection
+          iconName="home"
           iconType="material-community"
           title="Home"
           isExpanded={homeIsExpanded}
@@ -62,26 +86,34 @@ const Settings = () => {
           <HomeSettings />
         </SettingsSection>
 
+        <SettingsSection
+          iconName="chart-bar"
+          iconType="material-community"
+          title="Statistics"
+          isExpanded={statsIsExpanded}
+          setExpanded={setStatsIsExpanded}
+        >
+          <Text>
+            graph linetype, secondary muscle factor, count warmup sets
+          </Text>
+        </SettingsSection>
+
+        <SettingsSection
+          iconName="calculator"
+          iconType="material-community"
+          title="Calculators"
+          isExpanded={calculatorsIsExpanded}
+          setExpanded={setCalculatorsIsExpanded}
+        >
+          <Text>1rm, plates, warmup</Text>
+        </SettingsSection>
+
         <Button
-          containerStyle={{ marginVertical: 30 }}
+          containerStyle={{ marginVertical: 30, marginHorizontal: 20 }}
           title={"Sign Out"}
           onPress={() => dispatch(signOut())}
         />
       </ScrollView>
-      {/* <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>
-            ALL SETTINGS HERE ? default rest timer minutes count warmup sets?
-          </Text>
-          <Text>Profile: name, measurements, achievements(overall)</Text>
-
-          <Text>
-            Statistics: graph linetype, secondary muscle factor, count warmup
-            sets
-          </Text>
-          <Text>Calculators: 1rm, plates, warmup</Text>
-        </View> */}
     </SafeAreaView>
   )
 }

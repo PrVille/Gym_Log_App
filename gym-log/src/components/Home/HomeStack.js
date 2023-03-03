@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 const HomeStack = ({ params, navigation }) => {
   return (
     <>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -44,16 +44,6 @@ const HomeStack = ({ params, navigation }) => {
               flex: 1,
               backgroundColor: theme.colors.background,
             },
-            headerRight: (props) => (
-              <Icon
-                style={{ marginEnd: 10 }}
-                onPress={() => {
-                  navigation.navigate("SettingsStack", { screen: "AccountSettings"})}}
-                name="settings"
-                type="ionicons"
-                size={30}
-              />
-            ),
             headerLeft: (props) => (
               <CloseButton onPress={() => navigation.goBack()} />
             ),

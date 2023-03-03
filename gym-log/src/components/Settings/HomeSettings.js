@@ -493,11 +493,11 @@ const HomeSettings = ({ params, settings }) => {
 
         <FollowedRoutineSettings />
 
-        <FavouriteAchievementsSettings />
-
         <FavouriteExercisesSettings />
 
         <FavouriteGraphsSettings />
+
+        <FavouriteAchievementsSettings />
       </View>
     </View>
   )

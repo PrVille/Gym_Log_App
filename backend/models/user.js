@@ -33,6 +33,7 @@ const schema = mongoose.Schema({
       },
     ],
   },
+  favouriteAchievements: [{ type: String }],
   settings: {
     home: {
       overview: {
@@ -131,8 +132,8 @@ const schema = mongoose.Schema({
           },
           targetMuscleData: {
             type: String,
-            default: "Sets"
-          }
+            default: "Sets",
+          },
         },
       },
     },
