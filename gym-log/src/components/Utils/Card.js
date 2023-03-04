@@ -17,7 +17,9 @@ const Card = ({ children, backgroundColor }) => {
       <View
         style={{
           margin: 10,
-          backgroundColor: backgroundColor ? backgroundColor : theme.colors.primary,
+          backgroundColor: backgroundColor
+            ? backgroundColor
+            : theme.colors.primary,
           borderRadius: 10,
           paddingVertical: 10,
           paddingHorizontal: 15,
@@ -29,7 +31,6 @@ const Card = ({ children, backgroundColor }) => {
   )
 }
 
-
 const Header = (props) => {
   return (
     <View>
@@ -39,16 +40,37 @@ const Header = (props) => {
           flexDirection: "row",
         }}
       >
-        <Text
+        <View
           style={{
-            fontSize: theme.fontSizes.heading,
+            flexDirection: "row",
+            justifyContent: "flex-start",
             flex: 1,
-            color: theme.colors.background,
-            fontWeight: theme.fontWeights.bold,
           }}
         >
-          {props.children}
-        </Text>
+          {props.removeIcon && (
+            <Icon
+              containerStyle={{
+                flex: 0,
+                marginEnd: 10,
+                justifyContent: "center",
+              }}
+              name="close"
+              color={theme.colors.background}
+              onPress={props.onIconPress}
+            />
+          )}
+          <Text
+            style={{
+              fontSize: theme.fontSizes.heading,
+              flex: 0,
+              color: theme.colors.background,
+              fontWeight: theme.fontWeights.bold,
+            }}
+          >
+            {props.children}
+          </Text>
+        </View>
+
         <TouchableOpacity
           style={{
             minWidth: "20%",
@@ -93,7 +115,14 @@ const BodyHeader = (props) => {
 const HeaderRow = (props) => {
   return (
     <View>
-      <View style={{ flexDirection: "row", marginVertical: props.marginVertical ? props.marginVertical : 0 }}>{props.children}</View>
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: props.marginVertical ? props.marginVertical : 0,
+        }}
+      >
+        {props.children}
+      </View>
       {props.divider && <Divider style={{ marginVertical: 5 }} />}
     </View>
   )

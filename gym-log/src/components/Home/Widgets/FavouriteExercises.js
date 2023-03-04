@@ -7,6 +7,8 @@ const FavouriteExercises = ({ navigation }) => {
   const exercises = useSelector(selectFavouriteExercises)
   const settings =
     useSelector(selectUser).settings.home.favouriteExercises.options
+  const countWarmupSets =
+    useSelector(selectUser).settings.general.countWarmupSets
 
   if (exercises.length === 0) {
     return (
@@ -33,83 +35,89 @@ const FavouriteExercises = ({ navigation }) => {
 
   return (
     <>
-      {exercises.map((exercise) => (
-        <Card key={exercise._id}>
-          <Card.Header
-            buttonTitle="Exercise Details"
-            onButtonPress={() => {
-              navigation.navigate("ExerciseDetails", exercise._id)
-            }}
-            divider
-          >
-            {exercise.name}
-          </Card.Header>
-          <Card.Body key={exercise._id}>
-            {settings.oneRepMax && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>1RM</Card.Column>
-                <Card.Column>{exercise.oneRepMax}</Card.Column>
-              </Card.Row>
-            )}
+      {exercises.map((exercise) => {
+          const sets = countWarmupSets ? exercise.sets : exercise.sets.filter(set => set.type !== "warmup")
 
-            {settings.oneRepMaxGoal && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>1RM Goal</Card.Column>
-                <Card.Column>{exercise.oneRepMaxGoal}</Card.Column>
-              </Card.Row>
-            )}
+        return (
+          <Card key={exercise._id}>
+            <Card.Header
+              buttonTitle="Exercise Details"
+              onButtonPress={() => {
+                navigation.navigate("ExerciseDetails", exercise._id)
+              }}
+              divider
+            >
+              {exercise.name}
+            </Card.Header>
+            <Card.Body key={exercise._id}>
+              {settings.oneRepMax && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>1RM</Card.Column>
+                  <Card.Column>{exercise.oneRepMax}</Card.Column>
+                </Card.Row>
+              )}
 
-            {settings.weightRecord && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>Weight Record</Card.Column>
-                <Card.Column>
-                  {exercise.sets.length === 0
-                    ? 0
-                    : Math.max(...exercise.sets.map((set) => set.weight))}{" "}
-                  kg
-                </Card.Column>
-              </Card.Row>
-            )}
+              {settings.oneRepMaxGoal && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>1RM Goal</Card.Column>
+                  <Card.Column>{exercise.oneRepMaxGoal}</Card.Column>
+                </Card.Row>
+              )}
 
-            {settings.volumeRecord && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>Volume Record</Card.Column>
-                <Card.Column>{getVolumeRecord(exercise.sets)}</Card.Column>
-              </Card.Row>
-            )}
+              {settings.weightRecord && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>Weight Record</Card.Column>
+                  <Card.Column>
+                    {sets.length === 0
+                      ? 0
+                      : Math.max(
+                          ...sets.map((set) => set.weight)
+                        )}{" "}
+                    kg
+                  </Card.Column>
+                </Card.Row>
+              )}
 
-            {settings.sets && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>Total Sets</Card.Column>
-                <Card.Column>{exercise.sets.length}</Card.Column>
-              </Card.Row>
-            )}
+              {settings.volumeRecord && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>Volume Record</Card.Column>
+                  <Card.Column>{getVolumeRecord(sets)}</Card.Column>
+                </Card.Row>
+              )}
 
-            {settings.reps && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>Total Reps</Card.Column>
-                <Card.Column>
-                  {exercise.sets
-                    .map((set) => set.reps)
-                    .reduce((a, b) => a + b, 0)}
-                </Card.Column>
-              </Card.Row>
-            )}
+              {settings.sets && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>Total Sets</Card.Column>
+                  <Card.Column>{sets.length}</Card.Column>
+                </Card.Row>
+              )}
 
-            {settings.volume && (
-              <Card.Row disableSwipe compact>
-                <Card.Column>Total Volume</Card.Column>
-                <Card.Column>
-                  {exercise.sets
-                    .map((set) => set.weight * set.reps)
-                    .reduce((a, b) => a + b, 0)}{" "}
-                  kg
-                </Card.Column>
-              </Card.Row>
-            )}
-          </Card.Body>
-        </Card>
-      ))}
+              {settings.reps && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>Total Reps</Card.Column>
+                  <Card.Column>
+                    {sets
+                      .map((set) => set.reps)
+                      .reduce((a, b) => a + b, 0)}
+                  </Card.Column>
+                </Card.Row>
+              )}
+
+              {settings.volume && (
+                <Card.Row disableSwipe compact>
+                  <Card.Column>Total Volume</Card.Column>
+                  <Card.Column>
+                    {sets
+                      .map((set) => set.weight * set.reps)
+                      .reduce((a, b) => a + b, 0)}{" "}
+                    kg
+                  </Card.Column>
+                </Card.Row>
+              )}
+            </Card.Body>
+          </Card>
+        )
+      })}
     </>
   )
 }

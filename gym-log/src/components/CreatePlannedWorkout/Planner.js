@@ -12,7 +12,13 @@ import theme from "../../theme"
 import { Button, Chip } from "@rneui/themed"
 import Section from "../Utils/Section"
 
-const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
+const Planner = ({
+  navigation,
+  exercises,
+  plannedWorkout,
+  removeSet,
+  removeExercise,
+}) => {
   const primaryMuscles = [
     ...new Set(exercises.map((p) => p.exercise.primaryMuscles).flat()),
   ]
@@ -35,6 +41,8 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
               onButtonPress={() =>
                 navigation.navigate("ExerciseDetails", exercise.exercise._id)
               }
+              removeIcon
+              onIconPress={() => removeExercise(exercise.exercise._id)}
             >
               {exercise.exercise.name}
             </Card.Header>
@@ -46,9 +54,7 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
                     removeSet(exercise.exercise._id, set._id)
                   }
                 >
-                  <Card.Column alignItems="flex-start">
-                    {index + 1}
-                  </Card.Column>
+                  <Card.Column alignItems="flex-start">{index + 1}</Card.Column>
 
                   <Card.IconColumn
                     name={set.type === "warmup" ? "fitness" : "weight-lifter"}
@@ -109,7 +115,7 @@ const Planner = ({ navigation, exercises, plannedWorkout, removeSet }) => {
           onPress={() => navigation.navigate("ExercisePicker")}
         />
 
-<Section>
+        <Section>
           <Section.Title>Target muscles</Section.Title>
 
           <Section.SubSection divider>

@@ -59,8 +59,8 @@
 | 02.03.23 | 2     | target muscles to planned workouts, workouts, logger, planner, RestTimer |
 | 02.03.23 | 4     | backend user settings, home settings and screen integrated with user home settings |
 | 03.03.23 | 4     | favouriteGraphs backend and frontend, homescreen favourite graphs |
-| sum      | 160   | | 
 | 03.03.23 | 4     | accountScreen, achievements |
-
-
-
+| 03.03.23 | 1     | deleteUser, Account Settings, General Settings, Statistics Settings  |
+| 04.03.23 | 3     | calculators, sign in, sign up, input validation  |
+| 04.03.23 | 4     | deleteUser, Account Settings, General Settings, Statistics Settings  |
+| sum      | 172   | | 

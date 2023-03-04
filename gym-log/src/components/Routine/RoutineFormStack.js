@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack"
 import { useState, useEffect } from "react"
-
+import { View, Alert } from "react-native"
+import { Icon } from "@rneui/themed"
 import PlannedWorkoutPicker from "./PlannedWorkoutPicker"
 import RoutineForm from "./RoutineForm"
 import CloseButton from "../Buttons/CloseButton"
@@ -29,6 +30,7 @@ const RoutineFormStack = ({ navigation, route }) => {
   const routineToEdit = route.params
     ? useSelector((state) => selectRoutineById(state, route.params))
     : null
+  const hasEmptyFields = routine.weeks.some(week => week.length === 0)  
 
   useEffect(() => {
     if (routineToEdit) {
@@ -39,6 +41,16 @@ const RoutineFormStack = ({ navigation, route }) => {
       })
     }
   }, [])
+
+  const confirmCancel = () => {
+    Alert.alert(`Cancel routine?`, "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => navigation.goBack() },
+    ])
+  }
 
   const addWeek = () => {
     const copyOfRoutine = JSON.parse(JSON.stringify(routine))
@@ -106,13 +118,23 @@ const RoutineFormStack = ({ navigation, route }) => {
             flex: 1,
             backgroundColor: theme.colors.background,
           },
-          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+          headerLeft: () => <CloseButton onPress={confirmCancel} />,
           headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+              <Icon
+                style={{ marginEnd: 10 }}
+                onPress={() => navigation.navigate("CalculatorsStack")}
+                name="calculator"
+                type="material-community"
+                size={30}
+              />
             <ForwardButton
+            disabled={hasEmptyFields}
               onPress={() => {
                 navigation.navigate("RoutineFormFinish")
               }}
             />
+            </View>
           ),
         })}
       >
@@ -140,6 +162,7 @@ const RoutineFormStack = ({ navigation, route }) => {
           headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
             <DoneButton
+            disabled={!routine.name}
               onPress={() => {
                 submitRoutine()
                 navigation.goBack()

@@ -14,7 +14,9 @@ import theme from "../../theme"
 import { selectUser } from "../../redux/reducers/userReducer"
 
 const TargetMuscleGraph = ({ targetMuscle, widget }) => {
-  const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
+  const user = useSelector(selectUser)
+  const settings = user.settings.home.favouriteGraphs.options
+  const countWarmupSets = user.settings.general.countWarmupSets
 
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
@@ -31,15 +33,10 @@ const TargetMuscleGraph = ({ targetMuscle, widget }) => {
     data: "Sets",
   })
 
-  const [selectedSecondaryMuscleFactor, setSelectedSecondaryMuscleFactor] =
-    useState({
-      index: 1,
-      factor: 0.5,
-    })
-
   const grouping = widget ? settings.grouping : selectedGrouping.grouped
   const months = widget ? settings.period : selectedInterval.months
   const dataType = widget ? settings.targetMuscleData : selectedData.data
+  const secondaryMuscleWeight = user.settings.statistics.secondaryMuscleWeight
 
   const [startDate, endDate, datesOfInterval, map] = useDates(months, grouping)
 
@@ -50,14 +47,17 @@ const TargetMuscleGraph = ({ targetMuscle, widget }) => {
     selectExercisesBySecondaryMuscle(state, targetMuscle)
   )
 
-  const primarySets = primaryExercises
+  const rawPrimarySets = primaryExercises
     .map((e) => e.sets)
     .flat()
     .map((set) => ({ ...set, createdAt: parseISO(set.createdAt) }))
-  const secondarySets = secondaryExercises
+  const rawSecondarySets = secondaryExercises
     .map((e) => e.sets)
     .flat()
     .map((set) => ({ ...set, createdAt: parseISO(set.createdAt) }))
+
+  const primarySets = countWarmupSets ? rawPrimarySets : rawPrimarySets.filter(set => set.type !== "warmup")
+  const secondarySets = countWarmupSets ? rawSecondarySets : rawSecondarySets.filter(set => set.type !== "warmup")
 
   const primarySetsOfInterval = primarySets.filter((set) =>
     isWithinInterval(set.createdAt, {
@@ -98,12 +98,12 @@ const TargetMuscleGraph = ({ targetMuscle, widget }) => {
         : getMonth(set.createdAt)
 
     if (dataType === "Sets")
-      map[key] += selectedSecondaryMuscleFactor.factor
+      map[key] += secondaryMuscleWeight
     else if (dataType === "Reps")
-      map[key] += set.reps * selectedSecondaryMuscleFactor.factor
+      map[key] += set.reps * secondaryMuscleWeight
     else if (dataType === "Volume")
       map[key] +=
-        ((set.reps * set.weight) / 1000) * selectedSecondaryMuscleFactor.factor
+        ((set.reps * set.weight) / 1000) * secondaryMuscleWeight
   }
 
   const data = datesOfInterval.map((date) => ({
@@ -140,24 +140,6 @@ const TargetMuscleGraph = ({ targetMuscle, widget }) => {
               setSelectedData({
                 index: value,
                 data: value === 0 ? "Sets" : value === 1 ? "Reps" : "Volume",
-              })
-            }}
-          />
-        </View>
-      </View>
-
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>Count Secondary</Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <ButtonGroup
-            buttons={["0", "0.5", "1"]}
-            selectedIndex={selectedSecondaryMuscleFactor.index}
-            onPress={(value) => {
-              setSelectedSecondaryMuscleFactor({
-                index: value,
-                factor: value === 0 ? 0 : value === 1 ? 0.5 : 1,
               })
             }}
           />

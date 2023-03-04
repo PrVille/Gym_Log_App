@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, ActivityIndicator, Alert } from "react-native"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
 
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"
-import LoggerStack from "./Logger/Logger"
+import LoggerStack from "./Logger/LoggerStack"
 import ExerciseDetails from "./Screens/ExerciseDetails"
 import WorkoutHistory from "./Screens/WorkoutHistory"
 import CreatePlannedWorkout from "./CreatePlannedWorkout/CreatePlannedWorkout"
@@ -19,12 +19,17 @@ import CreateExercise from "./Screens/CreateExercise"
 import useInitialization from "../hooks/useInitialization"
 
 import CloseButton from "./Buttons/CloseButton"
+import BackButton from "./Buttons/BackButton"
 
 import { useTheme } from "@react-navigation/native"
 import SetHistory from "./Screens/SetHistory"
 import RoutineDetails from "./Screens/RoutineDetails"
 import RoutineFormStack from "./Routine/RoutineFormStack"
 import GraphScreen from "./Statistics/GraphScreen"
+import CalculatorsStack from "./Calculators/CalculatorsStack"
+import WarmupCalculator from "./Calculators/WarmupCalculator"
+import OneRepMaxCalculator from "./Calculators/OneRepMaxCalculator"
+import theme from "../theme"
 
 const Stack = createStackNavigator()
 
@@ -46,14 +51,21 @@ const MainStack = () => {
     !state.routines
   )
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>LOADING...</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     )
 
   return (
     <>
-      <Stack.Navigator initialRouteName="" >
+      <Stack.Navigator initialRouteName="">
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
@@ -118,7 +130,17 @@ const MainStack = () => {
             headerTitle: "Create new exercise",
             headerShadowVisible: false,
             headerLeft: () => (
-              <CloseButton onPress={() => navigation.goBack()} />
+              <CloseButton
+                onPress={() =>
+                  Alert.alert(`Cancel exercise?`, "", [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    { text: "OK", onPress: () => navigation.goBack() },
+                  ])
+                }
+              />
             ),
           })}
         />
@@ -209,6 +231,58 @@ const MainStack = () => {
               flex: 1,
               backgroundColor: colors.background,
             },
+          })}
+        />
+
+        <Stack.Screen
+          name="CalculatorsStack"
+          component={CalculatorsStack}
+          options={({ navigation, route }) => ({
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "Calculators",
+            presentation: "transparentModal",
+            cardStyle: {
+              flex: 1,
+              backgroundColor: colors.background,
+            },
+            headerLeft: (props) => (
+              <CloseButton onPress={() => navigation.goBack()} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="OneRepMaxCalculator"
+          component={OneRepMaxCalculator}
+          options={({ navigation, route }) => ({
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "1RM Calculator",
+            cardStyle: {
+              flex: 1,
+              backgroundColor: colors.background,
+            },
+            headerLeft: (props) => (
+              <BackButton onPress={() => navigation.goBack()} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="WarmupCalculator"
+          component={WarmupCalculator}
+          options={({ navigation, route }) => ({
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "Warmup Calculator",
+            cardStyle: {
+              flex: 1,
+              backgroundColor: colors.background,
+            },
+            headerLeft: (props) => (
+              <BackButton onPress={() => navigation.goBack()} />
+            ),
           })}
         />
       </Stack.Navigator>

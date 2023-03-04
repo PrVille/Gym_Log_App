@@ -13,8 +13,10 @@ const WorkoutsGraph = ({ type, widget }) => {
   const workouts = useSelector(selectWorkouts).map((w) => ({
     ...w,
     createdAt: parseISO(w.createdAt),
-  })) //getWorkoutsTestData(100)
+  })) 
+  //const workouts = getWorkoutsTestData(100)
   const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
 
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
@@ -39,7 +41,8 @@ const WorkoutsGraph = ({ type, widget }) => {
 
   for (let i = 0; i < workoutsOfInterval.length; i++) {
     const workout = workoutsOfInterval[i]
-    const sets = workout.exercises.map((e) => e.sets).flat()
+    const rawSets = workout.exercises.map((e) => e.sets).flat()
+    const sets = countWarmupSets ? rawSets : rawSets.filter(set => set.type !== "warmup")
     const key =
       grouping === "weekly"
         ? getWeek(workout.createdAt, {

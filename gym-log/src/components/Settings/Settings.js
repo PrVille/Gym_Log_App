@@ -3,111 +3,45 @@ import { SafeAreaView, ScrollView, Text, View } from "react-native"
 import { Button, ListItem, Icon } from "@rneui/themed"
 import { useDispatch } from "react-redux"
 import { signOut } from "../../redux/reducers/userReducer"
-import HomeSettings from "./HomeSettings"
-import theme from "../../theme"
 
-const SettingsSection = ({
-  children,
-  iconName,
-  iconType,
-  title,
-  isExpanded,
-  setExpanded,
-}) => (
-  <ListItem.Accordion
-    containerStyle={{ paddingHorizontal: 10 }}
-    icon={
-      <Icon
-        name={"chevron-down"}
-        type="material-community"
-        style={{ color: theme.colors.primary }}
-      />
-    }
-    content={
-      <>
-        <Icon
-          name={iconName}
-          type={iconType}
-          size={30}
-          containerStyle={{ marginEnd: 10 }}
-        />
-        <ListItem.Content>
-          <ListItem.Title>{title}</ListItem.Title>
-        </ListItem.Content>
-      </>
-    }
-    isExpanded={isExpanded}
-    onPress={() => {
-      setExpanded(!isExpanded)
-    }}
-  >
-    {children}
-  </ListItem.Accordion>
-)
-
-const Settings = () => {
+const Settings = ({ navigation }) => {
   const dispatch = useDispatch()
-  const [homeIsExpanded, setHomeIsExpanded] = useState(false)
-  const [statsIsExpanded, setStatsIsExpanded] = useState(false)
-  const [generalIsExpanded, setGeneralIsExpanded] = useState(false)
-  const [accountIsExpanded, setAccountIsExpanded] = useState(false)
-  const [calculatorsIsExpanded, setCalculatorsIsExpanded] = useState(false)
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <SettingsSection
-          iconName="cog"
-          iconType="material-community"
-          title="General"
-          isExpanded={generalIsExpanded}
-          setExpanded={setGeneralIsExpanded}
-        >
-          <Text>default rest timer minutes, timer add/sub increment, disable timer vibrate/sound/notification, count warmup sets, round to nearest</Text>
-        </SettingsSection>
+        <ListItem onPress={() => navigation.navigate("GeneralSettings")}>
+          <Icon name="cog" type="material-community" size={30} />
+          <ListItem.Content>
+            <ListItem.Title>General</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
 
-        <SettingsSection
-          iconName="account"
-          iconType="material-community"
-          title="Account"
-          isExpanded={accountIsExpanded}
-          setExpanded={setAccountIsExpanded}
-        >
-          <Text>name, measurements, achievements(overall), signout, delete account && data</Text>
-        </SettingsSection>
+        <ListItem onPress={() => navigation.navigate("AccountSettings")}>
+          <Icon name="account" type="material-community" size={30} />
+          <ListItem.Content>
+            <ListItem.Title>Account</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
 
-        <SettingsSection
-          iconName="home"
-          iconType="material-community"
-          title="Home"
-          isExpanded={homeIsExpanded}
-          setExpanded={setHomeIsExpanded}
-        >
-          <HomeSettings />
-        </SettingsSection>
+        <ListItem onPress={() => navigation.navigate("HomeSettings")}>
+          <Icon name="home" type="material-community" size={30} />
+          <ListItem.Content>
+            <ListItem.Title>Home</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
 
-        <SettingsSection
-          iconName="chart-bar"
-          iconType="material-community"
-          title="Statistics"
-          isExpanded={statsIsExpanded}
-          setExpanded={setStatsIsExpanded}
-        >
-          <Text>
-            graph linetype, secondary muscle factor, count warmup sets
-          </Text>
-        </SettingsSection>
-
-        <SettingsSection
-          iconName="calculator"
-          iconType="material-community"
-          title="Calculators"
-          isExpanded={calculatorsIsExpanded}
-          setExpanded={setCalculatorsIsExpanded}
-        >
-          <Text>1rm, plates, warmup</Text>
-        </SettingsSection>
-
+        <ListItem onPress={() => navigation.navigate("StatisticsSettings")}>
+          <Icon name="chart-bar" type="material-community" size={30} />
+          <ListItem.Content>
+            <ListItem.Title>Statistics</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+       
         <Button
           containerStyle={{ marginVertical: 30, marginHorizontal: 20 }}
           title={"Sign Out"}

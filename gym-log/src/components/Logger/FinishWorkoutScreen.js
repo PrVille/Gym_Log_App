@@ -12,7 +12,7 @@ const FinishWorkoutScreen = ({
   useEffect(() => {
     setWorkout({
       ...workout,
-      duration: Math.floor((finishTime - startTime) / 1000 / 60),
+      duration: Math.ceil((finishTime - startTime) / 1000 / 60),
     })
   }, [])
 

@@ -1,39 +1,11 @@
 import { Divider, ButtonGroup } from "@rneui/themed"
 import { useDispatch, useSelector } from "react-redux"
-import { Text, View, Switch, StyleSheet, Dimensions } from "react-native"
+import { Text, View, Switch, StyleSheet, Dimensions, ScrollView } from "react-native"
 import GraphOptions from "../Graphs/GraphOptions"
 import theme from "../../theme"
 import { selectUser, updateUser } from "../../redux/reducers/userReducer"
+import SwitchItem from "./SwitchItem"
 
-const SwitchItem = ({ onValueChange, value, label, bold }) => (
-  <View
-    style={{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    }}
-  >
-    <Text
-      style={{
-        fontSize: theme.fontSizes.subheading,
-        color: theme.colors.primary,
-        fontWeight: bold ? theme.fontWeights.bold : theme.fontWeights.normal,
-      }}
-    >
-      {label}
-    </Text>
-    <Switch
-      trackColor={{
-        false: theme.colors.primaryVariant,
-        true: theme.colors.primary,
-      }}
-      thumbColor={theme.colors.background}
-      ios_backgroundColor={theme.colors.primaryVariant}
-      onValueChange={onValueChange}
-      value={value}
-    />
-  </View>
-)
 
 const OverviewFields = () => {
   const dispatch = useDispatch()
@@ -487,7 +459,7 @@ const FavouriteGraphsSettings = () => {
 
 const HomeSettings = ({ params, settings }) => {
   return (
-    <View>
+    <ScrollView contentInset={{bottom: 50}}>
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <OverviewSettings />
 
@@ -499,7 +471,7 @@ const HomeSettings = ({ params, settings }) => {
 
         <FavouriteAchievementsSettings />
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

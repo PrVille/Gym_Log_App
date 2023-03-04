@@ -34,6 +34,15 @@ export const signIn = (username, password) => {
   }
 }
 
+export const signUp = (newUser) => {
+  return async (dispatch) => {
+    await userService.create(newUser)
+    const user = await signInService.signIn({ username: newUser.username, password: newUser.password })
+    await userService.setUser(user)
+    dispatch(setUser(user))
+  }
+}
+
 export const signOut = () => {
   return async (dispatch) => {
     await userService.removeUser()
@@ -46,6 +55,14 @@ export const updateUser = (user) => {
     await userService.update(user._id, user)
     await userService.setUser(user)
     dispatch(setUser(user))
+  }
+}
+
+export const deleteUser = (id) => {
+  return async (dispatch) => {    
+    await userService.deleteUser(id)
+    await userService.removeUser()
+    dispatch(removeUser())
   }
 }
 

@@ -5,6 +5,7 @@ import Home from "./Home"
 import CloseButton from "../Buttons/CloseButton"
 import Account from "./Account"
 import theme from "../../theme"
+import CalculatorsStack from "../Calculators/CalculatorsStack"
 
 const Stack = createStackNavigator()
 
@@ -25,6 +26,15 @@ const HomeStack = ({ params, navigation }) => {
                 style={{ marginStart: 10 }}
                 onPress={() => navigation.navigate("Account")}
                 name="account"
+                type="material-community"
+                size={30}
+              />
+            ),
+            headerRight: (props) => (
+              <Icon
+                style={{ marginEnd: 10 }}
+                onPress={() => navigation.navigate("CalculatorsStack")}
+                name="calculator"
                 type="material-community"
                 size={30}
               />

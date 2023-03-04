@@ -6,8 +6,10 @@ import { selectUser } from "../../../redux/reducers/userReducer"
 
 const Overview = () => {
   const workouts = useSelector(selectWorkouts)
-  const sets = useSelector(selectSets)
+  const selectedSets = useSelector(selectSets)
   const settings = useSelector(selectUser).settings.home.overview.options
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
+  const sets = countWarmupSets ? selectedSets : selectedSets.filter(set => set.type !== "warmup")
 
   return (
     <Card>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { Text, Button } from "react-native"
+import { Text, Button, View, Alert } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-
+import { Icon } from "@rneui/themed"
 import FinishPlanning from "./FinishPlanning"
 
 import Planner from "./Planner"
@@ -29,21 +29,19 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
   const dispatch = useDispatch()
   const [exercises, setExercises] = useState([])
   const [plannedWorkout, setPlannedWorkout] = useState({
-    name: `${uuid.v4()}`,
-    notes: "test",
-    estimatedDuration: 0,
+    name: `Planned Workout`,
+    notes: "My planned workout",
+    estimatedDuration: "",
   })
   const workoutToEdit = route.params
     ? useSelector((state) => selectPlannedWorkoutById(state, route.params))
     : null
+  const sets = exercises.map((e) => e.sets).flat()
+  const hasEmptyFields =
+    exercises.length === 0 || exercises.some((e) => e.sets.length === 0)
 
   useEffect(() => {
     if (workoutToEdit) {
-      const existingSets = workoutToEdit.plannedExercises
-        .map((e) => e.sets)
-        .flat()
-        .map((set) => set._id)
-      console.log(existingSets)
       setExercises(workoutToEdit.plannedExercises)
       setPlannedWorkout({
         name: workoutToEdit.name,
@@ -52,6 +50,16 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
       })
     }
   }, [])
+
+  const confirmCancel = () => {
+    Alert.alert(`Cancel planned workout?`, "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => navigation.goBack() },
+    ])
+  }
 
   const addPlannedSet = (exerciseId, newPlannedSet) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
@@ -84,6 +92,12 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
     ])
   }
 
+  const removeExercise = (exerciseId) => {
+    return setExercises(
+      [...exercises].filter((e) => e.exercise._id !== exerciseId)
+    )
+  }
+
   const submitWorkout = async () => {
     for (let i = 0; i < exercises.length; i++) {
       const sets = exercises[i].sets
@@ -101,7 +115,9 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
         .flat()
         .map((set) => set._id)
       for (let i = 0; i < existingPlannedSets.length; i++) {
-        await dispatch(deletePlannedSet(existingPlannedSets[i])).then(res => res)
+        await dispatch(deletePlannedSet(existingPlannedSets[i])).then(
+          (res) => res
+        )
       }
 
       dispatch(
@@ -109,7 +125,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           ...plannedWorkout,
           plannedExercises: exercises,
           _id: workoutToEdit._id,
-          active: workoutToEdit.active
+          active: workoutToEdit.active,
         })
       )
       return
@@ -122,7 +138,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
       })
     )
   }
-  
+
   const removeSet = (exerciseId, setId) => {
     const copyOfExercises = JSON.parse(JSON.stringify(exercises)) // deep copy
     const exercise = copyOfExercises.find((e) => e.exercise._id === exerciseId)
@@ -138,13 +154,23 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           presentation: "transparentModal",
           headerShadowVisible: false,
           headerTitle: "Planning a workout",
-          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
+          headerLeft: () => <CloseButton onPress={confirmCancel} />,
           headerRight: () => (
-            <ForwardButton
-              onPress={() => {
-                navigation.navigate("FinishPlanning")
-              }}
-            />
+            <View style={{ flexDirection: "row" }}>
+              <Icon
+                style={{ marginEnd: 10 }}
+                onPress={() => navigation.navigate("CalculatorsStack")}
+                name="calculator"
+                type="material-community"
+                size={30}
+              />
+              <ForwardButton
+                disabled={hasEmptyFields}
+                onPress={() => {
+                  navigation.navigate("FinishPlanning")
+                }}
+              />
+            </View>
           ),
         })}
       >
@@ -153,6 +179,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
             exercises={exercises}
             plannedWorkout={plannedWorkout}
             removeSet={removeSet}
+            removeExercise={removeExercise}
             {...props}
           />
         )}
@@ -163,10 +190,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           presentation: "transparentModal",
           headerTitle: "Choose Exercise",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
           headerRight: null, //search button here
         })}
       >
@@ -189,6 +213,9 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
           headerRight: () => (
             <DoneButton
+              disabled={
+                !plannedWorkout.name || !plannedWorkout.estimatedDuration
+              }
               onPress={() => {
                 submitWorkout()
                 navigation.goBack()
@@ -213,10 +240,7 @@ const CreatePlannedWorkout = ({ route, navigation, workout }) => {
           presentation: "transparentModal",
           headerTitle: "Create Planned Set",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <CloseButton onPress={() => navigation.goBack()} />
-            
-          ),
+          headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
         })}
       >
         {(props) => (

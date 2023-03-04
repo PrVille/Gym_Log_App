@@ -11,8 +11,12 @@ import {
 } from "victory-native"
 
 import theme from "../../theme"
+import { useSelector } from "react-redux"
+import { selectUser } from "../../redux/reducers/userReducer"
 
 const LineGraph = ({ data, type, widget }) => {
+  const graphLineType = useSelector(selectUser).settings.statistics.graphLineType
+  
   const getLabelText = () => {
     switch (type) {
       case "Duration":
@@ -60,7 +64,7 @@ const LineGraph = ({ data, type, widget }) => {
       />
       <VictoryAxis dependentAxis tickFormat={(y) => Math.floor(y)} style={styles.axis} />
       <VictoryLine
-        interpolation={"monotoneX"}
+        interpolation={graphLineType}
         data={data}
         style={styles.line}
       />

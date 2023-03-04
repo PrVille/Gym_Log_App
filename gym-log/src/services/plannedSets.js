@@ -24,7 +24,4 @@ const remove = async (id) => {
   return reponse.data
 };
 
-
-
-
 export default { create, createMany, getAll, remove }

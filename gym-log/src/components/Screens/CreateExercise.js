@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Text, ScrollView } from "react-native"
+import { Text, ScrollView, Alert } from "react-native"
 import { useDispatch } from "react-redux"
 import {
   createExercise,
@@ -24,7 +24,6 @@ const data = [
   { id: 12, muscle: "calves", isChecked: false },
 ]
 
-//also for editing, rename to form?
 const CreateExercise = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { colors } = useTheme()
@@ -36,8 +35,8 @@ const CreateExercise = ({ navigation, route }) => {
   const [newExercise, setNewExercise] = useState({
     name: "",
     instructions: "",
-    oneRepMax: 0,
-    oneRepMaxGoal: 0,
+    oneRepMax: "",
+    oneRepMaxGoal: "",
     primaryMuscles: [],
     secondaryMuscles: [],
     sets: [],
@@ -72,6 +71,9 @@ const CreateExercise = ({ navigation, route }) => {
       .map((sm) => sm.muscle)
     newExercise.primaryMuscles = pms
     newExercise.secondaryMuscles = sms
+    
+    if (!newExercise.oneRepMax) newExercise.oneRepMax = 0
+    if (!newExercise.oneRepMaxGoal) newExercise.oneRepMaxGoal = 0
 
     await dispatch(createExercise(newExercise))
       .then(() => navigation.goBack())
@@ -87,6 +89,9 @@ const CreateExercise = ({ navigation, route }) => {
       .map((sm) => sm.muscle)
     newExercise.primaryMuscles = pms
     newExercise.secondaryMuscles = sms
+
+    if (!newExercise.oneRepMax) newExercise.oneRepMax = 0
+    if (!newExercise.oneRepMaxGoal) newExercise.oneRepMaxGoal = 0
 
     await dispatch(updateExercise(newExercise))
       .then(() => navigation.goBack())
@@ -146,7 +151,7 @@ const CreateExercise = ({ navigation, route }) => {
         maxLength={6}
         selectTextOnFocus={true}
         value={`${newExercise.oneRepMax}`.replace(",", ".")}
-        placeholder={`Defaults to 0, will update automatically`}
+        placeholder={`Defaults to 0, updates automatically`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, oneRepMax: value })
         }
@@ -159,7 +164,7 @@ const CreateExercise = ({ navigation, route }) => {
         maxLength={6}
         selectTextOnFocus={true}
         value={`${newExercise.oneRepMaxGoal}`.replace(",", ".")}
-        placeholder={`Defaults to 0, will update automatically`}
+        placeholder={`Defaults to 0`}
         onChangeText={(value) =>
           setNewExercise({ ...newExercise, oneRepMaxGoal: value })
         }

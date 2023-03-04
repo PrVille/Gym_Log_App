@@ -11,12 +11,15 @@ import Card from "../Utils/Card"
 import { Button } from "@rneui/themed"
 import theme from "../../theme"
 import { setNotification } from "../../redux/reducers/notificationReducer"
+import { selectUser } from "../../redux/reducers/userReducer"
 
 const RoutineDetails = ({ route, navigation }) => {
   const dispatch = useDispatch()
   const id = route.params
   const routine = useSelector((state) => selectRoutineById(state, id))
   const activeRoutine = useSelector(selectActiveRoutine)
+  const countWarmupSets =
+    useSelector(selectUser).settings.general.countWarmupSets
   const { name, notes, weeks, active, completedCount } = routine
 
   useEffect(() => {
@@ -91,44 +94,57 @@ const RoutineDetails = ({ route, navigation }) => {
                 {weeks.length === 1 ? "Weekly" : "Week " + week.week}
               </Text>
             </View>
-            {week.plannedWorkouts.map((plannedWorkout, i) => (
-              <Card key={i}>
-                <Card.Header
-                  divider
-                  buttonTitle="Workout Details"
-                  onButtonPress={() =>
-                    navigation.navigate(
-                      "PlannedWorkoutDetails",
-                      plannedWorkout._id
-                    )
-                  }
-                >
-                  {"Day " + (i + 1) + ": "}
-                  {plannedWorkout.name}
-                </Card.Header>
+            {week.plannedWorkouts.map((plannedWorkout, i) => {
+              return (
+                <Card key={i}>
+                  <Card.Header
+                    divider
+                    buttonTitle="Workout Details"
+                    onButtonPress={() =>
+                      navigation.navigate(
+                        "PlannedWorkoutDetails",
+                        plannedWorkout._id
+                      )
+                    }
+                  >
+                    {"Day " + (i + 1) + ": "}
+                    {plannedWorkout.name}
+                  </Card.Header>
 
-                <Card.Body>
-                  {plannedWorkout.plannedExercises.map((plannedExercise) => (
-                    <Card.Row key={plannedExercise.exercise._id} disableSwipe>
-                      <Card.Column alignItems="flex-start">
-                        {plannedExercise.exercise.name}
-                      </Card.Column>
-                      <Card.Column>
-                        {plannedExercise.sets.length === 1
-                          ? plannedExercise.sets.length + " set"
-                          : plannedExercise.sets.length + " sets"}
-                      </Card.Column>
-                      <Card.Column>
-                        {plannedExercise.sets
-                          .map((set) => set.plannedReps)
-                          .reduce((a, b) => a + b, 0)}{" "}
-                        reps
-                      </Card.Column>
-                    </Card.Row>
-                  ))}
-                </Card.Body>
-              </Card>
-            ))}
+                  <Card.Body>
+                    {plannedWorkout.plannedExercises.map((plannedExercise) => {
+                      const plannedSets = countWarmupSets
+                        ? plannedExercise.sets
+                        : plannedExercise.sets.filter(
+                            (set) => set.type !== "warmup"
+                          )
+
+                      return (
+                        <Card.Row
+                          key={plannedExercise.exercise._id}
+                          disableSwipe
+                        >
+                          <Card.Column alignItems="flex-start">
+                            {plannedExercise.exercise.name}
+                          </Card.Column>
+                          <Card.Column>
+                            {plannedSets.length === 1
+                              ? plannedSets.length + " set"
+                              : plannedSets.length + " sets"}
+                          </Card.Column>
+                          <Card.Column>
+                            {plannedSets
+                              .map((set) => set.plannedReps)
+                              .reduce((a, b) => a + b, 0)}{" "}
+                            reps
+                          </Card.Column>
+                        </Card.Row>
+                      )
+                    })}
+                  </Card.Body>
+                </Card>
+              )
+            })}
           </View>
         ))}
       </ScrollView>

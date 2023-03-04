@@ -14,12 +14,13 @@ import {
 } from "../../redux/reducers/exerciseReducer"
 import { useEffect } from "react"
 import Section from "../Utils/Section"
+import { selectUser } from "../../redux/reducers/userReducer"
 
 const ExerciseDetails = ({ route, navigation }) => {
   const dispatch = useDispatch()
   const id = route.params
   const exercise = useSelector((state) => selectExerciseById(state, id))
-  const { width } = Dimensions.get("screen")
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
   const {
     name,
     instructions,
@@ -28,8 +29,9 @@ const ExerciseDetails = ({ route, navigation }) => {
     secondaryMuscles,
     oneRepMax,
     oneRepMaxGoal,
-    sets,
   } = exercise
+
+  const sets = countWarmupSets ? exercise.sets : exercise.sets.filter(set => set.type !== "warmup")
 
   useEffect(() => {
     navigation.setOptions({

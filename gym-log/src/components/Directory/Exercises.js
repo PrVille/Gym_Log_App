@@ -25,6 +25,8 @@ import { selectUser, updateUser } from "../../redux/reducers/userReducer"
 const Stack = createStackNavigator()
 
 const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
+  const sets = countWarmupSets ? exercise.sets : exercise.sets.filter(set => set.type !== "warmup")
   const confirmDeletion = (exercise) => {
     Alert.alert(
       `Delete ${exercise.name}?`,
@@ -72,8 +74,8 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
       <ListItem.Content>
         <ListItem.Title>{exercise.name}</ListItem.Title>
         <ListItem.Subtitle>
-          Sets: {exercise.sets.length} | Volume:{" "}
-          {exercise.sets
+          Sets: {sets.length} | Volume:{" "}
+          {sets
             .map((set) => set.weight * set.reps)
             .reduce((a, b) => a + b, 0)}{" "}
           kg

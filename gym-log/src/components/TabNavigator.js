@@ -56,7 +56,7 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"HomeStack"}
+      initialRouteName={"SettingsStack"}
     >
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="StatisticsStack" component={StatisticsStack} />

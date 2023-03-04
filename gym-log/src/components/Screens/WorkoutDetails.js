@@ -10,10 +10,12 @@ import {
   format,
   parseISO
 } from "date-fns"
+import { selectUser } from "../../redux/reducers/userReducer"
 
 const WorkoutDetails = ({ params, route, navigation }) => {
   const id = route.params
   const workout = useSelector((state) => selectWorkoutById(state, id))
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
   const { colors } = useTheme()
 
   const { name, notes, duration, exercises, createdAt } = workout
@@ -57,14 +59,14 @@ const WorkoutDetails = ({ params, route, navigation }) => {
             <Section.SubSectionItem>
               <Section.SubSectionItemTitle>Sets</Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>
-                {exercises.map((e) => e.sets.length).reduce((a, b) => a + b, 0)}
+                {exercises.map((e) => countWarmupSets ? e.sets.length : e.sets.filter(set => set.type !== "warmup").length).reduce((a, b) => a + b, 0)}
               </Section.SubSectionItemBody>
             </Section.SubSectionItem>
             <Section.SubSectionItem>
               <Section.SubSectionItemTitle>Volume</Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>
                 {exercises
-                  .map((e) => e.sets)
+                  .map((e) => countWarmupSets ? e.sets : e.sets.filter(set => set.type !== "warmup"))
                   .flat()
                   .map((set) => set.weight * set.reps)
                   .reduce((a, b) => a + b, 0)}{" "}
@@ -138,31 +140,6 @@ const WorkoutDetails = ({ params, route, navigation }) => {
         ))}
       </ScrollView>
     </SafeAreaView>
-  )
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>{name}</Text>
-      <Text>{notes}</Text>
-      <Text>{duration}</Text>
-      <Text>{createdAt}</Text>
-      {exercises.map((exercise) => {
-        return (
-          <View key={exercise._id}>
-            <Text>
-              {exercise.exercise.name}, Sets: {exercise.sets.length}
-            </Text>
-          </View>
-        )
-      })}
-    </View>
   )
 }
 

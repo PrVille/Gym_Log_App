@@ -107,6 +107,9 @@ export const defaultRNETheme = createTheme({
       checkedColor: theme.colors.primary,
       uncheckedColor: theme.colors.primary,
     },
+    ListItemChevron:{
+      color: theme.colors.primary
+    },
     SearchBar: {
       containerStyle: {
         backgroundColor: theme.colors.background,

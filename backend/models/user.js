@@ -10,6 +10,7 @@ const schema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    minlength: 3,
   },
   passwordHash: {
     type: String,
@@ -35,6 +36,22 @@ const schema = mongoose.Schema({
   },
   favouriteAchievements: [{ type: String }],
   settings: {
+    general: {
+      countWarmupSets: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    statistics: {
+      secondaryMuscleWeight: {
+        type: Number,
+        default: 0.5
+      },
+      graphLineType: {
+        type: String,
+        default: "monotoneX"
+      }
+    },
     home: {
       overview: {
         active: {

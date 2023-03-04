@@ -14,6 +14,7 @@ import { selectUser } from "../../redux/reducers/userReducer"
 
 const ExerciseGraph = ({ exerciseId, widget }) => {
   const settings = useSelector(selectUser).settings.home.favouriteGraphs.options
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
 
   const [selectedInterval, setSelectedInterval] = useState({
     index: 0,
@@ -38,10 +39,11 @@ const ExerciseGraph = ({ exerciseId, widget }) => {
 
   const exercise = useSelector((state) => selectExerciseById(state, exerciseId))
 
-  const sets = exercise.sets.map((set) => ({
+  const rawSets = exercise.sets.map((set) => ({
     ...set,
     createdAt: parseISO(set.createdAt),
   }))
+  const sets = countWarmupSets ? rawSets : rawSets.filter(set => set.type !== "warmup")
 
   const setsOfInterval = sets.filter((set) =>
     isWithinInterval(set.createdAt, {

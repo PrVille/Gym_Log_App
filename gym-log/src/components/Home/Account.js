@@ -62,8 +62,10 @@ export const Achievements = ({ type, widget }) => {
   const [isExpanded, setExpanded] = useState(false)
   const dispatch = useDispatch()
   const workouts = useSelector(selectWorkouts)
-  const sets = useSelector(selectSets)
+  const selectedSets = useSelector(selectSets)
   const user = useSelector(selectUser)
+  const countWarmupSets = user.settings.general.countWarmupSets
+  const sets = countWarmupSets ? selectedSets : selectedSets.filter(set => set.type !== "warmup")
   const favourite = user.favouriteAchievements.includes(type)
 
   const workoutsCount = useMemo(() => workouts.length, [workouts])
@@ -101,7 +103,7 @@ export const Achievements = ({ type, widget }) => {
       : type === "Sets"
       ? 15
       : type === "Reps"
-      ? 120
+      ? 100
       : 60
 
   const action =
@@ -272,6 +274,9 @@ const Account = () => {
         <Section>
           <Section.Title lg>
             Good {time}, {user.name}!
+          </Section.Title>
+          <Section.Title sm>
+            @ {user.username}
           </Section.Title>
         </Section>
 

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { initializeExercises } from "../redux/reducers/exerciseReducer"
 import { initializeWorkouts } from "../redux/reducers/workoutReducer"
 import { initializeSets } from "../redux/reducers/setReducer"
@@ -11,9 +11,7 @@ const useInitialization = (user) => {
 
   if (!user) return () => null
 
-  return () => {
-    console.log("INITIALIZING");
-    
+  return () => {   
     dispatch(initializeSets())
     dispatch(initializePlannedSets())
     dispatch(initializeExercises())

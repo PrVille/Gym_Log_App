@@ -5,12 +5,14 @@ import { useTheme } from "@react-navigation/native"
 import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
 import { useState, createRef, useMemo } from "react"
 import Header from "../Utils/Header"
+import { selectUser } from "../../redux/reducers/userReducer"
 
 const ItemSeparator = () => <View style={{ height: 5 }} />
 
 const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
   const [searchQuery, setSearchQuery] = useState("")
   const [order, setOrder] = useState("asc")
+  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
   const onChangeSearch = (query) => setSearchQuery(query)
   const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc")
   let searchRef = createRef()
@@ -32,7 +34,7 @@ const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
   )
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <Header
         onChangeSearch={onChangeSearch}
         searchQuery={searchQuery}
@@ -46,6 +48,7 @@ const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
         data={availableExercises}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => {
+          const sets = countWarmupSets ? item.sets : item.sets.filter(set => set.type !== "warmup")
           return (
             <ListItem
               onPress={() => {
@@ -57,8 +60,8 @@ const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
               <ListItem.Content>
                 <ListItem.Title>{item.name}</ListItem.Title>
                 <ListItem.Subtitle>
-                  Sets: {item.sets.length} | Volume:{" "}
-                  {item.sets
+                  Sets: {sets.length} | Volume:{" "}
+                  {sets
                     .map((set) => set.weight * set.reps)
                     .reduce((a, b) => a + b, 0)}{" "}
                   kg
@@ -73,7 +76,7 @@ const ExercisePicker = ({ navigation, onSelection, existingExercises }) => {
         icon={{ name: "add", color: colors.background }}
         onPress={() => navigation.navigate("CreateExercise")}
       />
-    </>
+    </SafeAreaView>
   )
 }
 

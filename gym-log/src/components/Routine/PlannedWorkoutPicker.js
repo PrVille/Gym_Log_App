@@ -27,7 +27,7 @@ const PlannedWorkoutPicker = ({ navigation, onSelection, route }) => {
   )
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <Header
         onChangeSearch={onChangeSearch}
         searchQuery={searchQuery}
@@ -65,7 +65,7 @@ const PlannedWorkoutPicker = ({ navigation, onSelection, route }) => {
         icon={{ name: "add", color: theme.colors.background }}
         onPress={() => navigation.navigate("CreatePlannedWorkout")}
       />
-    </>
+    </SafeAreaView>
   )
 }
 
