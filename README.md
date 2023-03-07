@@ -1,6 +1,6 @@
 # Gym Log App
 
-This mobile application is a final project for [Full Stack Open](https://fullstackopen.com/en/) course.
+This mobile application is the final project for [Full Stack Open](https://fullstackopen.com/en/) course.
 The application allows users to log workouts and track/display data of their progress in the gym.
 Created and tested on iOS.
 
