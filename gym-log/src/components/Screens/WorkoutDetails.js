@@ -74,7 +74,7 @@ const WorkoutDetails = ({ params, route, navigation }) => {
                   )
                   .flat()
                   .map((set) => set.weight * set.reps)
-                  .reduce((a, b) => a + b, 0)}{" "}
+                  .reduce((a, b) => a + b, 0).toFixed()}{" "}
                 kg
               </Section.SubSectionItemBody>
             </Section.SubSectionItem>

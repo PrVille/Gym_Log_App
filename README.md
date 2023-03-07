@@ -1,12 +1,20 @@
 # Gym Log App
 
-This application is a final project for [Full Stack Open](https://fullstackopen.com/en/) course.
-The application allows users to log gym workouts and track/display data of their progress in the gym. 
+This mobile application is a final project for [Full Stack Open](https://fullstackopen.com/en/) course.
+The application allows users to log workouts and track/display data of their progress in the gym.
+
+<img src="https://qr.expo.dev/expo-go?owner=villepr&slug=gym-log&releaseChannel=default&host=exp.host" alt="app-qr" width="25%">
+
+_Live demo https://expo.dev/@villepr/gym-log_
 
 ### Keywords
 React Native, Expo, Javascript, React Navigation, Redux, Axios, Full Stack
 
-# Working hours
+# Demo & Screenshots
+
+<img src="./gym-log/assets/readme/home.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/1rm_calc.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/exercise.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/graph.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/exercises.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/logger.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/planner.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/routine.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/workout_history.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/workout.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/settings.PNG" alt="app-qr" width="25%">
+
+## Working hours
 
 |   date   | hours | what I did |
 |   :--:   | :---: | :--------: |

@@ -121,7 +121,7 @@ const ExerciseDetails = ({ route, navigation }) => {
             <Section.SubSectionItemBody>
               {sets
                 .map((set) => set.weight * set.reps)
-                .reduce((a, b) => a + b, 0)}{" "}
+                .reduce((a, b) => a + b, 0).toFixed()}{" "}
               kg
             </Section.SubSectionItemBody>
           </Section.SubSectionItem>

@@ -109,7 +109,7 @@ const FavouriteExercises = ({ navigation }) => {
                   <Card.Column>
                     {sets
                       .map((set) => set.weight * set.reps)
-                      .reduce((a, b) => a + b, 0)}{" "}
+                      .reduce((a, b) => a + b, 0).toFixed()}{" "}
                     kg
                   </Card.Column>
                 </Card.Row>

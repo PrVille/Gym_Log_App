@@ -77,7 +77,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
           Sets: {sets.length} | Volume:{" "}
           {sets
             .map((set) => set.weight * set.reps)
-            .reduce((a, b) => a + b, 0)}{" "}
+            .reduce((a, b) => a + b, 0).toFixed()}{" "}
           kg
         </ListItem.Subtitle>
       </ListItem.Content>
