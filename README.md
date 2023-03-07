@@ -1,4 +1,10 @@
-# Repo for full stack open project
+# Gym Log App
+
+This application is a final project for [Full Stack Open](https://fullstackopen.com/en/) course.
+The application allows users to log gym workouts and track/display data of their progress in the gym. 
+
+### Keywords
+React Native, Expo, Javascript, React Navigation, Redux, Axios, Full Stack
 
 # Working hours
 
