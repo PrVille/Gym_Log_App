@@ -1,19 +1,15 @@
 import React, { useState, createRef, useMemo } from "react"
 import {
-  Text,
   View,
   FlatList,
-  Pressable,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-  Vibration
 } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useSelector, useDispatch } from "react-redux"
 import { selectPlannedWorkoutsByQuery, deletePlannedWorkout } from "../../redux/reducers/plannedWorkoutReducer"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import { ListItem, Icon, Button, FAB } from "@rneui/themed"
 import { useTheme } from "@react-navigation/native"
 import { refetchPlannedSets } from "../../redux/reducers/plannedSetReducer"
 import Header from "../Utils/Header"
@@ -29,7 +25,7 @@ const PlannedWorkoutListItem = ({
   const confirmDeletion = (plannedWorkout) => {
     Alert.alert(
       `Delete ${plannedWorkout.name}?`,
-      "This will delete the planned workout and all related data (planned sets)",
+      "This will delete the planned workout and all related data.",
       [
         {
           text: "Cancel",
@@ -145,7 +141,6 @@ const PlannedWorkouts = ({ params }) => {
   const onChangeSearch = (query) => setSearchQuery(query)
   const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc")
 
-  const { colors } = useTheme()
   let searchRef = createRef()
 
   return (

@@ -3,11 +3,9 @@ import {
   ScrollView,
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
 } from "react-native"
 import Card from "../Utils/Card"
-import RestTimer from "../Utils/RestTimer"
 import theme from "../../theme"
 import { Button, Chip } from "@rneui/themed"
 import Section from "../Utils/Section"

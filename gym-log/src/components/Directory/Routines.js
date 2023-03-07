@@ -23,7 +23,7 @@ const RoutineListItem = ({
   const confirmDeletion = (routine) => {
     Alert.alert(
       `Delete ${routine.name}?`,
-      "This will delete the routine and all related data (?)",
+      "This will delete the routine and all related data.",
       [
         {
           text: "Cancel",

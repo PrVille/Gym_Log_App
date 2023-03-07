@@ -1,11 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack"
 import { Icon } from "@rneui/themed"
-import { Text } from "react-native"
 import Home from "./Home"
 import CloseButton from "../Buttons/CloseButton"
 import Account from "./Account"
 import theme from "../../theme"
-import CalculatorsStack from "../Calculators/CalculatorsStack"
 
 const Stack = createStackNavigator()
 

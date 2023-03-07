@@ -44,7 +44,6 @@ const CreateExercise = ({ navigation, route }) => {
 
   useEffect(() => {
     if (route.params) {
-      console.log(route.params.primaryMuscles)
       const pms = primaryMuscles.map((pm) => {
         return route.params.primaryMuscles.includes(pm.muscle)
           ? { ...pm, isChecked: true }
@@ -197,7 +196,6 @@ const CreateExercise = ({ navigation, route }) => {
             return (
               <ListItem key={item.id} bottomDivider>
                 <ListItem.CheckBox
-                  // Use ThemeProvider to change the defaults of the checkbox
                   iconType="material-community"
                   checkedIcon="checkbox-marked"
                   uncheckedIcon="checkbox-blank-outline"
@@ -241,7 +239,6 @@ const CreateExercise = ({ navigation, route }) => {
             return (
               <ListItem key={item.id} bottomDivider>
                 <ListItem.CheckBox
-                  // Use ThemeProvider to change the defaults of the checkbox
                   iconType="material-community"
                   checkedIcon="checkbox-marked"
                   uncheckedIcon="checkbox-blank-outline"

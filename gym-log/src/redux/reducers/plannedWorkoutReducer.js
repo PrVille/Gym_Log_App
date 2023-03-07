@@ -54,11 +54,8 @@ export const updatePlannedWorkout = (plannedWorkoutToUpdate) => {
   }
 }
 
-// Backend removes related planned sets, initialize them after calling this
 export const deletePlannedWorkout = (id) => {
-  return async (dispatch) => {
-    console.log("deletePlannedWorkout");
-    
+  return async (dispatch) => {    
     const deletedPlannedWorkout = await plannedWorkoutService.remove(id)
     dispatch(removePlannedWorkout(id))    
     return deletedPlannedWorkout

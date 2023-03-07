@@ -1,16 +1,10 @@
-import React, { useState } from "react"
-import { Text, View, ScrollView, FlatList } from "react-native"
-import { Input, Button, ListItem, Divider } from "@rneui/themed"
-import theme from "../../theme"
+import {  ScrollView } from "react-native"
 import Overview from "./Widgets/Overview"
 import ActiveRoutine from "./Widgets/ActiveRoutine"
 import FavouriteExercises from "./Widgets/FavouriteExercises"
-import { WorkoutsGraph } from "../Statistics/GraphScreen"
-import { useHeaderHeight } from "@react-navigation/elements"
 import { useSelector } from "react-redux"
 import { selectUser } from "../../redux/reducers/userReducer"
 import FavouriteGraphs from "./Widgets/FavouriteGraphs"
-import { Achievement } from "./Account"
 import FavouriteAchievements from "./Widgets/FavouriteAchievements"
 
 const Home = ({ navigation, route }) => {

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { createWorkout } from "../../redux/reducers/workoutReducer"
 import { createMultipleSets } from "../../redux/reducers/setReducer"
 import { updateExercise } from "../../redux/reducers/exerciseReducer"
-import { selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
+import { refetchPlannedWorkouts, selectPlannedWorkoutById } from "../../redux/reducers/plannedWorkoutReducer"
 import CloseButton from "../Buttons/CloseButton"
 import BackButton from "../Buttons/BackButton"
 import ForwardButton from "../Buttons/ForwardButton"
@@ -54,7 +54,7 @@ const LoggerStack = ({ route, navigation }) => {
         case "previousWeight":
           exercise.sets.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
-          })
+          })         
           const set = exercise.sets.find(
             (set) => set.reps === plannedSet.plannedReps
           )
@@ -77,16 +77,16 @@ const LoggerStack = ({ route, navigation }) => {
         const plannedSets = plannedExercises[i].sets
         for (let j = 0; j < plannedSets.length; j++) {
           const plannedSet = plannedSets[j]
+          const weight = parseFloat(
+            selectWeight(plannedSet, exercise.exercise)
+          ).toLocaleString("en-US", { maximumFractionDigits: 2 })
           const set = {
             _id: uuid.v4(),
             type: plannedSet.type,
             exercise: plannedSet.exercise,
             reps: plannedSet.plannedReps,
-            weight: parseFloat(
-              selectWeight(plannedSet, exercise.exercise)
-            ).toLocaleString("en-US", { maximumFractionDigits: 2 }),
+            weight: weight === "0" ? "" : weight,
           }
-
           plannedSets[j] = { ...set }
         }
       }
@@ -184,6 +184,8 @@ const LoggerStack = ({ route, navigation }) => {
         ...workout,
         exercises,
       })
+    ).then(
+      dispatch(refetchPlannedWorkouts())
     )
   }
 

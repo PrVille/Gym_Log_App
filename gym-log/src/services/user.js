@@ -1,11 +1,9 @@
 import AuthStorage from "./utils/authStorage"
 import axios from "axios"
+import Constants from "expo-constants"
 
+const baseUrl = Constants.manifest.extra.BASE_URL + "/api/users"
 const authStorage = new AuthStorage()
-
-const webUrl = "http://localhost:3001/api/users"
-const mobileUrl = "http://192.168.0.105:3001/api/users"
-const baseUrl = mobileUrl
 
 const setUser = async (user) => {
   await authStorage.setUser(user)

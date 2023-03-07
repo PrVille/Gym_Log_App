@@ -11,7 +11,7 @@ import {
   selectExercisesByQuery,
   deleteExercise,
 } from "../../redux/reducers/exerciseReducer"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import { ListItem, Icon, Button, FAB } from "@rneui/themed"
 import theme from "../../theme"
 import { useDispatch, useSelector } from "react-redux"
 import { refetchWorkouts } from "../../redux/reducers/workoutReducer"
@@ -30,7 +30,7 @@ const ExerciseListItem = ({ exercise, navigation, removeExercise }) => {
   const confirmDeletion = (exercise) => {
     Alert.alert(
       `Delete ${exercise.name}?`,
-      "This will delete the exercise and all related data (sets, planned sets, exercise in workouts and planned workouts)",
+      "This will delete the exercise and all related data.",
       [
         {
           text: "Cancel",

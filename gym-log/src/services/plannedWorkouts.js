@@ -1,8 +1,7 @@
 import axios from "axios"
+import Constants from "expo-constants"
 
-const webUrl = "http://localhost:3001/api/plannedworkouts"
-const mobileUrl = "http://192.168.0.105:3001/api/plannedworkouts"
-const baseUrl = mobileUrl
+const baseUrl = Constants.manifest.extra.BASE_URL + "/api/plannedworkouts"
 
 const getAll = async () => {
   const request = axios.get(baseUrl)
@@ -20,9 +19,7 @@ const update = async (id, newObject) => {
   return reponse.data
 };
 
-const remove = async (id) => {
-  console.log("plannedWorkoutService - remove");
-  
+const remove = async (id) => { 
   const reponse = await axios.delete(`${baseUrl}/${id}`);
   return reponse.data
 };

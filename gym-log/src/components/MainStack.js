@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 
-import { StyleSheet, Text, View, ActivityIndicator, Alert } from "react-native"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import { View, ActivityIndicator, Alert } from "react-native"
 
 import TabNavigator from "./TabNavigator"
 import LoggerOptions from "./Logger/LoggerOptions"

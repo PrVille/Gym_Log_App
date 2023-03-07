@@ -1,22 +1,17 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { selectWorkoutById } from "../../redux/reducers/workoutReducer"
-import { useTheme } from "@react-navigation/native"
-import { StyleSheet, ScrollView, SafeAreaView, Text, View } from "react-native"
+import { ScrollView, SafeAreaView } from "react-native"
 import Section from "../Utils/Section"
 import Card from "../Utils/Card"
 import theme from "../../theme"
-import {
-  format,
-  parseISO
-} from "date-fns"
 import { selectUser } from "../../redux/reducers/userReducer"
 
 const WorkoutDetails = ({ params, route, navigation }) => {
   const id = route.params
   const workout = useSelector((state) => selectWorkoutById(state, id))
-  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
-  const { colors } = useTheme()
+  const countWarmupSets =
+    useSelector(selectUser).settings.general.countWarmupSets
 
   const { name, notes, duration, exercises, createdAt } = workout
 
@@ -59,14 +54,24 @@ const WorkoutDetails = ({ params, route, navigation }) => {
             <Section.SubSectionItem>
               <Section.SubSectionItemTitle>Sets</Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>
-                {exercises.map((e) => countWarmupSets ? e.sets.length : e.sets.filter(set => set.type !== "warmup").length).reduce((a, b) => a + b, 0)}
+                {exercises
+                  .map((e) =>
+                    countWarmupSets
+                      ? e.sets.length
+                      : e.sets.filter((set) => set.type !== "warmup").length
+                  )
+                  .reduce((a, b) => a + b, 0)}
               </Section.SubSectionItemBody>
             </Section.SubSectionItem>
             <Section.SubSectionItem>
               <Section.SubSectionItemTitle>Volume</Section.SubSectionItemTitle>
               <Section.SubSectionItemBody>
                 {exercises
-                  .map((e) => countWarmupSets ? e.sets : e.sets.filter(set => set.type !== "warmup"))
+                  .map((e) =>
+                    countWarmupSets
+                      ? e.sets
+                      : e.sets.filter((set) => set.type !== "warmup")
+                  )
                   .flat()
                   .map((set) => set.weight * set.reps)
                   .reduce((a, b) => a + b, 0)}{" "}

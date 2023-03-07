@@ -1,17 +1,8 @@
-import { Children } from "react"
 import { View, Text, TouchableOpacity, TextInput } from "react-native"
 import { Divider, Icon, Input, Button, ListItem } from "@rneui/themed"
 import theme from "../../theme"
 
 const Card = ({ children, backgroundColor }) => {
-  const subComponentList = Object.keys(Card)
-
-  const subComponents = subComponentList.map((key) => {
-    return Children.map(children, (child) =>
-      child.type.name === key ? child : null
-    )
-  })
-
   return (
     <>
       <View
@@ -25,7 +16,7 @@ const Card = ({ children, backgroundColor }) => {
           paddingHorizontal: 15,
         }}
       >
-        {subComponents.map((component) => component)}
+        {children}
       </View>
     </>
   )

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
-import { Text, View } from "react-native"
-import { useTheme } from "@react-navigation/native"
+import { View } from "react-native"
 import { Input, Divider } from "@rneui/themed"
 
 const FinishWorkoutScreen = ({

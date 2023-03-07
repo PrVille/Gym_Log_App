@@ -38,7 +38,6 @@ export const createWorkout = (workout) => {
   }
 }
 
-// Backend removes related sets, initialize them after calling this
 export const deleteWorkout = (id) => {
   return async (dispatch) => {
     const deletedWorkout = await workoutService.remove(id)

@@ -1,27 +1,22 @@
 import { useState, useEffect, useMemo } from "react"
 import {
-  Text,
   View,
   FlatList,
-  Pressable,
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
   SafeAreaView,
 } from "react-native"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import { ListItem, Icon, Button, Chip } from "@rneui/themed"
 import {
   refetchWorkouts,
-  selectWorkouts,
 } from "../../redux/reducers/workoutReducer"
 import { useSelector, useDispatch } from "react-redux"
-import { deleteWorkout } from "../../redux/reducers/workoutReducer"
 import {
   deleteSet,
   selectSetsByExerciseId,
 } from "../../redux/reducers/setReducer"
 import { useTheme } from "@react-navigation/native"
-import { selectSets, refetchSets } from "../../redux/reducers/setReducer"
 import { refetchExercises } from "../../redux/reducers/exerciseReducer"
 import { createStackNavigator } from "@react-navigation/stack"
 import { compareAsc, compareDesc, parseISO, format } from "date-fns"
@@ -31,7 +26,7 @@ const SetListItem = ({ set, navigation, removeSet }) => {
   const confirmDeletion = (set) => {
     Alert.alert(
       `Delete set?`,
-      "This will delete the set and all related data",
+      "This will delete the set and all related data.",
       [
         {
           text: "Cancel",

@@ -1,26 +1,5 @@
-import React, { useState, useEffect } from "react"
-import {
-  createExercise,
-  updateExercise,
-} from "../../redux/reducers/exerciseReducer"
-import { setNotification } from "../../redux/reducers/notificationReducer"
-import { Input, Button, ListItem, Divider } from "@rneui/themed"
-import uuid from "react-native-uuid"
-import {
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  selectRoutineById,
-  selectActiveRoutine,
-  updateRoutine,
-} from "../../redux/reducers/routineReducer"
-import theme from "../../theme"
+import { Input, Divider } from "@rneui/themed"
+import { View } from "react-native"
 
 const RoutineFormFinish = ({ setRoutine, routine }) => {
   return (

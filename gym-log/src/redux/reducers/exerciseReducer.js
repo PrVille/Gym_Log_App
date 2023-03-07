@@ -47,7 +47,7 @@ export const createExercise = (exercise) => {
 }
 
 export const updateExercise = (exerciseToUpdate) => {
-  return async (dispatch) => {
+  return async (dispatch) => {   
     const updatedExercise = await exerciseService.update(
       exerciseToUpdate._id,
       exerciseToUpdate
@@ -57,7 +57,6 @@ export const updateExercise = (exerciseToUpdate) => {
   }
 }
 
-// Backend removes related sets, workouts, planned sets and planned workouts, initialize them after calling this
 export const deleteExercise = (id) => {
   return async (dispatch) => {
     const deletedExercise = await exerciseService.remove(id)
@@ -68,14 +67,12 @@ export const deleteExercise = (id) => {
 
 // SELECTORS
 
-// useSelector(selectExercises) === useSelector(state => selectExercises(state))
 export const selectExercises = (state) => state.exercises
 
 export const selectFavouriteExercises = (state) => {
   return state.exercises.filter((e) => e.favourite)
 }
 
-// useSelector(state => selectExerciseById(state, id))
 export const selectExerciseById = (state, id) => {
   return state.exercises.find((exercise) => exercise._id === id)
 }

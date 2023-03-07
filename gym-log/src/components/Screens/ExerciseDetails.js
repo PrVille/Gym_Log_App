@@ -1,11 +1,5 @@
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from "react-native"
-import { Icon, Button } from "@rneui/themed"
+import { ScrollView, StyleSheet } from "react-native"
+import { Icon } from "@rneui/themed"
 
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -20,7 +14,8 @@ const ExerciseDetails = ({ route, navigation }) => {
   const dispatch = useDispatch()
   const id = route.params
   const exercise = useSelector((state) => selectExerciseById(state, id))
-  const countWarmupSets = useSelector(selectUser).settings.general.countWarmupSets
+  const countWarmupSets =
+    useSelector(selectUser).settings.general.countWarmupSets
   const {
     name,
     instructions,
@@ -31,7 +26,9 @@ const ExerciseDetails = ({ route, navigation }) => {
     oneRepMaxGoal,
   } = exercise
 
-  const sets = countWarmupSets ? exercise.sets : exercise.sets.filter(set => set.type !== "warmup")
+  const sets = countWarmupSets
+    ? exercise.sets
+    : exercise.sets.filter((set) => set.type !== "warmup")
 
   useEffect(() => {
     navigation.setOptions({

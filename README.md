@@ -63,4 +63,8 @@
 | 03.03.23 | 1     | deleteUser, Account Settings, General Settings, Statistics Settings  |
 | 04.03.23 | 3     | calculators, sign in, sign up, input validation  |
 | 04.03.23 | 4     | deleteUser, Account Settings, General Settings, Statistics Settings  |
-| sum      | 172   | | 
+| 06.03.23 | 4     | signup confirm password, backend initialize new user db |
+| 07.03.23 | 4     | cleanup, deployment |
+| sum      | 180   | | 
+
+

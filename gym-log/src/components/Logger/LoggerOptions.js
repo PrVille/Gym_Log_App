@@ -1,7 +1,7 @@
 import React from "react"
-import { Text, TouchableWithoutFeedback, View, Pressable } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 import { BlurView } from "expo-blur"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
+import { Button } from "@rneui/themed"
 import theme from "../../theme"
 
 const LoggerOptions = ({ navigation }) => {

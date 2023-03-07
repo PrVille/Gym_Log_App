@@ -1,7 +1,7 @@
 import { signIn } from "../../redux/reducers/userReducer"
 import { Button, Input } from "@rneui/themed"
 import { useRef, useState } from "react"
-import { View, Text, ScrollView, StyleSheet, Icon } from "react-native"
+import { View, Text, ScrollView, StyleSheet } from "react-native"
 import { useDispatch } from "react-redux"
 import { setNotification } from "../../redux/reducers/notificationReducer"
 import theme from "../../theme"

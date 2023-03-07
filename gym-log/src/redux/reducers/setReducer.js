@@ -33,7 +33,6 @@ export const initializeSets = () => {
 
 export const refetchSets = () => initializeSets()
 
-// NOTE: remember to add set for equivalent exercise
 export const createSet = (set) => {
   return async (dispatch) => {
     const newSet = await setService.create(set)
@@ -42,7 +41,6 @@ export const createSet = (set) => {
   }
 }
 
-// NOTE: remember to add sets for equivalent exercises
 export const createMultipleSets = (sets) => {
   return async (dispatch) => {
     const newSets = await setService.create(sets)
@@ -51,7 +49,6 @@ export const createMultipleSets = (sets) => {
   }
 }
 
-// refetch exercises and workouts 
 export const deleteSet = (id) => {
   return async (dispatch) => {    
     const deletedSet = await setService.remove(id)

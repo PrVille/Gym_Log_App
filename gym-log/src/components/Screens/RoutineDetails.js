@@ -152,6 +152,4 @@ const RoutineDetails = ({ route, navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({})
-
 export default RoutineDetails

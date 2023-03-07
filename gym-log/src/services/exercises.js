@@ -1,7 +1,7 @@
 import axios from "./utils/axios"
-const webUrl = "http://localhost:3001/api/exercises"
-const mobileUrl = "http://192.168.0.105:3001/api/exercises"
-const baseUrl = mobileUrl
+import Constants from "expo-constants"
+
+const baseUrl = Constants.manifest.extra.BASE_URL + "/api/exercises"
 
 const getAll = async () => {
   const res = await axios.get(baseUrl)

@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   async function (response) {
     return response
   },
-  async function (error) {
+  async function (error) {    
     store.dispatch(setNotification({ message: error.response?.data?.error, type: "info" }, 5))
     if (error.response?.data?.error === "Token expired") store.dispatch(signOut())
     return Promise.reject(error)

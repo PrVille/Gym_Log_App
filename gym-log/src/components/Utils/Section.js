@@ -1,21 +1,12 @@
-import { Children } from "react"
 import { View, Text, TouchableOpacity } from "react-native"
 import { Divider, Icon } from "@rneui/themed"
 import theme from "../../theme"
 
 const Section = ({ children }) => {
-  const subComponentList = Object.keys(Section)
-
-  const subComponents = subComponentList.map((key) => {
-    return Children.map(children, (child) =>
-      child.type.name === key ? child : null
-    )
-  })
-
   return (
     <>
       <View style={{ marginStart: 20, marginVertical: 10 }}>
-        {subComponents.map((component) => component)}
+        {children}
       </View>
     </>
   )

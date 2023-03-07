@@ -138,6 +138,4 @@ const PlannedWorkoutDetails = ({ route, navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({})
-
 export default PlannedWorkoutDetails

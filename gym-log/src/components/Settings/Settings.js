@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import { SafeAreaView, ScrollView, Text, View } from "react-native"
+import { SafeAreaView, ScrollView } from "react-native"
 import { Button, ListItem, Icon } from "@rneui/themed"
 import { useDispatch } from "react-redux"
 import { signOut } from "../../redux/reducers/userReducer"
@@ -41,7 +40,7 @@ const Settings = ({ navigation }) => {
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-       
+
         <Button
           containerStyle={{ marginVertical: 30, marginHorizontal: 20 }}
           title={"Sign Out"}

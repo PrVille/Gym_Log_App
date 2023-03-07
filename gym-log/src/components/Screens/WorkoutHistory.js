@@ -1,22 +1,16 @@
 import { useState, useMemo, createRef } from "react"
 import {
-  Text,
   View,
   FlatList,
-  Pressable,
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
   SafeAreaView,
 } from "react-native"
-import { ListItem, Icon, Button, SearchBar, FAB, Chip } from "@rneui/themed"
-import {
-  selectWorkouts,
-  selectWorkoutsByQuery,
-} from "../../redux/reducers/workoutReducer"
+import { ListItem, Icon, Button } from "@rneui/themed"
+import { selectWorkoutsByQuery } from "../../redux/reducers/workoutReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWorkout } from "../../redux/reducers/workoutReducer"
-import { deleteSet } from "../../redux/reducers/setReducer"
 import { useTheme } from "@react-navigation/native"
 import { selectSets, refetchSets } from "../../redux/reducers/setReducer"
 import { refetchExercises } from "../../redux/reducers/exerciseReducer"
@@ -28,7 +22,7 @@ const WorkoutListItem = ({ workout, navigation, removeWorkout }) => {
   const confirmDeletion = (workout) => {
     Alert.alert(
       `Delete ${workout.name}?`,
-      "This will delete the workout and all related data (sets)",
+      "This will delete the workout and all related data.",
       [
         {
           text: "Cancel",

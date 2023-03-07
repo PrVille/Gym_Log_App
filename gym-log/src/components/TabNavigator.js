@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native"
+import { StyleSheet, View, } from "react-native"
 import Constants from "expo-constants"
 
 import StatisticsStack from "./Statistics/StatisticsStack"
@@ -8,7 +8,6 @@ import DirectoryNavigator from "./Directory/DirectoryNavigator"
 import HomeStack from "./Home/HomeStack"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useTheme } from "@react-navigation/native"
-import CloseButton from "./Buttons/CloseButton"
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +55,7 @@ const TabNavigator = () => {
         tabBarStyle: { borderTopWidth: 0 },
       })}
       sceneContainerStyle={styles.container}
-      initialRouteName={"SettingsStack"}
+      initialRouteName={"HomeStack"}
     >
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="StatisticsStack" component={StatisticsStack} />

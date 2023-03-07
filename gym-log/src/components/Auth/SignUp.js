@@ -1,6 +1,6 @@
 import { Button, Input } from "@rneui/themed"
 import { useRef, useState } from "react"
-import { View, Text, ScrollView, StyleSheet, Icon } from "react-native"
+import { View, ScrollView, StyleSheet, } from "react-native"
 import { useDispatch } from "react-redux"
 import { setNotification } from "../../redux/reducers/notificationReducer"
 import { signUp } from "../../redux/reducers/userReducer"
@@ -13,15 +13,21 @@ const SignUp = () => {
   const [name, setName] = useState("")
   const [nameBlur, setNameBlur] = useState(false)
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [confirmPasswordBlur, setConfirmPasswordBlur] = useState(false)
   const [passwordBlur, setPasswordBlur] = useState(false)
-  const [secure, setSecure] = useState(true)
+  const [securePassword, setSecurePassword] = useState(true)
+  const [secureConfirmPassword, setSecureConfirmPassword] = useState(true)
+
 
   const nameRef = useRef()
   const passwordRef = useRef()
+  const confirmPasswordRef = useRef()
 
   const validUsername = username.length >= 3
   const validName = name.length > 0
   const validPassword = password.length >= 5
+  const validConfirmPassword = confirmPassword == password
 
   const usernameError =
     usernameBlur && !username
@@ -36,6 +42,7 @@ const SignUp = () => {
       : passwordBlur && password.length < 5
       ? "Password must be at least 5 characters!"
       : ""
+  const confirmPasswordError = confirmPasswordBlur && confirmPassword !== password && validPassword ? "The passwords doesn't match!" : ""
 
   const notify = (message, type = "info") => {
     dispatch(setNotification({ message, type }, 5))
@@ -84,10 +91,10 @@ const SignUp = () => {
         <Input
           inputContainerStyle={styles.inputContainerStyle}
           rightIcon={{
-            name: secure ? "eye" : "eye-off",
+            name: securePassword ? "eye" : "eye-off",
             type: "material-community",
             color: theme.colors.primary,
-            onPress: () => setSecure(!secure),
+            onPress: () => setSecurePassword(!securePassword),
           }}
           label="Password"
           onBlur={() => setPasswordBlur(true)}
@@ -98,14 +105,38 @@ const SignUp = () => {
           onChangeText={(value) => setPassword(value)}
           autoCorrect={false}
           textContentType={"password"}
-          secureTextEntry={secure}
+          secureTextEntry={securePassword}
           errorStyle={{ color: "red" }}
           errorMessage={passwordError}
           ref={passwordRef}
+          onSubmitEditing={() => confirmPasswordRef.current.focus()}
+        />
+
+        <Input
+          inputContainerStyle={styles.inputContainerStyle}
+          rightIcon={{
+            name: secureConfirmPassword ? "eye" : "eye-off",
+            type: "material-community",
+            color: theme.colors.primary,
+            onPress: () => setSecureConfirmPassword(!secureConfirmPassword),
+          }}
+          label="Confirm Password"
+          onBlur={() => setConfirmPasswordBlur(true)}
+          maxLength={50}
+          selectTextOnFocus={true}
+          value={confirmPassword}
+          placeholder="Confirm Password"
+          onChangeText={(value) => setConfirmPassword(value)}
+          autoCorrect={false}
+          textContentType={"password"}
+          secureTextEntry={secureConfirmPassword}
+          errorStyle={{ color: "red" }}
+          errorMessage={confirmPasswordError}
+          ref={confirmPasswordRef}
         />
 
         <Button
-          disabled={!validUsername || !validName || !validPassword}
+          disabled={!validUsername || !validName || !validPassword || !validConfirmPassword}
           disabledStyle={{ backgroundColor: theme.colors.secondary }}
           disabledTitleStyle={{ color: theme.colors.background }}
           containerStyle={{ margin: 10 }}
