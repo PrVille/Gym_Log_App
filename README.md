@@ -1,10 +1,8 @@
 # ✨ Gym Log App
 
-<p>
-  This mobile application is the final project for [Full Stack Open](https://fullstackopen.com/en/) course.
-  The application allows users to log workouts and track/display data of their progress in the gym.
-  Created and tested on iOS.
-</p>
+This mobile application is the final project for [Full Stack Open](https://fullstackopen.com/en/) course.
+The application allows users to log workouts and track/display data of their progress in the gym.
+Created and tested on iOS.
 
 <img src="https://qr.expo.dev/expo-go?owner=villepr&slug=gym-log&releaseChannel=default&host=exp.host" alt="app-qr" width="25%">
 _Live demo https://expo.dev/@villepr/gym-log_
