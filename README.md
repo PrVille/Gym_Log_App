@@ -8,13 +8,35 @@ Created and tested on iOS.
 
 _Live demo https://expo.dev/@villepr/gym-log_
 
-### Keywords
-React Native, Expo, Javascript, React Navigation, Redux, Axios, Full Stack
+## 🔧 Technologies & Tools
 
-# Demo & Screenshots
+<p>
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white" />
+  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white" />
+  <img src="https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white" />
+  <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" />
+</p>
 
+## Demo & Screenshots
 
-<img src="./gym-log/assets/readme/gym-log-demo1.gif" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/home.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/1rm_calc.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/exercise.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/graph.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/exercises.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/logger.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/planner.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/routine.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/workout_history.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/workout.PNG" alt="app-qr" width="25%"> <img src="./gym-log/assets/readme/settings.PNG" alt="app-qr" width="25%">
+<p>
+  <img src="./gym-log/assets/readme/gym-log-demo1.gif" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/home.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/1rm_calc.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/exercise.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/graph.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/exercises.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/logger.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/planner.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/routine.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/workout_history.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/workout.PNG" alt="app-qr" width="25%">
+  <img src="./gym-log/assets/readme/settings.PNG" alt="app-qr" width="25%">
+</p>
+
 
 ## Working hours
 
