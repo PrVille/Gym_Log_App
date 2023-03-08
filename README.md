@@ -1,14 +1,23 @@
-# Gym Log App
+# ✨ Gym Log App
 
-This mobile application is the final project for [Full Stack Open](https://fullstackopen.com/en/) course.
-The application allows users to log workouts and track/display data of their progress in the gym.
-Created and tested on iOS.
+<p>
+  This mobile application is the final project for [Full Stack Open](https://fullstackopen.com/en/) course.
+  The application allows users to log workouts and track/display data of their progress in the gym.
+  Created and tested on iOS.
+</p>
 
 <img src="https://qr.expo.dev/expo-go?owner=villepr&slug=gym-log&releaseChannel=default&host=exp.host" alt="app-qr" width="25%">
-
 _Live demo https://expo.dev/@villepr/gym-log_
 
-## 🔧 Technologies & Tools
+## Menu
+
+- [🔧 Technologies and Tools](#-technologies-and-tools-)
+- [🚀 Features](#-features-)
+- [📷 Demo and Screenshots](#-demo-and-screenshots-)
+- [⌚ Working hours](#-working-hours-)
+- [👤 Author](#-author-)
+
+## 🔧 Technologies and Tools [🔝](#-gym-log-app)
 
 <p>
   <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
@@ -20,7 +29,35 @@ _Live demo https://expo.dev/@villepr/gym-log_
   <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" />
 </p>
 
-## Demo & Screenshots
+## 🚀 Features [🔝](#-gym-log-app)
+
+- Log improvised or planned workouts
+- Create account with some initialized exercises, planned workouts and routines
+- Create your own routines, planned workouts and exercises
+- Complete achievements and earn medals
+  - 5 tiers
+- Home screen widgets
+  - Overall statistics
+  - Followed routine
+  - Favoutite exercises
+  - Favourite graphs
+  - Favourite achievements
+- Statistics and graphs
+  - Overall
+  - Target muscles
+  - Exercises
+  - Data grouping and interval
+- History
+  - Completed workouts
+  - Completed sets
+- Calculators
+  - 1 rep max
+  - Warmup
+- Settings
+  - Home widgets editing
+  - Graph style and data editing
+
+## 📷 Demo and Screenshots [🔝](#-gym-log-app)
 
 <p>
   <img src="./gym-log/assets/readme/gym-log-demo1.gif" alt="app-qr" width="25%">
@@ -37,8 +74,7 @@ _Live demo https://expo.dev/@villepr/gym-log_
   <img src="./gym-log/assets/readme/settings.PNG" alt="app-qr" width="25%">
 </p>
 
-
-## Working hours
+## ⌚ Working hours [🔝](#-gym-log-app)
 
 |   date   | hours | what I did |
 |   :--:   | :---: | :--------: |
@@ -105,4 +141,15 @@ _Live demo https://expo.dev/@villepr/gym-log_
 | 07.03.23 | 4     | cleanup, deployment |
 | sum      | 180   | | 
 
+## 👤 Author [🔝](#-gym-log-app)
+
+👋 **Ville Prami**
+<p>
+    <a href="https://www.linkedin.com/in/ville-prami/">
+        <img alt="linkedin" title="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
+    </a>
+    <a>
+        <img alt="me" title="Me" src="https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white"/>
+    </a>
+</p>
 
