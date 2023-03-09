@@ -9,13 +9,13 @@ _Live demo https://expo.dev/@villepr/gym-log_
 
 ## Menu
 
-- [🔧 Technologies and Tools](#-technologies-and-tools-)
+- [🔧 Technologies & Tools](#-technologies--tools-)
 - [🚀 Features](#-features-)
-- [📷 Demo and Screenshots](#-demo-and-screenshots-)
+- [📷 Demo & Screenshots](#-demo--screenshots-)
 - [⌚ Working hours](#-working-hours-)
 - [👤 Author](#-author-)
 
-## 🔧 Technologies and Tools [🔝](#-gym-log-app)
+## 🔧 Technologies & Tools [🔝](#-gym-log-app)
 
 <p>
   <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
@@ -55,7 +55,7 @@ _Live demo https://expo.dev/@villepr/gym-log_
   - Home widgets editing
   - Graph style and data editing
 
-## 📷 Demo and Screenshots [🔝](#-gym-log-app)
+## 📷 Demo & Screenshots [🔝](#-gym-log-app)
 
 <p>
   <img src="./gym-log/assets/readme/gym-log-demo1.gif" alt="app-qr" width="25%">
