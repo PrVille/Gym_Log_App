@@ -146,7 +146,7 @@ _Live demo https://expo.dev/@villepr/gym-log_
     <a href="https://www.linkedin.com/in/ville-prami/">
         <img alt="linkedin" title="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
     </a>
-    <a>
+    <a href="https://ville-prami.vercel.app/">
         <img alt="me" title="Me" src="https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white"/>
     </a>
 </p>
